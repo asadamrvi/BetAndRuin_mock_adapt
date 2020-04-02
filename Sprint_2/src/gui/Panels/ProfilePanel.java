@@ -124,7 +124,7 @@ public class ProfilePanel extends JPanel {
 		add(textArea_2);
 		
 
-		    editbet = new JButton("Edit Bet");
+		    editbet = new JButton("Edit Bet Amount");
 			editbet.setEnabled(false);
 			editbet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
