@@ -387,10 +387,11 @@ public class BLFacadeImplementation  implements BLFacade {
 		    calendar.add(Calendar.HOUR_OF_DAY, Hours);
 		    Date last=calendar.getTime();
 		    int high_low=last.compareTo(finish_date);
-		    if (high_low==-1) {
+		    if (high_low<0) {
 		    	return true;
 		    }
 		    else
+
 		    	return false;
 		    }
 

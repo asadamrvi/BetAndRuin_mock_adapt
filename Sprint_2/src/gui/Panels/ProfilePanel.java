@@ -179,27 +179,29 @@ public class ProfilePanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int j=table.getSelectedRow();
-				boolean editable=table.isEnabled();
-				if (editable) {editable=false;}
+				ViewFulldetail.setEnabled(true);
 
 				Bet b=bet_list.get(j);
 				if (facade.Enable_or_not(b, 48)) {
 					editbet.setEnabled(true);
 					
 				}
-				else
-				{
-					JOptionPane.showMessageDialog(null, "There Must be Gap of 48 hours before bet take place");
-	
+//				else
+//				{
+//					JOptionPane.showMessageDialog(null, "There Must be Gap of 48 hours before bet take place");
+//	
+//				}
+				//48 hours
+				if (facade.Enable_or_not(b, 24)) {
+					DeleteBet.setEnabled(true);
+					
 				}
-				if (facade.Enable_or_not(b, 24)) {}
-				else
-				{
-					JOptionPane.showMessageDialog(null, "Sorry,There is less than 24 hours for bet to Place");
-
-				}
-				DeleteBet.setEnabled(true);
-				ViewFulldetail.setEnabled(true);
+//				else
+//				{
+//					JOptionPane.showMessageDialog(null, "Sorry,There is less than 24 hours for bet to Place");
+//
+//				}
+				
 				
 				
 			}

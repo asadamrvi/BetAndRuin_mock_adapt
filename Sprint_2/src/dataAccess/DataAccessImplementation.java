@@ -96,7 +96,7 @@ public class DataAccessImplementation implements DataAccess {
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 
 			Event ev1=new Event(1, "Atlético-Athletic", df.parse("12:00 17/4/2020"),df.parse("13:45 17/4/2020"),Sport.FOOTBALL);
-			Event ev2=new Event(2, "Eibar-Barcelona", df.parse("15:00 17/4/2020"),df.parse("16:45 17/4/2020"),Sport.FOOTBALL);
+			Event ev2=new Event(2, "Eibar-Barcelona", df.parse("15:00 03/4/2020"),df.parse("16:45 17/4/2020"),Sport.FOOTBALL);
 			Event ev3=new Event(3, "Getafe-Celta", df.parse("18:00 11/5/2020"),df.parse("19:45 11/5/2020"),Sport.FOOTBALL);
 			Event ev4=new Event(4, "Alavés-Deportivo", df.parse("20:00 25/4/2020"),df.parse("21:45 25/4/2020"),Sport.FOOTBALL);
 			Event ev5=new Event(5, "Español-Villareal",df.parse("22:00 25/4/2020"),df.parse("23:45 25/4/2020"),Sport.FOOTBALL);
