@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.SystemColor;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -256,11 +257,21 @@ public class ProfilePanel extends JPanel {
 		JButton btnNewButton = new JButton("Delete Profile");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int option = JOptionPane.showConfirmDialog(getParent(),"This Will Delete Your Account and All your bets, Want to Do it?","Sure?",
+						JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+				if (option==0) {
 				facade.removeUser(facade.getLoggeduser().getID());
-				facade.logOut();
-				MainGUI mai=MainGUI.getInstance();
-				mai.resetPanels();
-				mai.visitorView();
+//				facade.logOut();
+//				MainGUI mai=MainGUI.getInstance();
+//				mai.resetPanels();
+//				mai.visitorView();
+				System.gc();
+				for (Window window : Window.getWindows()) {
+				    window.dispose();
+				}
+				facade.logOut();;
+				}
 				
 				
 				
