@@ -1,6 +1,7 @@
 package dataAccess;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -155,6 +156,7 @@ public interface DataAccess {
 	 * @return			cash on the account after the addition
 	 */
 	public float addCash(String ID, float cash);
+	public ArrayList<Bet> getBets(User bettor);
 
 	/**
 	 * 
@@ -162,5 +164,8 @@ public interface DataAccess {
 	public void storeFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file);
 
 	public void close();
+	public void remove_bet (User bettor,Bet bet);
+	public void updatebets (User bettor,Bet bet,float amount);
+
 
 }

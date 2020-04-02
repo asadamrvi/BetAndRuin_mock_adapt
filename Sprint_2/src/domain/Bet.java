@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -25,6 +26,14 @@ public class Bet {
 	@GeneratedValue
 	private Integer betNumber;
 	
+	public float getStake() {
+		return stake;
+	}
+
+	public void setStake(float stake) {
+		this.stake = stake;
+	}
+
 	@XmlIDREF
 	@ManyToOne
 	private User bettor;
@@ -34,7 +43,8 @@ public class Bet {
 	private Date placementdate;
 	private Date resolvingdate;
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
+
 	private List<Prediction> predictions;
 
 	private enum Status{ONGOING,CANCELLED,PAYMENT_PENDING};
@@ -96,6 +106,10 @@ public class Bet {
 
 	public Date getResolvingdate() {
 		return resolvingdate;
+	}
+	
+	public String StatustoString() {
+		return status.name();
 	}
 
 	public void setResolvingdate(Date resolvingdate) {

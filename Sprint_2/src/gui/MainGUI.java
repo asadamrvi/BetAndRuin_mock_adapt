@@ -544,6 +544,8 @@ public class MainGUI extends JFrame {
 	Action menuAction = new  AbstractAction() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			menubuttons.put(profileButton,new ProfilePanel());
+
 			Object panel = menubuttons.get(e.getSource());
 			currentPanel.removeAll();
 			currentPanel.add((JPanel)panel);

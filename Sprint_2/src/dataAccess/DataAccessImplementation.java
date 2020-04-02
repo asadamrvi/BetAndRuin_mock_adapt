@@ -551,8 +551,10 @@ public class DataAccessImplementation implements DataAccess {
 	 * @return
 	 */
 	public void removeUser(String iD) {
+		User u = db.find(User.class, iD);
+
 		db.getTransaction().begin();
-		TypedQuery<User> query = db.createQuery("DELETE FROM User u WHERE u.ID = \"" + iD + "\"", User.class);
+		TypedQuery query = db.createQuery("DELETE FROM User user where id ="+"'"+ u.getID()+"'",User.class);
 		query.executeUpdate();
 		db.getTransaction().commit();
 		System.out.println(iD + " has been deleted");
@@ -660,5 +662,49 @@ public class DataAccessImplementation implements DataAccess {
 				return predictions;
 			}
 		}
+	}
+	public ArrayList<Bet> getBets(User bettor){
+		User u = db.find(User.class, bettor.getID());
+		TypedQuery q1 = db.createQuery("select user FROM User user where id ="+"'"+ u.getID()+"'",User.class);
+		List<User> results = q1.getResultList();
+        ArrayList<Bet> bets =  results.get(0).getBets();
+		System.out.println("Bet reterived sucessfully");
+		return bets;
+	}
+
+	@Override
+	public void remove_bet(User bettor, Bet bet) {
+		User u = db.find(User.class, bettor.getID());
+
+	    db.getTransaction().begin();
+		
+		u.remove_bet(bet);
+	  //   db.remove(bet);
+//		db.pers
+		db.getTransaction().commit();
+		System.out.println("Bet removed sucessfully");
+		
+	}
+
+	@Override
+	public void updatebets(User bettor, Bet bet, float amount) {
+		User u = db.find(User.class, bettor.getID());
+		ArrayList<Bet> bets=u.getBets();
+		Bet aux=null;
+		for (Bet b:bets) {
+			if (b.getBetNumber()==bet.getBetNumber()) {
+				 aux=b;
+				 break;
+			}
+		}
+if (aux!=null) {
+	    db.getTransaction().begin();
+		
+		aux.setAmount(amount);
+		db.persist(aux);
+		db.getTransaction().commit();
+		System.out.println("Bet update sucessfully");
+	}
+		
 	}
 }

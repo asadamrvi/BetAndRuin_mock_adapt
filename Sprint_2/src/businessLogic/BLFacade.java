@@ -217,4 +217,40 @@ public interface BLFacade  {
 	
 	public List<Prediction> getQuestionPredictions(int questionId) throws QuestionNotFound, NoAnswers;
 	
+	/** Add Hours in Placment Date of bet, and compare new date with Resolving Date.
+	 * 
+	 * @param A Bet Variable, Hours
+	 * @return	return True if adding hours in Bet Placement date is less then Resolving Date
+	 */
+	public boolean Enable_or_not(Bet b,int Hours);
+	
+	/** Function To Get TAbles Data.
+	 * 
+	 * @param Bet Variable and Arraylist of Predictions.
+	 * @return	return Matrix DAta later to Use in tables.
+	 */
+	public Object[][] getDAta(Bet b,ArrayList<Bet> bets) ;
+	/** Function To Get BEts of User .
+	 * 
+	 * @param User U.
+	 * @return	return ArrayList of User bets.
+	 */
+	public ArrayList<Bet> getBets(User u);
+	
+	/** Function To remove Bet of USer.
+	 * 
+	 * @param User U, and Bet B.
+	 * @return	Remove Bet from USer bet List.
+	 */
+	public void remove_bet (User bettor, Bet bet);
+	/** Function to update Bet Amount of given Bet..
+	 * 
+	 * @param A user , Bet and New Amount.
+	 * @return	Set amount as new BEt amount.
+	 */
+	public void updatebets (User bettor, Bet bet, float amount);
+	
+	public User getLoggeduser();
+
+	
 }

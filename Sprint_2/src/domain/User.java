@@ -43,7 +43,7 @@ public class User implements Comparable<User>{
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Profile profile;
 
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany(fetch=FetchType.EAGER)
 	private ArrayList<Bet> bets;
 
 
@@ -133,6 +133,19 @@ public class User implements Comparable<User>{
 	
 	public ArrayList<Bet> getBets() {
 		return bets;
+	}
+	
+	public void remove_bet(Bet c) {
+		int j=0;
+		for (int i=0;i<bets.size();i++) {
+			if (bets.get(i).equals(c)) {
+				j=i;
+				break;
+			}
+		}
+		bets.remove(j);
+		
+
 	}
 	
 	public String statusToString() {

@@ -2,6 +2,7 @@ package businessLogic;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -248,6 +249,11 @@ public class BLFacadeImplementation  implements BLFacade {
 
 	}
 
+	public User getLoggeduser() {
+		return loggeduser;
+	}
+
+
 	/**
 	 * This method invokes the data access to initialize the database with some events and questions.
 	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
@@ -370,5 +376,80 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 		
 	}
-}
+
+
+	@Override
+	public boolean Enable_or_not(Bet b, int Hours) {
+		Date placement_date=b.getPlacementdate();
+		Date finish_date=b.getResolvingdate();
+		 Calendar calendar = Calendar.getInstance();
+		    calendar.setTime(placement_date);
+		    calendar.add(Calendar.HOUR_OF_DAY, Hours);
+		    Date last=calendar.getTime();
+		    int high_low=last.compareTo(finish_date);
+		    if (high_low==-1) {
+		    	return true;
+		    }
+		    else
+		    	return false;
+		    }
+
+
+	@Override
+	public Object[][] getDAta(Bet b, ArrayList<Bet> bets) {
+		
+			if (b==null) {
+				Object[][] data = new Object[bets.size()][3];
+				for (int i = 0; i < bets.size(); i++) {
+					data[i][0] = bets.get(i).getStatus();
+				    data[i][1] = bets.get(i).getStake();
+				    data[i][2] = bets.get(i).getPlacementdate();
+				    }
+				return data;
+			}
+			else {
+				List<Prediction> predictions=b.getPredictions();
+				Object[][] data = new Object[predictions.size()][5];
+				for (int i = 0; i < predictions.size(); i++) { 
+				data[i][0] =predictions.get(i).getPredictionNumber();
+			    data[i][1] = predictions.get(i).getQuestion().getQuestion();
+			    data[i][2] = predictions.get(i).getAnswer();
+			    data[i][3] = predictions.get(i).getOdds();
+			    data[i][4] = predictions.get(i).getOutcome();
+			    }
+				return data;
+			}
+			
+		}
+
+
+	@Override
+	public ArrayList<Bet> getBets(User u) {
+		DataAccessImplementation dbManager = new DataAccessImplementation();
+		//	dbManager.initializeDB();
+			ArrayList<Bet> bets=dbManager.getBets(u);
+			
+	             dbManager.close();
+			return (bets);
+	}
+
+
+	@Override
+	public void remove_bet(User bettor, Bet bet) {
+		DataAccess dbManager = new DataAccessImplementation();
+		dbManager.remove_bet(bettor, bet);
+		dbManager.close();
+		
+	}
+
+
+	@Override
+	public void updatebets(User bettor, Bet bet, float amount) {
+		DataAccess dbManager = new DataAccessImplementation();
+		dbManager.updatebets(bettor, bet,amount);
+		dbManager.close();
+		
+	}
+	}
+
 
