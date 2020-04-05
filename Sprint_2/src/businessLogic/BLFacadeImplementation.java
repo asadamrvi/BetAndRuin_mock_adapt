@@ -451,6 +451,19 @@ public class BLFacadeImplementation  implements BLFacade {
 		dbManager.close();
 		
 	}
+
+
+	@Override
+	public Profile refreshProfile() {
+		// TODO Auto-generated method stub
+		DataAccess dbManager=new DataAccessImplementation();
+		
+		loggeduser =dbManager.getuserbyid(loggeduser.getID());
+		
+		dbManager.close();
+		return loggeduser.getProfile();
+
+	}
 	}
 
 

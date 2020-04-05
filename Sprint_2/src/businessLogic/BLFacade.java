@@ -251,6 +251,8 @@ public interface BLFacade  {
 	public void updatebets (User bettor, Bet bet, float amount);
 	
 	public User getLoggeduser();
+	
+	public Profile refreshProfile();
 
 	
 }

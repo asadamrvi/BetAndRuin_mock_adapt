@@ -31,6 +31,7 @@ import domain.User;
 import exceptions.InsufficientCash;
 import gui.BetDetail;
 import gui.MainGUI;
+import gui.User_Edit;
 
 import java.awt.Color;
 import javax.swing.JButton;
@@ -52,6 +53,7 @@ public class ProfilePanel extends JPanel {
 	private JButton editbet;
 	private JButton DeleteBet;
 	private JButton ViewFulldetail;
+	private JButton editProfile;
 	private JScrollPane scrollPane;
 	private ArrayList<Bet> bet_list;
 	private DefaultTableModel TableModel;
@@ -280,8 +282,24 @@ public class ProfilePanel extends JPanel {
 		btnNewButton.setBounds(501, 87, 128, 26);
 		add(btnNewButton);
 		
+		 editProfile = new JButton("Edit Profile");
+		editProfile.setEnabled(true);
+	
+		editProfile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				profile=facade.refreshProfile();
+				User_Edit j=new User_Edit(profile);
+                 j.setVisible(true);
+			}
+		});
+		editProfile.setBounds(501, 134, 128, 26);
+		add(editProfile);
+		
 
 		if(profile != null) {
+			if (facade.getLoggeduser().isAdmin()) {
+				editProfile.setEnabled(false);
+			}
 			textArea.setText(profile.getID());
 			textArea_2.setText(profile.getSurname());
 			textArea_1.setText(profile.getName());

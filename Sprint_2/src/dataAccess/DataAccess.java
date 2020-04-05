@@ -166,6 +166,7 @@ public interface DataAccess {
 	public void close();
 	public void remove_bet (User bettor,Bet bet);
 	public void updatebets (User bettor,Bet bet,float amount);
+	public User getuserbyid(String id);
 
 
 }

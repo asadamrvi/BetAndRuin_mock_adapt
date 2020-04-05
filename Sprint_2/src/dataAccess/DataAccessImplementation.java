@@ -707,4 +707,12 @@ if (aux!=null) {
 	}
 		
 	}
+	
+	public User getuserbyid(String id) {
+		User u = db.find(User.class, id);
+		return u;
+		
+
+		
+	}
 }
