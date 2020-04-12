@@ -1,16 +1,14 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
@@ -19,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Bet {
+public class Bet implements Serializable{
 	
 	@Id 
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
@@ -36,6 +34,7 @@ public class Bet {
 
 	@XmlIDREF
 	@ManyToOne
+	@OneToMany(fetch=FetchType.LAZY)
 	private User bettor;
 	private BetType type;
 	private Status status;
@@ -44,10 +43,9 @@ public class Bet {
 	private Date resolvingdate;
 	
 	@OneToMany(fetch=FetchType.EAGER)
-
 	private List<Prediction> predictions;
 
-	private enum Status{ONGOING,CANCELLED,PAYMENT_PENDING};
+	public enum Status{ONGOING,RESOLVED,CANCELLED,PAYMENT_PENDING};
 	
 	public Bet(User bettor, float amount, BetType type, List<Prediction> predictions) {
 		super();

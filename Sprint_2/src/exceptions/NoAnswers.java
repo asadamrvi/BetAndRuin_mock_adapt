@@ -1,5 +1,6 @@
 package exceptions;
 
+@SuppressWarnings("serial")
 public class NoAnswers extends Exception {
 	public NoAnswers() {
 		// TODO Auto-generated constructor stub

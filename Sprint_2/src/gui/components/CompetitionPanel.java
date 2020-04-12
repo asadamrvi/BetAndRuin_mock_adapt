@@ -3,21 +3,19 @@ package gui.components;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import domain.Competition;
 import domain.Country;
 
+@SuppressWarnings("serial")
 public class CompetitionPanel extends JPanel{
 
 	private Competition selectedcompetition;

@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Desktop;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,16 +23,15 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
-
 import businessLogic.BLFacade;
-import businessLogic.BLFacadeImplementation;
 import domain.Feedback.FeedbackType;
 import gui.MainGUI;
 import gui.components.HintTextField;
 import javax.swing.ButtonGroup;
 import java.util.EnumMap;
 import java.util.Map;
-import javax.swing.JRadioButton;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FeedbackPanel extends JPanel {
 
@@ -320,6 +318,12 @@ public class FeedbackPanel extends JPanel {
 						valid = false;
 					}
 					if(name.trim().isEmpty() && email.trim().isEmpty()) {
+						identityErrorLabel.setText("Enter identity information");
+						identityErrorLabel.setVisible(true);
+						valid = false;
+					}
+					if(!isEmailValid(email)) {
+						identityErrorLabel.setText("Invalid email address");
 						identityErrorLabel.setVisible(true);
 						valid = false;
 					}
@@ -340,6 +344,20 @@ public class FeedbackPanel extends JPanel {
 		}
 	}
 
+	
+	/**
+	 * Checks if an email has the correct format.
+	 * @param email			email String to check.
+	 * @return				boolean indicating if the email is valid.
+	 */
+	private boolean isEmailValid(String email) {
+		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+
+		Pattern p = Pattern.compile(regex);
+		Matcher m =  p.matcher(email);
+		return m.matches();
+	}
+	
 	//AUXILIARY CLASSES
 
 	/**

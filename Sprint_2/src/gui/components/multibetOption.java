@@ -24,22 +24,26 @@ public class multibetOption extends JPanel {
 	private float stake;
 	private int combinations;
 	private BetType type;	
-
+	private  float winnings;
+	private JLabel priceLabel;
+	private JLabel posWinLabel;
+	
 	/**
 	 * Create the panel.
 	 */
 	public multibetOption( BetType type, int combinations) {
 		this.type = type;
+		this.combinations = combinations;
 		setBackground(new Color(240, 255, 255));
-		setLayout(new MigLayout("", "[195.00px][50px][67.00px]", "[26px]"));
+		setLayout(new MigLayout("", "[33.00px][108.00][50px][91.00px]", "[19.00px][25px:8.00px:25px]"));
 		JLabel typeLabel = new JLabel(type.name());
 		typeLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
-		add(typeLabel, "cell 0 0,grow");
+		add(typeLabel, "cell 0 0 2 1,grow");
 		
 		stakeField = new JNumericField(7, JNumericField.DECIMAL);
 		stakeField.setPrecision(2);
 		stakeField.setAllowNegative(false);
-		add(stakeField, "cell 2 0,grow");
+		add(stakeField, "cell 3 0,grow");
 		stakeField.setColumns(10);
 		setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 		stakeField.getDocument().addDocumentListener(new stakeListener());
@@ -47,7 +51,24 @@ public class multibetOption extends JPanel {
 		JLabel combinationsLabel = new JLabel("x" + combinations);
 		combinationsLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
 		combinationsLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-		add(combinationsLabel, "cell 1 0,grow");
+		add(combinationsLabel, "cell 2 0,grow");
+		
+		JLabel priceTitleLabel = new JLabel("price:");
+		priceTitleLabel.setVerticalAlignment(SwingConstants.TOP);
+		priceTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
+		add(priceTitleLabel, "cell 0 1,aligny top");
+		
+		priceLabel = new JLabel("0€");
+		priceLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+		add(priceLabel, "cell 1 1,alignx left,aligny top");
+		
+		JLabel posWinTitleLabel = new JLabel("pos. winnings:\r\n");
+		posWinTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
+		add(posWinTitleLabel, "cell 2 1,aligny top");
+		
+		posWinLabel = new JLabel("0€");
+		posWinLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+		add(posWinLabel, "cell 3 1,alignx right,aligny top");
 
 	}
 
@@ -80,6 +101,13 @@ public class multibetOption extends JPanel {
 		this.combinations = combinations;
 	}
 	
+	public float getWinnings() {
+		return winnings;
+	}
+	
+	public void setWinnings(float winnings) {
+		this.winnings = winnings;
+	}
 	
 	public BetType getType() {
 		return type;
@@ -108,19 +136,40 @@ public class multibetOption extends JPanel {
 
 		@Override
 		public void insertUpdate(DocumentEvent e) {
-			stake = stakeField.getFloat();
+			try {
+				stake = stakeField.getFloat();
+				//posWinLabel.setText(text);
+				priceLabel.setText(Float.toString(stake*combinations));
+			}
+			catch (NumberFormatException n) {
+				stake = 0;
+			}
 			
 		}
 
 		@Override
 		public void removeUpdate(DocumentEvent e) {
-			stake = stakeField.getFloat();
+			try {
+				stake = stakeField.getFloat();
+				//posWinLabel.setText(text);
+				priceLabel.setText(Float.toString(stake*combinations));
+			}
+			catch (NumberFormatException n) {
+				stake = 0;
+			}
 			
 		}
 
 		@Override
 		public void changedUpdate(DocumentEvent e) {
-			stake = stakeField.getFloat();
+			try {
+				stake = stakeField.getFloat();
+				//posWinLabel.setText();
+				priceLabel.setText(Float.toString(stake*combinations));
+			}
+			catch (NumberFormatException n) {
+				stake = 0;
+			}
 			
 		}
 		

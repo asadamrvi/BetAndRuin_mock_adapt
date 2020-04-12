@@ -9,11 +9,9 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -25,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -40,17 +37,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import businessLogic.BLFacade;
-import domain.Country;
 import domain.User;
 import gui.EditUserGUI;
 import gui.MainGUI;
 import gui.RegisterGUI;
 import gui.components.ButtonColumn;
-
 import java.awt.Color;
-import javax.swing.UIManager;
-import java.awt.SystemColor;
 
+@SuppressWarnings("serial")
 public class userManagementPanel extends JPanel {
 
 
@@ -79,7 +73,7 @@ public class userManagementPanel extends JPanel {
 
 	
 	String[] filters = { "ID", "Name", "Surname", "Email", "Nationality","City","Phone number"};  //,"Birthdate"};
-	private JComboBox<String> filterComboBox = new JComboBox(filters);
+	private JComboBox<String> filterComboBox = new JComboBox<String>(filters);
 	String[] match = { "Full match", "Beginning", "Contains"};
 	private JComboBox<String> matchComboBox = new JComboBox<String>(match);
 
@@ -450,6 +444,7 @@ public class userManagementPanel extends JPanel {
 			userTable.setValueAt(newData[7], row, 7); //Phone number
 			userTable.setValueAt(newData[8], row, 8); //birthdate
 			userTable.setValueAt(newData[9], row, 11); //Status
+			System.out.println( userTable.getSelectedRow());
 		}
 	};
 
@@ -492,7 +487,7 @@ public class userManagementPanel extends JPanel {
 		userTable.getColumnModel().getColumn(12).setPreferredWidth(30);
 		userTable.getColumnModel().getColumn(13).setPreferredWidth(30);
 
-		//Table sorting settings (edit and delete button collums sorting disabled)
+		//Table sorting settings (edit and delete button columns sorting disabled)
 		TableRowSorter<NonEditableTableModel> sorter = new TableRowSorter<NonEditableTableModel>(userTableModel);
 
 		sorter.setSortable(12, false);
@@ -554,7 +549,7 @@ public class userManagementPanel extends JPanel {
 	
 		public boolean isCellEditable (int row, int column)
 		{
-			if(column == 11 || column==12) {
+			if(column == 12 || column==13) {
 				return true;
 			}
 			return false;

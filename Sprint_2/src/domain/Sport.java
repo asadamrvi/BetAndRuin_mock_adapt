@@ -1,12 +1,14 @@
 package domain;
 
+import java.util.ResourceBundle;
+
 public enum Sport {
 	FOOTBALL("Football"),
-	BASKETBALL("Basketball"),
-	TENNIS("Tennis"),
+	BASKETBALL("BasketBall"),
+	TENNIS("Tennis"), 
 	GOLF("Golf"),
 	BOXING("Boxing"),
-	HORSE_RACING("Horse racing");
+	HORSE_RACING("HorseRacing");
 	
 	
 	String asString;
@@ -16,14 +18,15 @@ public enum Sport {
 	}
 	
 	public String getString() {
-		return asString;
+		return ResourceBundle.getBundle("Etiquetas").getString(asString);
+		
 	}
 	
 	public static String[] namesArray() {
 		Sport[] values = Sport.values();
 		String[] nameArray = new String[values.length];
 		for(Sport s : values) {
-			nameArray[s.ordinal()] = s.asString;
+			nameArray[s.ordinal()] = ResourceBundle.getBundle("Etiquetas").getString(s.asString);
 		}
 		return nameArray;
 	}

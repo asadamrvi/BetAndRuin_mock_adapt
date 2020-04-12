@@ -1,0 +1,656 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:00:52 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 5580@DESKTOP-00OS7EM
+
+[2020-04-10 00:00:52 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:01:21 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 5580@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:05:28 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 952@DESKTOP-00OS7EM
+
+[2020-04-10 00:05:28 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:05:41 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 952@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:06:00 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 5352@DESKTOP-00OS7EM
+
+[2020-04-10 00:06:00 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:06:11 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 5352@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:10:49 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 3352@DESKTOP-00OS7EM
+
+[2020-04-10 00:10:49 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:10:54 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 3352@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:13:24 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 5340@DESKTOP-00OS7EM
+
+[2020-04-10 00:13:24 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:14:03 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 5340@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:17:25 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 11636@DESKTOP-00OS7EM
+
+[2020-04-10 00:17:25 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:17:46 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 11636@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:20:56 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 10216@DESKTOP-00OS7EM
+
+[2020-04-10 00:20:56 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:20:58 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 10216@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 00:21:15 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 12932@DESKTOP-00OS7EM
+
+[2020-04-10 00:21:15 #2 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 00:29:33 #3 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 12932@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 13:03:44 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-4534)
+
+[2020-04-10 13:03:44 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 22608@DESKTOP-00OS7EM
+
+[2020-04-10 13:03:44 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 14:12:00 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 22608@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:19:47 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:20:24 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:20:30 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-4524)
+
+[2020-04-10 14:20:30 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 11432@DESKTOP-00OS7EM
+
+[2020-04-10 14:20:30 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 14:21:01 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 11432@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:37:29 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:37:33 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:37:37 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-4368)
+
+[2020-04-10 14:37:37 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 16604@DESKTOP-00OS7EM
+
+[2020-04-10 14:37:37 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 14:37:59 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 16604@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:41:17 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-972)
+
+[2020-04-10 14:41:17 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 17856@DESKTOP-00OS7EM
+
+[2020-04-10 14:41:17 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 14:41:29 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 17856@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 14:53:30 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2785)
+
+[2020-04-10 14:53:30 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 16416@DESKTOP-00OS7EM
+
+[2020-04-10 14:53:30 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 14:53:38 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 16416@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 17:35:31 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2718)
+
+[2020-04-10 17:35:31 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 4172@DESKTOP-00OS7EM
+
+[2020-04-10 17:35:31 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 17:35:37 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 4172@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:05:25 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-5580)
+
+[2020-04-10 18:05:25 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 6004@DESKTOP-00OS7EM
+
+[2020-04-10 18:05:25 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 18:05:47 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 6004@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:11:05 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:11:08 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-5036)
+
+[2020-04-10 18:11:08 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 8556@DESKTOP-00OS7EM
+
+[2020-04-10 18:11:08 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 18:11:13 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 8556@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:16:38 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 5038-6111)
+
+[2020-04-10 18:16:38 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 16640@DESKTOP-00OS7EM
+
+[2020-04-10 18:16:38 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 18:17:01 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 16640@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:44:33 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:44:38 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-4940)
+
+[2020-04-10 18:44:38 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 22312@DESKTOP-00OS7EM
+
+[2020-04-10 18:44:38 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 18:44:44 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 22312@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:51:26 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 18:51:28 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2812)
+
+[2020-04-10 18:51:28 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 7828@DESKTOP-00OS7EM
+
+[2020-04-10 18:51:28 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 18:51:35 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 7828@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 20:20:38 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-26)
+
+[2020-04-10 20:20:38 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 11736@DESKTOP-00OS7EM
+
+[2020-04-10 20:20:38 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 20:22:48 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 11736@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 21:09:35 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-21)
+
+[2020-04-10 21:09:36 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 17480@DESKTOP-00OS7EM
+
+[2020-04-10 21:09:36 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 21:13:57 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 17480@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 21:24:30 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-4368)
+
+[2020-04-10 21:24:30 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 18252@DESKTOP-00OS7EM
+
+[2020-04-10 21:24:30 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 21:24:43 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 18252@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 21:28:15 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2712)
+
+[2020-04-10 21:28:15 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 8792@DESKTOP-00OS7EM
+
+[2020-04-10 21:28:15 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 21:28:20 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 8792@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 21:31:57 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2892)
+
+[2020-04-10 21:31:57 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 8388@DESKTOP-00OS7EM
+
+[2020-04-10 21:31:57 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 21:32:07 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 8388@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 23:32:37 #1 explorer] 
+[ObjectDB 2.8.2] javax.persistence.PersistenceException
+Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process (error 141)
+	at com.objectdb.Explorer$1.run(Explorer.java:57)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Caused by: com.objectdb.o.UserException: Attempt to open a database file 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' that is currently in use by another process
+	at com.objectdb.o.MSG.a(MSG.java:64)
+	at com.objectdb.o.LFL.J(LFL.java:930)
+	at com.objectdb.o.LFL.x(LFL.java:887)
+	at com.objectdb.o.LFL.x(LFL.java:797)
+	at com.objectdb.o.DFL.<init>(DFL.java:241)
+	at com.objectdb.o.DMG.<init>(DMG.java:27)
+	at com.objectdb.o.MST.<init>(MST.java:127)
+	at com.objectdb.o.MST.ap(MST.java:109)
+	at com.objectdb.o.MSF.Y3(MSF.java:190)
+	at com.objectdb.o.OMF.s(OMF.java:804)
+	at com.objectdb.jpa.EMF.s(EMF.java:130)
+	at com.objectdb.o.OMF.x(OMF.java:715)
+	at com.objectdb.jpa.EMF.createEntityManager(EMF.java:149)
+	... 17 more
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 23:32:40 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2216)
+
+[2020-04-10 23:32:40 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 17972@DESKTOP-00OS7EM
+
+[2020-04-10 23:32:40 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 23:40:29 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 17972@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 23:42:11 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2226)
+
+[2020-04-10 23:42:11 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 5532@DESKTOP-00OS7EM
+
+[2020-04-10 23:42:11 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 23:43:18 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 5532@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 23:48:11 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2928)
+
+[2020-04-10 23:48:11 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 20660@DESKTOP-00OS7EM
+
+[2020-04-10 23:48:11 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 23:54:04 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 20660@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-10 23:56:16 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-2298)
+
+[2020-04-10 23:56:16 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 22712@DESKTOP-00OS7EM
+
+[2020-04-10 23:56:16 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-10 23:56:25 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 22712@DESKTOP-00OS7EM
+

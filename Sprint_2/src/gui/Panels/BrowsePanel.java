@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
@@ -16,11 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,26 +31,21 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JCalendar;
 import businessLogic.BLFacade;
-import configuration.UtilDate;
-import dataAccess.DataAccessImplementation;
 import domain.BetType;
 import domain.Competition;
 import domain.Event;
 import domain.Prediction;
 import domain.Question;
 import domain.Sport;
-import domain.User;
 import exceptions.InsufficientCash;
-import exceptions.NoAnswers;
-import exceptions.QuestionNotFound;
 import gui.LoginGUI;
 import gui.MainGUI;
 import gui.RegisterGUI;
-import gui.components.multibetOption;
 import gui.components.CompetitionPanel;
 import gui.components.FancyButton;
 import gui.components.JNumericField;
@@ -63,6 +58,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -72,43 +68,43 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListSelectionModel;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
-import javax.swing.table.DefaultTableModel;
+
 
 @SuppressWarnings("serial")
 public class BrowsePanel extends JPanel {
-
-
 	//JCalendar
 	private JCalendar jCalendar1 = new JCalendar();
-	private Calendar calendarMio = null;
 
 	private JComboBox<String> answerComboBox = new JComboBox<String>();	
 
 	private JButton btnBet;
-	private final JButton addToCouponButton = new JButton(ResourceBundle.getBundle("Etiquetas").getString("AddBetToCoupon")); //$NON-NLS-1$ //$NON-NLS-2$;
+	private JButton multibetButton ;
+	private final FancyButton addToCouponButton; //$NON-NLS-1$ //$NON-NLS-2$;
 	private final SportButton footballButton = new SportButton(new ImageIcon("images/sports/yfootball.png"), new ImageIcon("images/sports/football.png"), Sport.FOOTBALL);
 	private final SportButton basketButton = new SportButton(new ImageIcon("images/sports/ybasketball.png"), new ImageIcon("images/sports/basketball.png"), Sport.BASKETBALL);
 	private final SportButton tennisButton = new SportButton(new ImageIcon("images/sports/ytennis.png"), new ImageIcon("images/sports/tennis.png"), Sport.TENNIS);
 	private final SportButton boxingButton = new SportButton(new ImageIcon("images/sports/yboxing.png"), new ImageIcon("images/sports/boxing.png"), Sport.BOXING);
 	private final SportButton horseButton = new SportButton(new ImageIcon("images/sports/yhorse.png"), new ImageIcon("images/sports/horse.png"), Sport.HORSE_RACING);
 	private final SportButton golfButton = new SportButton(new ImageIcon("images/sports/ygolf.png"), new ImageIcon("images/sports/golf.png"), Sport.GOLF);
-	private List<JButton> sportbuttons = new ArrayList<JButton>();
+	private List<SportButton> sportbuttons = new ArrayList<SportButton>();
 
 	private final JLabel totwinLabel = new JLabel("");
-	private final JLabel chosenCompetitionLabel = new JLabel("No competition selected");
-	private final JLabel couponLabel = new JLabel("COUPON");
-	private final JLabel competitionsLabel = new JLabel("COMPETITIONS");
-	private final JLabel sportsLabel = new JLabel("SPORTS");
-	private final JLabel stakeLabel = new JLabel("Stake per bet");
-	private final JLabel totwintitleLabel = new JLabel("Possible total winnings");
+	private final JLabel chosenCompetitionLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("NoCompetitionSelected"));
+	private final JLabel couponLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Coupon"));
+	private final JLabel competitionsLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("COMPETITIONS"));
+	private final JLabel sportsLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("SPORTS"));
+	private final JLabel stakeLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("StakePerBet") +":");
+	private final JLabel totwintitleLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("PossibleWinnings") +":");
 	private final JLabel jLabelQueries = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Queries")); 
 	private final JLabel jLabelEvents = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Events"));  //$NON-NLS-1$ //$NON-NLS-2$
 	private final JLabel errorlabel = new JLabel();
+	private final JLabel lblChooseYourPrediction = DefaultComponentFactory.getInstance().createLabel(ResourceBundle.getBundle("Etiquetas").getString("ChooseYourPrediction")); 
 
 	private final JPanel selectionPanel = new JPanel();
 	private final JScrollPane competitionScrollPane = new JScrollPane();
@@ -121,8 +117,8 @@ public class BrowsePanel extends JPanel {
 	private final JPanel sportsPanel = new JPanel();
 	private final JPanel couponPanel = new JPanel();
 
-	private JTable tableEvents= new JTable();
-	private JTable tableQueries = new JTable();
+	private JTable tableEvents;
+	private JTable tableQueries;
 
 	private NonEditableTableModel tableModelEvents;
 	private NonEditableTableModel tableModelQueries;
@@ -136,11 +132,9 @@ public class BrowsePanel extends JPanel {
 	private String[] columnNamesQueries = new String[] {
 			ResourceBundle.getBundle("Etiquetas").getString("QueryN"), 
 			ResourceBundle.getBundle("Etiquetas").getString("Query"),
-			"MinBet"
+			ResourceBundle.getBundle("Etiquetas").getString("MinimumBet")
 
 	};
-
-	private BLFacade facade = MainGUI.getBusinessLogic();
 
 
 	private final JNumericField globalStakeTextField = new JNumericField(7, JNumericField.DECIMAL);
@@ -148,11 +142,21 @@ public class BrowsePanel extends JPanel {
 	private DocumentListener allStakeListener = new allStakeListener();
 
 	private final JPanel logoPanel = new JPanel();
-	private JButton multibetButton ;
 	private final JPanel bettingPanel = new JPanel();
 	private  JScrollPane multibetScrollPanel = new JScrollPane();
 	private JPanel multibetPanel = new JPanel();
-	private final JLabel lblChooseYourPrediction = DefaultComponentFactory.getInstance().createLabel(ResourceBundle.getBundle("Etiquetas").getString("BrowsePanel.lblChooseYourPrediction.text")); //$NON-NLS-1$ //$NON-NLS-2$
+
+	private Set<Question> selectedquestions = new HashSet<Question>();
+	private Map<Event, List<Prediction>> selectedevents = new HashMap<Event, List<Prediction>>();
+	private Set<Prediction> selectedpredictions = new HashSet<Prediction>();
+
+	private DefaultTableCellRenderer whiteRenderer = null;
+	private DefaultTableCellRenderer activeEventRenderer = null;
+	private DefaultTableCellRenderer activeQuestionRenderer = null;
+	private DefaultTableCellRenderer fullQuestionRenderer = null;
+
+	private BLFacade facade = MainGUI.getBusinessLogic();
+
 
 	/**
 	 * Create the panel.
@@ -163,7 +167,7 @@ public class BrowsePanel extends JPanel {
 		setBackground(UIManager.getColor("Button.highlight"));
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{19, 265, 30, 41, 0, 87, 23, 223, 30, 100, 39, 38, 0, 46, 141, 0};
+		gridBagLayout.columnWidths = new int[]{19, 265, 30, 54, 0, 72, 30, 150, 30, 100, 39, 38, 0, 46, 76, 0};
 		gridBagLayout.rowHeights = new int[]{49, 65, 60, 25, 64, 150, 15, 14, 60, 22, 10, 35, 50, 10, 10, 22, 40, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -196,7 +200,6 @@ public class BrowsePanel extends JPanel {
 		sportsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		sportsLabel.setFont(new Font("Source Sans Pro", Font.BOLD | Font.ITALIC, 22));
 		sportsPanel.add(sportsLabel, "2, 1, fill, fill");
-
 		sportsPanel.add(footballButton, "3, 1, fill, fill");		
 		sportsPanel.add(basketButton, "4, 1, fill, fill");		
 		sportsPanel.add(tennisButton, "5, 1, fill, fill");
@@ -206,14 +209,10 @@ public class BrowsePanel extends JPanel {
 
 		sportbuttons.add(footballButton);
 		sportbuttons.add(basketButton);
-		sportbuttons.add(footballButton);
 		sportbuttons.add(tennisButton);
 		sportbuttons.add(boxingButton);
 		sportbuttons.add(horseButton);
 		sportbuttons.add(golfButton);
-		footballButton.setSelected(true);
-
-
 
 		GridBagConstraints gbc_selectionPanel = new GridBagConstraints();
 		gbc_selectionPanel.insets = new Insets(0, 0, 0, 5);
@@ -288,10 +287,9 @@ public class BrowsePanel extends JPanel {
 				}
 				else if (propertychangeevent.getPropertyName().equals("calendar"))
 				{
-					calendarMio = (Calendar) propertychangeevent.getNewValue();
-					DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar1.getLocale());
-					Date firstDay=UtilDate.trim(new Date(calendarMio.getTime().getTime()));
-					refreshPage(competitionPanel.getSelectedCompetition(), jCalendar1);
+					//DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar1.getLocale());
+					//Date firstDay=UtilDate.trim(new Date(calendarMio.getTime().getTime()));
+					refreshPage();
 				}
 				Vector<Date> eventsMonth = facade.getEventsMonth(jCalendar1.getDate(), competitionPanel.getSelectedCompetition());
 				paintDaysWithEvents(jCalendar1, eventsMonth);
@@ -318,7 +316,7 @@ public class BrowsePanel extends JPanel {
 		gbc_couponPanel.gridy = 1;
 		add(couponPanel, gbc_couponPanel);
 		GridBagLayout gbl_couponPanel = new GridBagLayout();
-		gbl_couponPanel.columnWidths = new int[]{79, 20, 20, 142, 20, 51, 33, 0};
+		gbl_couponPanel.columnWidths = new int[]{79, 20, 20, 76, 20, 51, 33, 0};
 		gbl_couponPanel.rowHeights = new int[]{33, 30, 134, 0, 0, 30, 20, 40, 40, 20, 0};
 		gbl_couponPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_couponPanel.rowWeights = new double[]{0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -337,14 +335,6 @@ public class BrowsePanel extends JPanel {
 		couponLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 18));
 		couponPanel.add(couponLabel, gbc_couponLabel);
 
-		betScrollPane = new JScrollPane(){
-			@Override
-			public Dimension getMinimumSize()
-			{
-				Dimension d = new Dimension(getParent().getWidth(), 200);
-				return d;
-			}
-		};
 		GridBagConstraints gbc_bettingPanel = new GridBagConstraints();
 		gbc_bettingPanel.gridheight = 4;
 		gbc_bettingPanel.gridwidth = 7;
@@ -357,7 +347,7 @@ public class BrowsePanel extends JPanel {
 
 
 
-		multibetButton = new FancyButton("Show multiple bet options\r\n", new Color(210,210,210),new Color(169,169,169),new Color(130, 130, 130)) {
+		multibetButton = new FancyButton(ResourceBundle.getBundle("Etiquetas").getString("ShowMultipleBetOptions"), new Color(210,210,210),new Color(169,169,169),new Color(130, 130, 130)) {
 			@Override
 			public Dimension getMaximumSize()
 			{
@@ -373,16 +363,20 @@ public class BrowsePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(multibetScrollPanel.isVisible()) {
-					multibetButton.setText("Show multiple bet options\r\n");
+					multibetButton.setText(ResourceBundle.getBundle("Etiquetas").getString("ShowMultipleBetOptions"));
 					multibetScrollPanel.setVisible(false);
 					multibetPanel.setVisible(false);
+					betScrollPane.repaint();
+					betScrollPane.revalidate();
 					bettingPanel.repaint();
 					bettingPanel.revalidate();
 				}
 				else {
-					multibetButton.setText("Hide multiple bet options\r\n");
+					multibetButton.setText(ResourceBundle.getBundle("Etiquetas").getString("HideMultipleBetOptions"));
 					multibetScrollPanel.setVisible(true);
 					multibetPanel.setVisible(true);
+					betScrollPane.repaint();
+					betScrollPane.revalidate();
 					bettingPanel.repaint();
 					bettingPanel.revalidate();
 				}
@@ -391,6 +385,15 @@ public class BrowsePanel extends JPanel {
 
 
 
+		betScrollPane = new JScrollPane(){
+			@Override
+			public Dimension getMinimumSize()
+			{
+				Dimension d = new Dimension(getParent().getWidth(), 3);
+				return d;
+			}
+		};
+		betPane.setLayout(new BoxLayout(betPane,BoxLayout.Y_AXIS));
 		betScrollPane.add(betPane);
 		betScrollPane.setViewportView(betPane);
 		//betScrollPane.setBorder(null);
@@ -401,7 +404,7 @@ public class BrowsePanel extends JPanel {
 		multibetScrollPanel = new JScrollPane();
 
 		bettingPanel.setLayout(new BoxLayout(bettingPanel,BoxLayout.Y_AXIS));
-		betPane.setLayout(new BoxLayout(betPane,BoxLayout.Y_AXIS));
+
 		multibetPanel.setLayout(new BoxLayout(multibetPanel,BoxLayout.Y_AXIS));
 		multibetScrollPanel.add(multibetPanel);
 		multibetScrollPanel.setViewportView(multibetPanel);
@@ -421,48 +424,78 @@ public class BrowsePanel extends JPanel {
 		gbc_jLabelEvents.gridx = 3;
 		gbc_jLabelEvents.gridy = 3;
 		add(jLabelEvents, gbc_jLabelEvents);
+
+
+		tableEvents = new JTable() {
+			public TableCellRenderer getCellRenderer(int row, int column)
+			{
+				if (whiteRenderer == null)
+				{
+					whiteRenderer = new DefaultTableCellRenderer();
+					whiteRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+				}
+				if (activeEventRenderer == null)
+				{
+					activeEventRenderer = new DefaultTableCellRenderer();
+					activeEventRenderer.setBackground(new Color(192,235,240));
+					activeEventRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+				}
+
+				if ( selectedevents.keySet().contains(tableModelEvents.getValueAt(row, 4)))
+					return activeEventRenderer;
+				else
+					return whiteRenderer;
+			}
+		};
 		tableEvents.setBorder(null);
 		tableEvents.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
 		tableEvents.setBackground(Color.WHITE);
 
-		tableEvents.addMouseListener(new MouseAdapter() {
+		tableEvents.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void valueChanged(ListSelectionEvent e) {
 				int i=tableEvents.getSelectedRow();
-				domain.Event ev=(domain.Event)tableModelEvents.getValueAt(i,4); // obtain ev object
-				List<Question> queries=ev.getQuestions();
+				if(i != -1) {
+					domain.Event ev=(domain.Event)tableModelEvents.getValueAt(i,4); // obtain ev object
+					List<Question> queries=ev.getQuestions();
 
-				tableModelQueries.setDataVector(null, columnNamesQueries);
-				tableModelQueries.setColumnCount(4); // another column added to allocate ev object
+					tableModelQueries.setDataVector(null, columnNamesQueries);
+					tableModelQueries.setColumnCount(4); // another column added to allocate ev object
 
-				if (queries.isEmpty())
-					jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("NoQueries")+": "+ev.getDescription());
-				else 
-					jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("SelectedEvent")+" "+ev.getDescription());
+					if (queries.isEmpty())
+						jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("NoQueries")+": "+ev.getDescription());
+					else 
+						jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("SelectedEvent")+" "+ev.getDescription());
 
-				for (domain.Question q:queries){
-					Vector<Object> row = new Vector<Object>();
+					for (domain.Question q:queries){
+						Vector<Object> row = new Vector<Object>();
 
-					row.add(q.getQuestionNumber());
-					row.add(q.getQuestion());
-					row.add(q.getBetMinimum());
-					row.add(q); // Question object added in order to obtain it with tableModelQueries.getValueAt(i,3)
-					tableModelQueries.addRow(row);	
+						row.add(q.getQuestionNumber());
+						row.add(q.getQuestion());
+						row.add(q.getBetMinimum());
+						row.add(q); // Question object added in order to obtain it with tableModelQueries.getValueAt(i,3)
+						tableModelQueries.addRow(row);	
+					}
+					tableQueries.getColumnModel().getColumn(0).setPreferredWidth(60);
+					tableQueries.getColumnModel().getColumn(0).setMinWidth(60);
+					tableQueries.getColumnModel().getColumn(0).setMaxWidth(60);
+					tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);
+					tableQueries.getColumnModel().getColumn(2).setPreferredWidth(25);
+					tableQueries.getColumnModel().removeColumn(tableQueries.getColumnModel().getColumn(3));
 				}
-				tableQueries.getColumnModel().getColumn(0).setPreferredWidth(60);
-				tableQueries.getColumnModel().getColumn(0).setMinWidth(60);
-				tableQueries.getColumnModel().getColumn(0).setMaxWidth(60);
-				tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);
-				tableQueries.getColumnModel().getColumn(2).setPreferredWidth(25);
-				tableQueries.getColumnModel().removeColumn(tableQueries.getColumnModel().getColumn(3));
+				
+
 			}
 		});
 
+		/*
+
+		 */
 		scrollPaneEvents.setViewportView(tableEvents);
 
 		tableModelEvents = new NonEditableTableModel(null, columnNamesEvents);
 		tableModelQueries = new NonEditableTableModel(null, columnNamesQueries);
-
 
 		tableEvents.setModel(tableModelEvents);
 		tableEvents.getColumnModel().getColumn(0).setResizable(false);
@@ -477,7 +510,7 @@ public class BrowsePanel extends JPanel {
 		tableEvents.getColumnModel().getColumn(3).setMaxWidth(75);
 
 		tableEvents.setRowHeight(40);
-
+		tableEvents.setFocusable(false);
 		tableEvents.getTableHeader().setReorderingAllowed(false);
 		tableEvents.getTableHeader().setResizingAllowed(false);
 		tableEvents.getTableHeader().setFont(new Font("Source sans Pro", Font.BOLD, 16));
@@ -496,45 +529,98 @@ public class BrowsePanel extends JPanel {
 		gbc_scrollPaneEvents.gridx = 3;
 		gbc_scrollPaneEvents.gridy = 4;
 		add(scrollPaneEvents, gbc_scrollPaneEvents);
-		tableQueries.setBackground(Color.WHITE);
 
-		scrollPaneQueries.setViewportView(tableQueries);
+		tableQueries = new JTable() {
+			public TableCellRenderer getCellRenderer(int row, int column)
+			{
+				Question rowquestion =  (Question)tableModelQueries.getValueAt(row, 3);
+				boolean full = true;
+				if(rowquestion.getPredictions() != null) {
+					for(Prediction p : rowquestion.getPredictions()) {
+						if(!selectedpredictions.contains(p)) {
+							full = false;
+						}
+					}
+				}
 
+				if (whiteRenderer == null)
+				{
+					whiteRenderer = new DefaultTableCellRenderer();
+					whiteRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+				}
+				if (activeQuestionRenderer == null)
+				{
+					activeQuestionRenderer = new DefaultTableCellRenderer();
+					activeQuestionRenderer.setBackground(new Color(255,248,148));
+					activeQuestionRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+				}
+				if (fullQuestionRenderer == null)
+				{
+					fullQuestionRenderer = new DefaultTableCellRenderer();
+					fullQuestionRenderer.setBackground(new Color(255,149,73));
+					fullQuestionRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+				}
+
+				if(full) {
+					return fullQuestionRenderer;
+				}
+				else if (selectedquestions.contains(tableModelQueries.getValueAt(row, 3))) {
+					return activeQuestionRenderer;
+				}		
+				else {
+					return whiteRenderer;
+				}			
+			}
+		};
 
 		tableQueries.setRowHeight(40);
+		tableQueries.setBackground(Color.WHITE);
+		tableQueries.setFocusable(false);
 		tableQueries.setModel(tableModelQueries);
 		tableQueries.getColumnModel().getColumn(0).setPreferredWidth(60);
 		tableQueries.getColumnModel().getColumn(0).setMinWidth(60);
 		tableQueries.getColumnModel().getColumn(0).setMaxWidth(60);
-		tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);
+		tableQueries.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tableQueries.getColumnModel().getColumn(1).setMinWidth(100);
+		tableQueries.getColumnModel().getColumn(2).setMinWidth(75);
 		tableQueries.getTableHeader().setReorderingAllowed(false);
 		tableQueries.getTableHeader().setResizingAllowed(false);
 		tableQueries.getTableHeader().setFont(new Font("Source sans Pro", Font.BOLD, 16));
 		tableQueries.getTableHeader().setBackground(new Color(255,255,255));
+		tableQueries.setSelectionModel(new DefaultListSelectionModel() {
+			@Override
+			public boolean isSelectedIndex(final int index) {
+				Question rowquestion = (Question)tableModelQueries.getValueAt(index, 3);
+				boolean isSelected;
+				boolean full = true;
+				if(rowquestion.getPredictions() != null) {
+					for(Prediction p : rowquestion.getPredictions()) {
+						if(!selectedpredictions.contains(p)) {
+							full = false;
+						}
+					}
+				}
+				if ( full ) {
+					isSelected = false;		
+				} else {
+					isSelected = super.isSelectedIndex(index);
+				}
+				return isSelected;
+			}
+		});
 		tableQueries.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				answerComboBox.removeAllItems();
 				errorlabel.setText("");
-				int i = tableQueries.getSelectedRow();
-				if (i != -1) {
-					int questionId =  (int) tableQueries.getValueAt(i, 0);
-					BLFacade facade = MainGUI.getBusinessLogic();
-					try {
-						List<Prediction> predictions = facade.getQuestionPredictions(questionId);
-						for (Prediction p : predictions) {
-							String item = p.getAnswer() + "; " + p.getOdds();
-							answerComboBox.addItem(item);
-						}
-					} catch (QuestionNotFound e2) {
-						errorlabel.setText(e2.getMessage());		
-					} catch (NoAnswers e2) {
-						errorlabel.setText(e2.getMessage());
-					}			
-				}
+				refreshAnswerSelection();
 			}
-		});
+		});	
+		scrollPaneQueries.setViewportView(tableQueries);
+
+
 		GridBagConstraints gbc_jLabelQueries = new GridBagConstraints();
+		gbc_jLabelQueries.gridwidth = 3;
 		gbc_jLabelQueries.anchor = GridBagConstraints.NORTHWEST;
 		gbc_jLabelQueries.insets = new Insets(0, 0, 5, 5);
 		gbc_jLabelQueries.gridx = 3;
@@ -567,31 +653,68 @@ public class BrowsePanel extends JPanel {
 		gbc_answerComboBox.gridy = 10;
 		add(answerComboBox, gbc_answerComboBox);
 
-		GridBagConstraints gbc_placeBetButton = new GridBagConstraints();
-		gbc_placeBetButton.fill = GridBagConstraints.BOTH;
-		gbc_placeBetButton.insets = new Insets(0, 0, 5, 5);
-		gbc_placeBetButton.gridx = 7;
-		gbc_placeBetButton.gridy = 12;
-		addToCouponButton.setBackground(new Color(220, 220, 220));
+
+
+		addToCouponButton = new FancyButton(ResourceBundle.getBundle("Etiquetas").getString("AddBetToCoupon"), new Color(200,200,200),new Color(169,169,169),new Color(130, 130, 130));
+		addToCouponButton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+		addToCouponButton.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+		addToCouponButton.setBorderPainted(true);
+		refreshAnswerSelection();
+		GridBagConstraints gbc_addToCouponButton = new GridBagConstraints();
+		gbc_addToCouponButton.fill = GridBagConstraints.BOTH;
+		gbc_addToCouponButton.insets = new Insets(0, 0, 5, 5);
+		gbc_addToCouponButton.gridx = 7;
+		gbc_addToCouponButton.gridy = 12;
+		addToCouponButton.setBackground(new Color(200, 200, 200));
 		addToCouponButton.setFont(new Font("Source Sans Pro", Font.PLAIN, 13));
-		add(addToCouponButton, gbc_placeBetButton);
+		add(addToCouponButton, gbc_addToCouponButton);
 		addToCouponButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int s = tableQueries.getSelectedRow();
 				if(s != -1) {
 					Question selectedq = (Question)tableModelQueries.getValueAt(tableQueries.getSelectedRow(),3);
+					BigDecimal minbet = new BigDecimal((Float)tableModelQueries.getValueAt(tableQueries.getSelectedRow(),2));
 					System.out.println(selectedq.toString());
 					if(answerComboBox.getSelectedItem() != null) {
-						
-						JPanel betpanel = new BetPanel(selectedq.getEvent(), selectedq, (String)answerComboBox.getSelectedItem(), new BigDecimal(0.0));
+
+						String[] ans = ((String)answerComboBox.getSelectedItem()).split(";");
+						JPanel betpanel = new BetPanel(selectedq.getEvent(), selectedq, (String)answerComboBox.getSelectedItem(),minbet, minbet);
 						betPane.add(betpanel);
 						betPane.revalidate();
 
+						//update event-prediction mappings that will be used to compute valid multiple bet combinations.
+						if(selectedevents.containsKey(selectedq.getEvent())) {
+							List<Prediction> currentpredictions = selectedevents.get(selectedq.getEvent());
+							if(currentpredictions == null) {
+								currentpredictions = new ArrayList<Prediction>();		
+							}
+							currentpredictions.add(selectedq.getPredictionByAnswer(ans[0]));
+						}
+						else {
+							List<Prediction> currentpredictions = new ArrayList<Prediction>();	
+							currentpredictions.add(selectedq.getPredictionByAnswer(ans[0]));
+							selectedevents.put(selectedq.getEvent(),currentpredictions);
+						}	
+
+						selectedquestions.add(selectedq);
+						selectedpredictions.add(selectedq.getPredictionByAnswer(ans[0]));
+						for(Prediction p :selectedpredictions) {
+							System.out.println(p.getAnswer());
+						}
+
+						tableEvents.repaint();
+						tableQueries.repaint();
+
+						refreshAnswerSelection();
+						calcTotalBetValues();
 						generateMultiBetOptions();
+						if(!btnBet.isEnabled()) {
+							btnBet.setEnabled(true);
+						}
 						if(betPane.getComponents().length == 10) {
 							addToCouponButton.setEnabled(false);
-							addToCouponButton.setText("Maximum bet amount reached");
+							addToCouponButton.setText(ResourceBundle.getBundle("Etiquetas").getString("MaximumAmountReached"));
 						}
 
 					}					
@@ -608,9 +731,10 @@ public class BrowsePanel extends JPanel {
 		competitionScrollPane.setViewportView(competitionPanel);
 
 		GridBagConstraints gbc_stakeLabel = new GridBagConstraints();
+		gbc_stakeLabel.gridwidth = 3;
 		gbc_stakeLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_stakeLabel.anchor = GridBagConstraints.EAST;
-		gbc_stakeLabel.gridx = 3;
+		gbc_stakeLabel.gridx = 1;
 		gbc_stakeLabel.gridy = 5;
 		stakeLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
 		couponPanel.add(stakeLabel, gbc_stakeLabel);
@@ -624,8 +748,10 @@ public class BrowsePanel extends JPanel {
 		couponPanel.add(globalStakeTextField, gbc_stakeTextField);
 
 		GridBagConstraints gbc_totwintitleLabel = new GridBagConstraints();
+		gbc_totwintitleLabel.gridwidth = 3;
+		gbc_totwintitleLabel.anchor = GridBagConstraints.EAST;
 		gbc_totwintitleLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_totwintitleLabel.gridx = 3;
+		gbc_totwintitleLabel.gridx = 1;
 		gbc_totwintitleLabel.gridy = 6;
 		totwintitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
 		couponPanel.add(totwintitleLabel, gbc_totwintitleLabel);
@@ -651,6 +777,7 @@ public class BrowsePanel extends JPanel {
 		gbc_btnBet.gridx = 1;
 		gbc_btnBet.gridy = 8;
 		couponPanel.add(getBtnBet(), gbc_btnBet);
+		btnBet.setEnabled(false);
 
 		errorlabel.setHorizontalAlignment(SwingConstants.CENTER);
 		errorlabel.setBackground(Color.RED);
@@ -663,8 +790,30 @@ public class BrowsePanel extends JPanel {
 		gbc_errorlabel.gridy = 15;
 		add(errorlabel, gbc_errorlabel);
 
+		footballButton.setSelected(true);
+	}
 
-
+	public void refreshAnswerSelection() {
+		int i = tableQueries.getSelectedRow();
+		answerComboBox.removeAllItems();
+		if (i != -1 && tableQueries.getSelectionModel().isSelectedIndex(i)) {
+			answerComboBox.setEnabled(true);
+			Question selectedquestion = (Question)tableModelQueries.getValueAt(tableQueries.getSelectedRow(), 3);
+			List<Prediction> predictions = selectedquestion.getPredictions();
+			if(predictions != null) {
+				for (Prediction p : predictions) {
+					if(!selectedpredictions.contains(p)) {
+						String item = p.getAnswer() + "; " + p.getOdds();
+						answerComboBox.addItem(item);
+					}
+				}
+				addToCouponButton.setEnabled(true);
+			}
+		}
+		else {
+			answerComboBox.setEnabled(false);
+			addToCouponButton.setEnabled(false);
+		}
 	}
 
 
@@ -675,24 +824,39 @@ public class BrowsePanel extends JPanel {
 	public class CompetitionChangeEvent implements PropertyChangeListener{
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals("selectedcompetition"))
-				refreshPage(competitionPanel.getSelectedCompetition(), jCalendar1);	
+				refreshPage();	
 		}
 	}
 
 	/**
-	 * Calculates the addition of all individual possible winnings of each bet.
+	 * Calculates the addition of all individual possible winnings of each bet nad the total price.
 	 */
-	public void calcTotalWinning() {
-		double sum = 0;
+	public void calcTotalBetValues() {
+		double winnings = 0;
+		double price = 0;
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
 
 		for(Component bp : betPane.getComponents()) {
 			if(bp instanceof BetPanel) {
-				sum = sum + ((BetPanel)bp).getStake().doubleValue() * ((BetPanel)bp).getOdds();
+				winnings += ((BetPanel)bp).getStake().doubleValue() * ((BetPanel)bp).getOdds();
+				price += ((BetPanel)bp).getStake().doubleValue();
 			}		
 		}
-		totwinLabel.setText(df.format(sum) + "€");
+		for(Component mbp : multibetPanel.getComponents()) {
+			if(mbp instanceof multibetOption) {
+				winnings += ((multibetOption)mbp).getWinnings();
+				price += ((multibetOption)mbp).getStake()*((multibetOption)mbp).getCombinations();
+			}
+		}
+		totwinLabel.setText(df.format(winnings) + "€");
+		JButton btnbet = getBtnBet();
+		if(price == 0) {
+			btnbet.setText("Bet");
+		}
+		else {
+			btnbet.setText("Bet" + " " + df.format(price) + "€");
+		}
 	}
 
 	/**
@@ -702,7 +866,12 @@ public class BrowsePanel extends JPanel {
 	public void setStakes(BigDecimal stakes) {
 		for(Component c : betPane.getComponents()) {
 			((BetPanel)c).disableStakeListener();
-			((BetPanel)c).setStakes(stakes);
+			if(stakes.compareTo(((BetPanel)c).getMinBet()) > 0) {
+				((BetPanel)c).setStakes(stakes);
+			}
+			else {
+				((BetPanel)c).setStakes(((BetPanel)c).getMinBet());
+			}
 			((BetPanel)c).enableStakeListener();
 		}
 	}
@@ -714,20 +883,21 @@ public class BrowsePanel extends JPanel {
 	 * @param comp  user selected competition
 	 * @param date	user selected date
 	 */
-	public void refreshPage(Competition comp, JCalendar jCalendar) {
-
+	public void refreshPage() {
 		try {
+			Competition comp = competitionPanel.getSelectedCompetition();
+
 			SimpleDateFormat df1 = new SimpleDateFormat("HH:mm");
 			SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
-			Vector<Date> dates = facade.getEventsMonth(jCalendar.getDate(), comp);
+			Vector<Date> dates = facade.getEventsMonth(jCalendar1.getDate(), comp);
 
 			tableModelEvents.setDataVector(null, columnNamesEvents);
 			tableModelEvents.setColumnCount(5); // another column added to allocate ev objects
 			if(comp != null) {
 				for(Event e: comp.getEvents()) {
-
+					System.out.println(e.toString());
 					//Date date = e.getEventDate();
-					if(df2.format(e.getEventDate()).equals(df2.format(jCalendar.getDate()))) {
+					if(df2.format(e.getEventDate()).equals(df2.format(jCalendar1.getDate()))) {
 						Vector<Object> row = new Vector<Object>();
 						System.out.println("Events "+e);
 
@@ -735,7 +905,7 @@ public class BrowsePanel extends JPanel {
 						row.add(e.getDescription());
 						row.add(df1.format(e.getEventdate()));
 						row.add(df1.format(e.getEndingdate()));
-						row.add(e); // ev object added in order to obtain it with tableModelEvents.getValueAt(i,2)
+						row.add(e); // ev object added in order to obtain it with tableModelEvents.getValueAt(i,4)
 						tableModelEvents.addRow(row);				
 					}
 				}
@@ -754,12 +924,13 @@ public class BrowsePanel extends JPanel {
 
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+
 			tableEvents.getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
 			tableEvents.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
 			tableEvents.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
 			tableEvents.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
 
-
+			tableModelQueries.setDataVector(null, columnNamesQueries);
 
 			if(comp == null) {
 				chosenCompetitionLabel.setText("No competition selected");
@@ -769,7 +940,7 @@ public class BrowsePanel extends JPanel {
 				chosenCompetitionLabel.setIcon(new ImageIcon("images/competitions/" + comp.getName() + ".png"));
 				chosenCompetitionLabel.setText("");
 			}
-			DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar.getLocale());
+			DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar1.getLocale());
 
 			jLabelEvents.setText(ResourceBundle.getBundle("Etiquetas").getString("Events") + ": " +  dateformat1.format(jCalendar1.getCalendar().getTime()));
 			paintDaysWithEvents(jCalendar1, dates);
@@ -785,33 +956,42 @@ public class BrowsePanel extends JPanel {
 	 */
 	public void generateMultiBetOptions() {
 		multibetPanel.removeAll();
-		int betcount = betPane.getComponents().length;
-		if(betcount > 1) {
+		int multivalidcount = selectedevents.size();
+		int[] combinations = computeMultiBets(selectedevents);
+		if( betPane.getComponents().length > multivalidcount && multivalidcount > 1) {
+			errorlabel.setText("Multi betting options have been restricted");
+			errorlabel.setVisible(true);
+		}
+		else {
+			errorlabel.setVisible(false);
+		}
+
+		if(multivalidcount > 1) {
 			multibetButton.setEnabled(true);
 			multibetPanel.setVisible(true);
-			if(betcount == 8) {
-				multibetPanel.add(new multibetOption(BetType.GOLIATH, 247));
+			if(multivalidcount == 8) {
+				multibetPanel.add(new multibetOption(BetType.GOLIATH, 247*combinations[6]));
 			}
-			if(betcount == 7) {
-				multibetPanel.add(new multibetOption(BetType.SUPER_HEINZ, 120));
+			if(multivalidcount == 7) {
+				multibetPanel.add(new multibetOption(BetType.SUPER_HEINZ, 120*combinations[5]));
 			}
-			if(betcount == 6) {
-				multibetPanel.add(new multibetOption(BetType.HEINZ, 57));
+			if(multivalidcount == 6) {
+				multibetPanel.add(new multibetOption(BetType.HEINZ, 57*combinations[4]));
 			}
-			if(betcount == 5) {
-				multibetPanel.add(new multibetOption(BetType.SUPER_YANKEE, 26));
+			if(multivalidcount == 5) {
+				multibetPanel.add(new multibetOption(BetType.SUPER_YANKEE, 26*combinations[3]));
 			}
-			if(betcount == 4) {
-				multibetPanel.add(new multibetOption(BetType.YANKEE, 11 ));
+			if(multivalidcount == 4) {
+				multibetPanel.add(new multibetOption(BetType.YANKEE, 11*combinations[2]));
 			}
-			if(betcount == 3) {
-				multibetPanel.add(new multibetOption(BetType.TRIXIE, 4 ));
+			if(multivalidcount == 3) {
+				multibetPanel.add(new multibetOption(BetType.TRIXIE, 4*combinations[1]));
 			}
-			for(int i = betcount; i>1 ; i--) {
-				multibetPanel.add(new multibetOption(BetType.getValue(i), combinations(betcount, i) ));
+			for(int i = multivalidcount; i>1 ; i--) {
+				multibetPanel.add(new multibetOption(BetType.getType(i), combinations[i-2]));
 			}
-			multibetScrollPanel.setMinimumSize(new Dimension(bettingPanel.getWidth(), 37*multibetPanel.getComponents().length));
-			multibetScrollPanel.setMaximumSize(new Dimension(bettingPanel.getWidth(), 37*multibetPanel.getComponents().length));
+			multibetScrollPanel.setMinimumSize(new Dimension(bettingPanel.getWidth(), 50*multibetPanel.getComponents().length));
+			multibetScrollPanel.setMaximumSize(new Dimension(bettingPanel.getWidth(), 50*multibetPanel.getComponents().length));
 
 			multibetPanel.repaint();
 			multibetPanel.revalidate();
@@ -821,38 +1001,9 @@ public class BrowsePanel extends JPanel {
 		else {
 			multibetScrollPanel.setVisible(false);
 			multibetPanel.setVisible(false);
-			multibetButton.setText("Show multiple bet options\r\n");
+			multibetButton.setText(ResourceBundle.getBundle("Etiquetas").getString("ShowMultipleBetOptions"));
 			multibetButton.setEnabled(false);
 		}
-	}
-
-
-	/** 
-	 * computes combinatorial number n choose r
-	 * 
-	 * @param n	int representing the number of elements in the set.
-	 * @param r	int representing how many elements we select at a time.
-	 * @return	combinatorial number nCr, indicates how many different combinations can be made with the given values r,n. 
-	 */
-	public int combinations(int n, int r) {
-		return (factorial(n)/(factorial(r)*factorial(n-r)));
-	}
-
-	/**
-	 * Computes factorial of given number (f!);
-	 * 
-	 * @param f   number to calculate the factorial of.
-	 * @return	  factorial value of the given number.
-	 */
-	public int factorial(int f) {
-		if(f == 0)
-			return 1;
-
-		int result = 1;
-		for(int i = f; i>1; i--) {
-			result = result * i;
-		}
-		return result;
 	}
 
 
@@ -893,20 +1044,15 @@ public class BrowsePanel extends JPanel {
 		calendar.set(Calendar.MONTH, month);
 	}
 
-
-
 	/**
 	 * 
 	 */
-	public void refreshCash() {
-		//cashLabel.setText(Float.toString(UserLoginGUI.getLoggedUser().getCash()));
-	}
-
-
 	private JButton getBtnBet() {
 		if(btnBet == null) {
-			btnBet = new JButton(ResourceBundle.getBundle("Etiquetas").getString("Bet"));
+			btnBet = new FancyButton(ResourceBundle.getBundle("Etiquetas").getString("Bet"), new Color(200,200,200),new Color(169,169,169),new Color(130, 130, 130));
+			btnBet.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 			btnBet.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+			btnBet.setBorderPainted(true);
 			btnBet.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					BLFacade facade = MainGUI.getBusinessLogic();
@@ -925,90 +1071,152 @@ public class BrowsePanel extends JPanel {
 					}
 					else {
 						bet.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
-						
+
 					}//else				
 				}//actionperformed
 			});//addactionlistener
 		}
-	return btnBet;
-}					
-						
-						
-						
-						
-						
-						
-						
-						
-						/*
-						try {
-							int i = tableQueries.getSelectedRow();
-							Question q = (Question)tableModelQueries.getValueAt(i,3);
-							Float betAmount = Float.parseFloat(betTextField.getText());
-							if(q.getBetMinimum() > betAmount) {
-								errorlabel.setText(" Enter a valid amount to bet (Minimum not reached)");
-							}
-							else{
-								//facade.placeBet(q, facade.getProfile().getID(), betAmount,0);  //CHANGE THE 0 (ANSWER)!!!!!!!!
-								errorlabel.setText("Bet placed sucessfully");
-								refreshCash();
-							}
-						}
-						catch(ArrayIndexOutOfBoundsException e) {
-							errorlabel.setText("Please select an event and question before betting");
-						}
-						catch(NumberFormatException e){
-							errorlabel.setText("Enter a valid amount to bet");
-						}
-						//	catch(InsufficientCash i) {
-						//	errorlabel.setText("Not enough money to bet with that amount");
-						//}
-					 * 
-					 */
-
-
+		return btnBet;
+	}					
 
 	/**
 	 * 
 	 */
 	AbstractAction bet = new AbstractAction() {
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			List<Prediction> pred =  new ArrayList<Prediction>();
-			Question q =null;
+			errorlabel.setVisible(false);
 			//SINGLES
-			for(Component c : betPane.getComponents()) {
-				List<Prediction> temp =  new ArrayList<Prediction>();
-				Prediction nextprediction = new Prediction(((BetPanel)c).getQuestion(),((BetPanel)c).getAnswer(), ((BetPanel)c).getOdds());
-				temp.add(nextprediction);
-				pred.add(nextprediction);
-				if(((BetPanel)c).getStake().intValue() > 0) {								
-					try {
-						facade.placeBets(((BetPanel)c).getStake().floatValue(), BetType.SINGLE, temp);
-					}
-					catch(InsufficientCash i) {
-						errorlabel.setText("Not enough money to bet with that amount");	
+			try {
+				for(Component c : betPane.getComponents()) {
+					List<Prediction> temp =  new ArrayList<Prediction>();
+					Prediction nextprediction = new Prediction(((BetPanel)c).getQuestion(),((BetPanel)c).getAnswer(), ((BetPanel)c).getOdds());
+					temp.add(nextprediction);
+					pred.add(nextprediction);
+					if(((BetPanel)c).getStake().intValue() > 0) {								
+						facade.placeBets(((BetPanel)c).getStake().floatValue(),((BetPanel)c).getStake().floatValue(), BetType.SINGLE, temp);
 					}
 				}
-				q = ((BetPanel)c).getQuestion();
-				
+				//MULTIPLE
+				for(Component c: multibetPanel.getComponents()) {
+					if(((multibetOption)c).getStake() > 0) {						
+						facade.placeBets(((multibetOption)c).getStake(),((multibetOption)c).getPrice(), ((multibetOption)c).getType(), pred);
+					}
+				}
+				JOptionPane.showMessageDialog(null, "Bets placed sucesfully");
+				MainGUI.getInstance().refreshCash();
 			}
-			//MULTIPLE
-			for(Component c: multibetPanel.getComponents()) {
-				if(((multibetOption)c).getStake() > 0) {						
-					try {	
-						facade.placeBets(((multibetOption)c).getStake(), ((multibetOption)c).getType(), pred);
-					}
-					catch(InsufficientCash i) {
-						errorlabel.setText("Not enough money to bet with that amount");	
-					}
-				}
+			catch(InsufficientCash i) {
+				errorlabel.setText("Not enough money to bet with that amount");	
+				errorlabel.setVisible(true);
 			}
 		}
 	};
-	
-	
+
+	/**
+	 * 
+	 */
+	public int[] computeMultiBets(Map<Event, List<Prediction>> map) {
+		int current = 1;
+		int i;
+		int combinationsum = 0;
+		int[] result = new int[map.size()];
+		List<Pair> comblist = new ArrayList<Pair>();
+		Object[] keyset = map.keySet().toArray();
+		for(i=1 ; i <= map.size(); i++) {
+			comblist.add(new Pair(i, map.get(keyset[i-1]).size()));
+		}
+		while(current <= map.size()) {
+			List<Pair> temp = new ArrayList<Pair>();
+			combinationsum=0;
+			for(Pair p: comblist) {	
+				int last = p.getList().get(p.getList().size()-1);
+				for(i=last+1; i<=map.size(); i++) {
+					Pair nextpair = new Pair(p,i,map.get(keyset[i-1]).size());
+					temp.add(nextpair);	
+					combinationsum += nextpair.getCombinations();
+				}	
+			}
+			comblist = new ArrayList<Pair>(temp);
+			result[current-1]=combinationsum;
+
+			current++;
+		}
+		return result;
+	}
+
+	/**
+	 * Auxiliary class for computeMultiBets
+	 */
+	public class Pair{
+		private ArrayList<Integer> list;
+		private int combinations;
+
+		public Pair( int i, int size) {
+			list = new ArrayList<Integer>();
+			list.add(i);
+			combinations = size;
+		}
+
+		public Pair(Pair p, int i, int size) {
+			list = new ArrayList<Integer>(p.getList());
+			list.add(i);
+			combinations = p.getCombinations()*size;
+		}
+
+		public ArrayList<Integer> getList(){
+			return list;
+		}
+
+		public int getCombinations() {
+			return combinations;
+		}
+
+		public String toString() {
+			String s = "";
+			for(Integer i : list) {
+				s = s + String.valueOf(i);
+			}
+			return s;
+		}
+	}
+
+
+	public class multiBetListener implements DocumentListener {
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			if(globalStakeTextField.getText().equals("")) {
+				setStakes(new BigDecimal(0));
+				calcTotalBetValues();	
+			}
+			else {
+				setStakes(new BigDecimal(globalStakeTextField.getText()));
+				calcTotalBetValues();		
+			}	
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			setStakes(new BigDecimal(globalStakeTextField.getText()));
+			calcTotalBetValues();			
+		}
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			if(globalStakeTextField.getText().equals("")) {
+				setStakes(new BigDecimal(0.0));
+				calcTotalBetValues();	
+			}
+			else {
+				setStakes(new BigDecimal(globalStakeTextField.getText()));
+				calcTotalBetValues();		
+			}	
+		}
+	}
+
+
+
 	/**
 	 * DocumentListener to set the values of all single bets to the value a user 
 	 * enters in the "Stake per bet" field.
@@ -1018,34 +1226,34 @@ public class BrowsePanel extends JPanel {
 		public void removeUpdate(DocumentEvent e) {
 			if(globalStakeTextField.getText().equals("")) {
 				setStakes(new BigDecimal(0));
-				calcTotalWinning();	
+				calcTotalBetValues();	
 			}
 			else {
 				setStakes(new BigDecimal(globalStakeTextField.getText()));
-				calcTotalWinning();		
+				calcTotalBetValues();		
 			}	
 		}
 
 		@Override
 		public void insertUpdate(DocumentEvent e) {
 			setStakes(new BigDecimal(globalStakeTextField.getText()));
-			calcTotalWinning();			
+			calcTotalBetValues();			
 		}
 
 		@Override
 		public void changedUpdate(DocumentEvent e) {
 			if(globalStakeTextField.getText().equals("")) {
-				setStakes(new BigDecimal(0));
-				calcTotalWinning();	
+				setStakes(new BigDecimal(0.0));
+				calcTotalBetValues();	
 			}
 			else {
 				setStakes(new BigDecimal(globalStakeTextField.getText()));
-				calcTotalWinning();		
+				calcTotalBetValues();		
 			}	
 		}
 	}
 
-	
+
 	/**
 	 *	Buttons on the upper panel, each for a sport, the country and competitions displayed in the competition panel are
 	 *	altered depending on the selected sport(button)
@@ -1100,12 +1308,12 @@ public class BrowsePanel extends JPanel {
 		Action selectSport = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(JButton jb : sportbuttons) {
-					jb.setSelected(false);
-				}
-
 				SportButton button = (SportButton) e.getSource();
+				for(SportButton spb : sportbuttons) {
+					spb.setSelected(false);
+				}
 				button.setSelected(true);
+
 				competitionScrollPane.remove(competitionPanel);
 				Vector<Competition> competitions = facade.getCompetitions(button.sport);
 				competitionPanel =  new  CompetitionPanel(competitions);
@@ -1135,42 +1343,47 @@ public class BrowsePanel extends JPanel {
 		private String answer;
 		private float odds;
 		private BigDecimal stake;
+		private BigDecimal minbet;
 
 		private JLabel winningsLabel;
 		private JLabel poswinLabel;
 		private JNumericField stakeField;
 		private DocumentListener stakeListener;
+		private JButton closeButton;
 
-		public BetPanel(Event ev, Question q, String answer, BigDecimal amount){ 	
+		public BetPanel(Event ev, Question q, String answer, BigDecimal minbet, BigDecimal stake){ 	
 
 			setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 
 			this.event = ev;
 			this.question = q;
-			this.stake = amount;
+			this.stake = stake;
+			this.minbet = minbet;
 
 			String[] ans = answer.split(";");
 			this.answer = ans[0];
 			this.odds = Float.parseFloat(ans[1]);
-			
+
 			setBackground(Color.WHITE);
-			setLayout(new MigLayout("", "[0.00][175.00px][10:51.00:10][38.00,grow][16.00][-138.00][][30:52.00:30][31.00:n:2]", "[30:30:30,fill][][][][][4:4:4]"));
+			setLayout(new MigLayout("", "[0.00][:47.00px:73.00px][:65.00:73][51.00:45:45][11.00][38.00][49.00][:20:20][167.00:n:2]", "[:27.00:27.00][:18.00:25px][-2.00][30:7.00:30,fill][:19.00:19.00]"));
 
 			JLabel eventLabel = new JLabel(ev.getDescription());
 			eventLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
-			add(eventLabel, "cell 1 0,alignx left,aligny top");
+			add(eventLabel, "cell 1 0 3 1,alignx left,aligny center");
 
 			JLabel lblOdds = new JLabel("Odds:");
 			lblOdds.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
 			lblOdds.setHorizontalAlignment(SwingConstants.TRAILING);
-			add(lblOdds, "cell 3 0,alignx left,aligny center");
+			add(lblOdds, "cell 5 0,alignx left,aligny center");
 
 			JLabel oddsLabel = new JLabel(ans[1]);
-			oddsLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 19));
-			oddsLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-			add(oddsLabel, "cell 4 0 3 1,alignx left,aligny center");
+			oddsLabel.setBackground(Color.WHITE);
+			oddsLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 18));
+			oddsLabel.setHorizontalAlignment(SwingConstants.LEFT);
+			add(oddsLabel, "cell 6 0,alignx left,aligny center");
 
-			JButton closeButton = new JButton((new ImageIcon("images/closex.png")));
+			closeButton = new JButton((new ImageIcon("images/closex.png")));
+			closeButton.setMargin(new Insets(0,0,0,0));
 			closeButton.setBorderPainted(false);
 			closeButton.setFocusPainted(false);
 			closeButton.setBackground(Color.WHITE);
@@ -1178,49 +1391,95 @@ public class BrowsePanel extends JPanel {
 			closeButton.setHorizontalAlignment(SwingConstants.LEADING);
 			closeButton.addActionListener(new ActionListener() {	
 				@Override
-				public void actionPerformed(ActionEvent e) {			
+				public void actionPerformed(ActionEvent e) {
+					BetPanel panel = (BetPanel)closeButton.getParent();
 					betPane.remove(closeButton.getParent());
 					generateMultiBetOptions();
 					if(addToCouponButton.isEnabled() == false) {
 						addToCouponButton.setEnabled(true);
 						addToCouponButton.setText("Add bet to coupon");
 					}
+
+					//remove the prediction
+					selectedpredictions.remove(question.getPredictionByAnswer(panel.getAnswer()));
+					selectedevents.get(panel.getEvent()).remove(question.getPredictionByAnswer(panel.getAnswer()));
+
+					//check if there is other prediction on the coupon for the same question before removing it
+					Question question = panel.getQuestion();
+					boolean removequestion = true;
+					for(Prediction p: selectedpredictions) {
+						if(p.getQuestion().equals(question)) {
+							removequestion = false;
+						}
+					}
+					if(removequestion) {
+						selectedquestions.remove(question);
+					}
+
+					//check if there is other prediction on the coupon for the same event before removing it
+					Event ev = panel.getEvent();
+					boolean removeevent = true;
+					for(Question q : selectedquestions) {
+						if(q.getEvent().equals(ev)) {
+							removeevent = false;
+						}
+					}
+					if(removeevent) {
+						for (Event t : selectedevents.keySet()) {
+							System.out.println(t.getDescription());
+						}
+						selectedevents.remove(ev);
+
+					}
+					refreshAnswerSelection();
+
+					tableEvents.repaint();
+					tableQueries.repaint();
+
 					betPane.revalidate();
 					betPane.repaint();
+					calcTotalBetValues();
+					generateMultiBetOptions();
+					if(betPane.getComponents().length == 0) {
+						btnBet.setEnabled(false);
+					}
 				}
 			});
-			add(closeButton, "cell 7 0 2 1,grow");
+			add(closeButton, "cell 7 0 2 1");
+
+			JLabel quetionLabel = new JLabel("<html>" + q.getQuestion() + "</html>");
+			quetionLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
+			add(quetionLabel, "cell 1 1 3 2,alignx left,aligny bottom");
+
+			stakeField = new JNumericField(7, JNumericField.DECIMAL);
+			stakeField.setPrecision(2);
+			stakeField.setAllowNegative(false);
+			add(stakeField, "cell 5 1 3 2,growx,aligny bottom");
+			stakeListener = new singleStakeListener();
+			stakeField.getDocument().addDocumentListener(stakeListener);
 
 			JLabel answerLabel = new JLabel(ans[0]);
 			answerLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 15));
-			add(answerLabel, "cell 1 3,alignx left,aligny top");
+			add(answerLabel, "cell 1 3 2 1,alignx left,aligny bottom");
 
 			poswinLabel = new JLabel("possible winnings: \r\n\r\n");
 			poswinLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			poswinLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
-			add(poswinLabel, "flowx,cell 3 3 5 1,alignx left,growy");
+			add(poswinLabel, "flowx,cell 5 3 3 1,alignx left,aligny bottom");
 
-			JLabel quetionLabel = new JLabel(q.getQuestion());
-			quetionLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
-			add(quetionLabel, "cell 1 2,alignx left,aligny top");
+			JLabel minBetTitleLabel = new JLabel("Min.Bet:\r\n\r\n");
+			minBetTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
+			add(minBetTitleLabel, "cell 1 4,grow");
+
+			JLabel minBetLabel = new JLabel(minbet.toString()+"€");
+			minBetLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 16));
+			add(minBetLabel, "cell 2 4,alignx left");
 
 			winningsLabel = new JLabel("");
 			winningsLabel.setVisible(true);
 			winningsLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 16));
-			add(winningsLabel, "cell 3 4 5 1,alignx trailing");
-
-			stakeField = new JNumericField(7, JNumericField.DECIMAL);
-			stakeField.setPrecision(2);
-			try {
-				setStakes(new BigDecimal(globalStakeTextField.getText()));
-			} catch (NumberFormatException n) {
-				setStakes(new BigDecimal(0));
-			}	
-			stakeField.setAllowNegative(false);
-			add(stakeField, "cell 3 2 5 1,growx");
-			stakeListener = new singleStakeListener();
-			stakeField.getDocument().addDocumentListener(stakeListener);
-			add(stakeField, "cell 3 2 5 1,growx");
+			add(winningsLabel, "cell 5 4 3 1,alignx left,aligny top");
+			setStakes(minbet);
 		}
 
 		@Override
@@ -1233,7 +1492,14 @@ public class BrowsePanel extends JPanel {
 		@Override
 		public Dimension getPreferredSize()
 		{
-			Dimension d = new Dimension(getParent().getWidth(), 130);
+			Dimension d = null;
+			int l = getQuestion().getQuestion().length();
+			if(l>25) {
+				d = new Dimension(getParent().getWidth(),150);
+			}
+			else {
+				d = new Dimension(getParent().getWidth(),130);
+			}	
 			return d;
 		}
 
@@ -1241,9 +1507,17 @@ public class BrowsePanel extends JPanel {
 		@Override
 		public Dimension getMaximumSize()
 		{
-			Dimension d = new Dimension(getParent().getWidth(), 130);
+			Dimension d = null;
+			int l = getQuestion().getQuestion().length();
+			if(l>25) {
+				d = new Dimension(getParent().getWidth(),150);
+			}
+			else {
+				d = new Dimension(getParent().getWidth(),130);
+			}	
 			return d;
 		}
+
 
 		public BigDecimal getStake() {
 			return stake;
@@ -1257,11 +1531,19 @@ public class BrowsePanel extends JPanel {
 		public String getAnswer() {
 			return answer;
 		}
-		
+
+		public Event getEvent() {
+			return this.event;
+		}
+
 		public Question getQuestion() {
 			return this.question;
 		}
-		
+
+		public BigDecimal getMinBet() {
+			return minbet;
+		}
+
 		public float getOdds() {
 			return odds;
 		}
@@ -1307,11 +1589,10 @@ public class BrowsePanel extends JPanel {
 					setWinnings(bd);
 				}
 				catch(NumberFormatException n) {
-					BigDecimal bd = new BigDecimal(0);
-					setStake(bd);
-					setWinnings(bd);
+					setStake(minbet);
+					setWinnings(minbet);
 				}
-				calcTotalWinning();	
+				calcTotalBetValues();	
 				globalStakeTextField.getDocument().addDocumentListener(allStakeListener);
 			}
 
@@ -1319,10 +1600,16 @@ public class BrowsePanel extends JPanel {
 			public void insertUpdate(DocumentEvent e) {
 				globalStakeTextField.getDocument().removeDocumentListener(allStakeListener);
 				globalStakeTextField.setText("");
-				BigDecimal bd = new BigDecimal(stakeField.getText());
-				setStake(bd);
-				setWinnings(bd);
-				calcTotalWinning();
+				try {
+					BigDecimal bd = new BigDecimal(stakeField.getText());
+					setStake(bd);
+					setWinnings(bd);
+				}
+				catch(NumberFormatException n) {
+					setStake(minbet);
+					setWinnings(minbet);
+				}
+				calcTotalBetValues();
 				globalStakeTextField.getDocument().addDocumentListener(allStakeListener);
 			}
 
@@ -1336,13 +1623,226 @@ public class BrowsePanel extends JPanel {
 					setWinnings(bd);
 				}
 				catch(NumberFormatException n) {
-					BigDecimal bd = new BigDecimal(0);
-					setStake(bd);
-					setWinnings(bd);
+					setStake(minbet);
+					setWinnings(minbet);
 				}
-				calcTotalWinning();
+				calcTotalBetValues();
 				globalStakeTextField.getDocument().addDocumentListener(allStakeListener);
 			}
+		}
+	}
+
+	/**
+	 * Panel that holds information about a combined bet
+	 */
+	public class multibetOption extends JPanel {
+		
+		private float stake;
+		private float price;
+		private int combinations;
+		private BetType type;	
+		private  float winnings;
+		private boolean fullcover;
+		
+		private JNumericField stakeField;
+		private JLabel priceLabel;
+		private JLabel posWinLabel;
+		private DecimalFormat df;
+		
+		/**
+		 * Create the panel.
+		 */
+		public multibetOption( BetType type, int combinations) {
+			this.type = type;
+			if(type.getBetCount()>1) {
+				fullcover = true;
+			}
+			this.price = 0;
+			this.combinations = combinations;
+			setBackground(new Color(240, 255, 255));
+			setLayout(new MigLayout("", "[33.00px][108.00][50px][91.00px]", "[19.00px][25px:8.00px:25px]"));
+			JLabel typeLabel = new JLabel(type.name());
+			typeLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
+			add(typeLabel, "cell 0 0 2 1,grow");
+			
+			stakeField = new JNumericField(7, JNumericField.DECIMAL);
+			stakeField.setPrecision(2);
+			stakeField.setAllowNegative(false);
+			add(stakeField, "cell 3 0,grow");
+			stakeField.setColumns(10);
+			setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+			stakeField.getDocument().addDocumentListener(new stakeListener());
+			
+			JLabel combinationsLabel = new JLabel("x" + combinations);
+			combinationsLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
+			combinationsLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+			add(combinationsLabel, "cell 2 0,grow");
+			
+			JLabel priceTitleLabel = new JLabel("price:");
+			priceTitleLabel.setVerticalAlignment(SwingConstants.TOP);
+			priceTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
+			add(priceTitleLabel, "cell 0 1,aligny top");
+			
+			priceLabel = new JLabel("0€");
+			priceLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+			add(priceLabel, "cell 1 1,alignx left,aligny top");
+			
+			JLabel posWinTitleLabel = new JLabel("pos. winnings:\r\n");
+			posWinTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
+			add(posWinTitleLabel, "cell 2 1,aligny top");
+			
+			posWinLabel = new JLabel("0€");
+			posWinLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+			add(posWinLabel, "cell 3 1,alignx right,aligny top");
+			
+			df = new DecimalFormat("#");
+			df.setMaximumFractionDigits(2);
+
+		}
+
+		public float getStake() {
+			return stake;
+		}
+
+
+		public void setStake(float stake) {
+			this.stake = stake;
+		}
+
+		public float getPrice() {
+			return price;
+		}
+		
+		public JTextField getBetField() {
+			return stakeField;
+		}
+
+
+		public void setBetField(JNumericField betField) {
+			this.stakeField = betField;
+		}
+
+
+		public int getCombinations() {
+			return combinations;
+		}
+
+
+		public void setCombinations(int combinations) {
+			this.combinations = combinations;
+		}
+		
+		public float getWinnings() {
+			return winnings;
+		}
+		
+		public void setWinnings(float winnings) {
+			this.winnings = winnings;
+		}
+		
+		public BetType getType() {
+			return type;
+		}
+
+
+		public void setType(BetType type) {
+			this.type = type;
+		}
+		
+		@Override
+		public Dimension getPreferredSize()
+		{		
+			Dimension d = new Dimension(getParent().getWidth(), 50); 
+			return d;
+		}
+		
+		@Override
+		public Dimension getMaximumSize()
+		{		
+			Dimension d = new Dimension(getParent().getWidth(), 50);
+			return d;
+		}
+		
+		public class stakeListener implements DocumentListener{
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				try {
+					List<Prediction> temp = new ArrayList<Prediction>(selectedpredictions); 
+					stake = stakeField.getFloat();
+					if(fullcover) {
+						winnings = facade.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
+					}
+					else {
+						winnings = facade.calculateCombinedWinnings(type.predictionCount(),stake,temp);
+					}
+					
+					price = stake*combinations;
+					posWinLabel.setText(df.format(winnings)+"€");
+					priceLabel.setText(df.format(price)+"€");
+					
+				}
+				catch (NumberFormatException n) {
+					stake = 0;
+					winnings = 0;
+					price = 0;
+					posWinLabel.setText("0€");
+					priceLabel.setText(df.format(stake*combinations)+"€");
+				}
+				calcTotalBetValues();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				try {
+					List<Prediction> temp = new ArrayList<Prediction>(selectedpredictions); 
+					stake = stakeField.getFloat();
+					if(fullcover) {
+						winnings = facade.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
+					}
+					else {
+						winnings = facade.calculateCombinedWinnings(type.predictionCount(),stake,temp);
+					}
+					price = stake*combinations;
+					posWinLabel.setText(df.format(winnings)+"€");
+					priceLabel.setText(df.format(price)+"€");
+				}
+				catch (NumberFormatException n) {
+					stake = 0;
+					winnings = 0;
+					price = 0;
+					posWinLabel.setText("0€");
+					priceLabel.setText(df.format(stake*combinations)+"€");
+				}
+				calcTotalBetValues();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				try {
+					List<Prediction> temp = new ArrayList<Prediction>(selectedpredictions); 
+					stake = stakeField.getFloat();
+					if(fullcover) {
+						winnings = facade.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
+					}
+					else {
+						winnings = facade.calculateCombinedWinnings(type.predictionCount(),stake,temp);
+					}
+					price = stake*combinations;
+					posWinLabel.setText(df.format(winnings)+"€");
+					priceLabel.setText(df.format(price)+"€");
+				}
+				catch (NumberFormatException n) {
+					stake = 0;
+					winnings = 0;
+					price = 0;
+					posWinLabel.setText("0€");
+					priceLabel.setText(df.format(stake*combinations)+"€");
+				}
+				calcTotalBetValues();
+			}
+			
+			
 		}
 	}
 }

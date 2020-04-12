@@ -18,15 +18,10 @@ public class ApplicationLauncher {
 
 		ConfigXML c=ConfigXML.getInstance();
 		
-		Locale.setDefault(new Locale("eur"));
+		Locale.setDefault(new Locale("en"));
 		
 		System.out.println("Locale: "+Locale.getDefault());
 		
-		MainGUI a=new MainGUI();
-		a.setVisible(true);
-
-
-
 		try {
 			
 			BLFacade appFacadeInterface;
@@ -35,7 +30,7 @@ public class ApplicationLauncher {
 //			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			if (c.isBusinessLogicLocal()) {
 				
-			 appFacadeInterface=new BLFacadeImplementation();
+			 appFacadeInterface= new BLFacadeImplementation();
 						
 			}
 			
@@ -43,11 +38,10 @@ public class ApplicationLauncher {
 				
 				//String serviceName="http://localhost:9999/ws/ruralHouses?wsdl";
 				 String serviceName= "http://"+c.getBusinessLogicNode() +":"+ c.getBusinessLogicPort()+"/ws/"+c.getBusinessLogicName()+"?wsdl";
-				 
+				  
 				//URL url = new URL("http://localhost:9999/ws/ruralHouses?wsdl");
 				URL url = new URL(serviceName);
 
-		 
 		        //1st argument refers to wsdl document abovea
 				//2nd argument is service name, refer to wsdl document above
 //		        QName qname = new QName("http://businessLogic/", "FacadeImplementationWSService");
@@ -61,13 +55,17 @@ public class ApplicationLauncher {
 				appFacadeInterface.initializeBD();
 				*/
 			
+			MainGUI a=new MainGUI(appFacadeInterface);
+			a.setVisible(true);
 			MainGUI.setBussinessLogic(appFacadeInterface);
+			MainGUI.getInstance().configureTimer();
 
 					
 		}catch (Exception e) {
 			//a.jLabelSelectOption.setText("Error: "+e.toString());
 			//a.jLabelSelectOption.setForeground(Color.RED);		
 			System.out.println("Error in ApplicationLauncher: "+e.toString());
+			e.printStackTrace();
 		}
 		//a.pack();
 	}

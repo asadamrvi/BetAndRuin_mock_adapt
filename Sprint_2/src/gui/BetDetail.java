@@ -1,9 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -12,17 +9,18 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-
 import businessLogic.BLFacade;
 import domain.Bet;
-
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class BetDetail extends JDialog {
 	
 	Bet bet;
@@ -49,9 +47,6 @@ public class BetDetail extends JDialog {
 //			e.printStackTrace();
 //		}
 //	}
-	
-	
-
 	/**
 	 * Create the dialog.
 	 */
@@ -59,8 +54,8 @@ public class BetDetail extends JDialog {
 		setTitle("Full Bet Detail");
 
 		this.bet=bet;
-		
-		
+			
+		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM,Locale.getDefault());
 		
 		setBounds(100, 100, 728, 411);
 		getContentPane().setLayout(null);
@@ -70,7 +65,7 @@ public class BetDetail extends JDialog {
 		contentPanel.setLayout(null);
 		
 		JLabel Status = new JLabel("Status");
-		Status.setBounds(56, 46, 71, 22);
+		Status.setBounds(56, 81, 60, 22);
 		contentPanel.add(Status);
 		
 		JTextArea StatusText = new JTextArea();
@@ -81,7 +76,8 @@ public class BetDetail extends JDialog {
 		contentPanel.add(StatusText);
 		
 		JLabel typeLabel = new JLabel("Bet Type");
-		typeLabel.setBounds(56, 81, 60, 22);
+		typeLabel.setBounds(56, 46, 71, 22);
+		
 		contentPanel.add(typeLabel);
 		
 		JTextArea txtrBetType = new JTextArea();
@@ -108,7 +104,7 @@ public class BetDetail extends JDialog {
 		
 		JTextArea PlacementDatetext = new JTextArea();
 		PlacementDatetext.setBorder(border);
-		PlacementDatetext.setText(bet.getPlacementdate().toLocaleString());
+		PlacementDatetext.setText(df.format(bet.getPlacementdate()));
 		PlacementDatetext.setBounds(477, 46, 198, 22);
 		contentPanel.add(PlacementDatetext);
 		
@@ -121,7 +117,7 @@ public class BetDetail extends JDialog {
          txtrResolvingDate.setEditable(false);
 		txtrResolvingDate.setBorder(border);
 		//txtrResolvingDate.setBorder(border);
-		txtrResolvingDate.setText(bet.getResolvingdate().toLocaleString());
+		txtrResolvingDate.setText(df.format(bet.getResolvingdate()));
 		txtrResolvingDate.setForeground(Color.BLUE);
 		txtrResolvingDate.setBounds(477, 81, 198, 22);
 		contentPanel.add(txtrResolvingDate);

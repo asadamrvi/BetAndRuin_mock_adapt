@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -13,9 +14,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Competition {
+public class Competition implements Serializable{
 
 	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
@@ -52,6 +54,10 @@ public class Competition {
 		this.events = new ArrayList<Event>();
 	}
 
+	public int getCompetitionNumber() {
+		return competitionnumber;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -108,7 +114,7 @@ public class Competition {
 
 
 	public void setEvents(ArrayList<Event> events) {
-		events = events;
+		this.events = events;
 	}
 	
 	public void addEvent(Event ev) {

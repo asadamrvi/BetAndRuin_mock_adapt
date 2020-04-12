@@ -4,10 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Vector;
+
+import javax.persistence.EntityManager;
+
 import domain.Event;
+import domain.Feedback;
 import domain.Feedback.FeedbackType;
 import domain.Prediction;
 import domain.Bet;
@@ -17,7 +19,9 @@ import domain.Country;
 import domain.Question;
 import domain.Sport;
 import domain.User;
+import exceptions.NoAnswers;
 import exceptions.QuestionAlreadyExist;
+import exceptions.QuestionNotFound;
 import exceptions.invalidID;
 import exceptions.invalidPW;
 
@@ -56,6 +60,24 @@ public interface DataAccess {
 	 */
 	public Vector<Event> getEvents(Date date, Sport sport);
 
+	
+	/**
+	 * This method retrieves from the database the live events. Live events are defined as those for whom the current date(and time) is between the event starting and
+	 * ending dates.
+	 * 
+	 * @return collection of events
+	 */
+	public Vector<Event> getLiveEvents();
+	
+	/**
+	 * This method retrieves from the database events that are scheduled to start between the two input dates.
+	 * 
+	 * @param date1   lower bound date;
+	 * @param date2   upper bound date;
+	 * @return        collection of events;
+	 */
+	public Vector<Event> getEventsBetweenDates(Date date1, Date date2);
+	
 	/**
 	 * This method retrieves from the database the dates a month for which there are events
 	 * 
@@ -147,7 +169,7 @@ public interface DataAccess {
 	 * @param u
 	 * @param amount
 	 */
-	public void recordBets(User bettor, float stake, BetType type, List<Prediction> predictions);
+	public void recordBets(User bettor, float stake, float price, BetType type, List<Prediction> predictions);
 
 	/**
 	 * Adds introduced amount the cash stored on the user's account
@@ -163,10 +185,41 @@ public interface DataAccess {
 	 */
 	public void storeFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file);
 
-	public void close();
-	public void remove_bet (User bettor,Bet bet);
-	public void updatebets (User bettor,Bet bet,float amount);
-	public User getuserbyid(String id);
+	//public void close();
+	public void removeBet (User bettor,Bet bet);
+	public void updatebet (User bettor,Bet bet,float amount);
+	
+	
+	/**
+	 * This method retrieves all Feedback objects from the database.
+	 * @return	Feedback that has been sent and stored previously.
+	 */
+	public Vector<Feedback> retrieveFeedback();
 
-
+	/**
+	 * Updates the cash of a user by the amount indicates.
+	 * 
+	 * @param user	User to update cash of.
+	 * @param update  Amount of cash to add/remove(+/-).
+	 */
+	public void updateUserCash(User user, float update);
+	
+	/**
+	 * This method retrieves from the database the Bets that were scheduled to resolve in the date given.
+	 * 
+	 * @param date    The date in which bets need to be resolved.
+	 * @return 		  collection of Bet objects.
+	 */
+	public List<Bet> getBetsByResolutionDate(Date date);
+	
+	/**
+	 * This method resolves the outcomes of the questions the event of finished at the given date. The outcomes of the possible 
+	 * predictions a question has are decided by a generated random number. The odds affect the likelihood of the number to be in the
+	 * range of said outcome.
+	 * 
+	 * @param date
+	 */
+	public void resolveQuestions(Date date);
+	
+	public List<Prediction> getQuestionPredictions(int questionId) throws QuestionNotFound,NoAnswers;
 }

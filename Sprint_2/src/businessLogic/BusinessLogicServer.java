@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 /**
  * It runs the business logic server as a separate process.
  */
+@SuppressWarnings("serial")
 public class BusinessLogicServer extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

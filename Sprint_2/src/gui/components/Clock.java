@@ -3,6 +3,8 @@ package gui.components;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import businessLogic.BLFacade;
+import gui.MainGUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -13,9 +15,8 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class Clock extends JPanel {
-
-	private static final long serialVersionUID = 1L;
 	
 	Timer timer;
 	JLabel dateLabel;
@@ -47,11 +48,8 @@ public class Clock extends JPanel {
 				dateLabel.setText(sDate);
 			}
 		};
-		timer = new Timer(1000,a);
-		timer.setInitialDelay(0);
-		timer.start();
-		
-		
+		a.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+		MainGUI.getInstance().getTimer().addActionListener(a);
 	}
 	
 	/**

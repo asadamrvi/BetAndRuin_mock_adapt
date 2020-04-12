@@ -4,24 +4,20 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.objectdb.o.JCM;
-
 import businessLogic.BLFacade;
 import domain.Country;
 import exceptions.invalidID;
+import gui.components.FancyButton;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
-
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import java.awt.Font;
@@ -29,6 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import java.awt.Color;
+
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 
@@ -68,6 +66,7 @@ public class EditUserGUI extends JDialog {
 		setTitle("Edit user information");
 		setResizable(false);
 		
+		
 		idField = new JTextField(ID);
 		nameField = new JTextField(name);
 		surnameField = new JTextField(surname);
@@ -86,16 +85,66 @@ public class EditUserGUI extends JDialog {
 			rdbtnUser.setSelected(true);
 		}
 		
+		idField = new JTextField(ID);
+		idField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		idField.setForeground(new Color(255,255, 255));
+		idField.setCaretColor(new Color(255,255,255));	
+		idField.setOpaque(false);
+		
+		nameField = new JTextField(name);
+		nameField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		nameField.setForeground(new Color(255,255, 255));
+		nameField.setCaretColor(new Color(255,255,255));	
+		nameField.setOpaque(false);
+		
+		surnameField = new JTextField(surname);
+		surnameField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		surnameField.setForeground(new Color(255,255, 255));
+		surnameField.setCaretColor(new Color(255,255,255));	
+		surnameField.setOpaque(false);
+		
+		emailField = new JTextField(email);
+		emailField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		emailField.setForeground(new Color(255,255, 255));
+		emailField.setCaretColor(new Color(255,255,255));	
+		emailField.setOpaque(false);
+		
+		cityTextField = new JTextField(city);
+		cityTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		cityTextField.setForeground(new Color(255,255, 255));
+		cityTextField.setCaretColor(new Color(255,255,255));	
+		cityTextField.setOpaque(false);
+		
+		addressTextField = new JTextField(address);
+		addressTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		addressTextField.setForeground(new Color(255,255, 255));
+		addressTextField.setCaretColor(new Color(255,255,255));	
+		addressTextField.setOpaque(false);
+		
+		phnPrefixTextField = new JTextField(phone[0]);
+		phnPrefixTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		phnPrefixTextField.setForeground(new Color(255,255, 255));
+		phnPrefixTextField.setCaretColor(new Color(255,255,255));	
+		phnPrefixTextField.setOpaque(false);
+		
+		phnTextField = new JTextField(phone[1]);
+		phnTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+		phnTextField.setForeground(new Color(255,255, 255));
+		phnTextField.setCaretColor(new Color(255,255,255));	
+		phnTextField.setOpaque(false);
+		
+		
 		
 		setModal(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 482, 509);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(null);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
 		contentPane.add(panel, BorderLayout.CENTER);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{30, 20, 20, 15, 93, -100, 24, 40, 40, 50, 30, 20, 0};
@@ -105,7 +154,8 @@ public class EditUserGUI extends JDialog {
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblEditUserInformation = new JLabel("Edit user information");
-		lblEditUserInformation.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblEditUserInformation.setForeground(Color.WHITE);
+		lblEditUserInformation.setFont(new Font("Source Code Pro Light", Font.BOLD, 24));
 		GridBagConstraints gbc_lblEditUserInformation = new GridBagConstraints();
 		gbc_lblEditUserInformation.anchor = GridBagConstraints.WEST;
 		gbc_lblEditUserInformation.gridwidth = 11;
@@ -115,6 +165,8 @@ public class EditUserGUI extends JDialog {
 		panel.add(lblEditUserInformation, gbc_lblEditUserInformation);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setForeground(Color.WHITE);
+		lblUsername.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
 		gbc_lblUsername.gridwidth = 3;
 		gbc_lblUsername.anchor = GridBagConstraints.EAST;
@@ -145,6 +197,8 @@ public class EditUserGUI extends JDialog {
 		usernameError.setVisible(false);;
 		
 		JLabel lblName = new JLabel("Name:");
+		lblName.setForeground(Color.WHITE);
+		lblName.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.gridwidth = 3;
 		gbc_lblName.anchor = GridBagConstraints.EAST;
@@ -164,6 +218,8 @@ public class EditUserGUI extends JDialog {
 		nameField.setColumns(10);
 		
 		JLabel lblSurname = new JLabel("Surname:");
+		lblSurname.setForeground(Color.WHITE);
+		lblSurname.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblSurname = new GridBagConstraints();
 		gbc_lblSurname.gridwidth = 3;
 		gbc_lblSurname.anchor = GridBagConstraints.EAST;
@@ -183,6 +239,8 @@ public class EditUserGUI extends JDialog {
 		panel.add(surnameField, gbc_surnameField);
 		
 		JLabel lblEmail = new JLabel("E-mail:");
+		lblEmail.setForeground(Color.WHITE);
+		lblEmail.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.gridwidth = 3;
 		gbc_lblEmail.anchor = GridBagConstraints.EAST;
@@ -194,7 +252,7 @@ public class EditUserGUI extends JDialog {
 
 		emailField.setColumns(10);
 		GridBagConstraints gbc_emailField = new GridBagConstraints();
-		gbc_emailField.gridwidth = 7;
+		gbc_emailField.gridwidth = 6;
 		gbc_emailField.insets = new Insets(0, 0, 5, 5);
 		gbc_emailField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_emailField.gridx = 4;
@@ -202,6 +260,8 @@ public class EditUserGUI extends JDialog {
 		panel.add(emailField, gbc_emailField);
 		
 		lblCountry = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Country") + ":");
+		lblCountry.setForeground(Color.WHITE);
+		lblCountry.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
 		gbc_lblCountry.anchor = GridBagConstraints.EAST;
 		gbc_lblCountry.gridwidth = 3;
@@ -225,6 +285,8 @@ public class EditUserGUI extends JDialog {
 		gbc_lblCity.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCity.gridx = 1;
 		gbc_lblCity.gridy = 8;
+		lblCity.setForeground(Color.WHITE);
+		lblCity.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		panel.add(lblCity, gbc_lblCity);
 		
 		GridBagConstraints gbc_cityTextField = new GridBagConstraints();
@@ -237,6 +299,8 @@ public class EditUserGUI extends JDialog {
 		cityTextField.setColumns(10);
 		
 		JLabel lblAddress = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Address"));
+		lblAddress.setForeground(Color.WHITE);
+		lblAddress.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
 		gbc_lblAddress.gridwidth = 3;
 		gbc_lblAddress.anchor = GridBagConstraints.EAST;
@@ -260,6 +324,8 @@ public class EditUserGUI extends JDialog {
 		gbc_lblPhoneNumber.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPhoneNumber.gridx = 1;
 		gbc_lblPhoneNumber.gridy = 10;
+		lblPhoneNumber.setForeground(Color.WHITE);
+		lblPhoneNumber.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		panel.add(lblPhoneNumber, gbc_lblPhoneNumber);
 		
 		GridBagConstraints gbc_phnPrefixTextField = new GridBagConstraints();
@@ -286,6 +352,8 @@ public class EditUserGUI extends JDialog {
 		gbc_lblBirthdate.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBirthdate.gridx = 1;
 		gbc_lblBirthdate.gridy = 11;
+		lblBirthdate.setForeground(Color.WHITE);
+		lblBirthdate.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		panel.add(lblBirthdate, gbc_lblBirthdate);
 		
 
@@ -312,6 +380,8 @@ public class EditUserGUI extends JDialog {
 		panel.add(comboBoxYear, gbc_comboBoxYear);
 		
 		JLabel lblRights = new JLabel("Rights:");
+		lblRights.setForeground(Color.WHITE);
+		lblRights.setFont(new Font("Source Code Pro Light", Font.PLAIN, 11));
 		GridBagConstraints gbc_lblRights = new GridBagConstraints();
 		gbc_lblRights.gridwidth = 3;
 		gbc_lblRights.anchor = GridBagConstraints.EAST;
@@ -327,6 +397,9 @@ public class EditUserGUI extends JDialog {
 		gbc_rdbtnUser.gridx = 4;
 		gbc_rdbtnUser.gridy = 12;
 		buttonGroup.add(rdbtnUser);
+		rdbtnUser.setForeground(Color.WHITE);
+		rdbtnUser.setOpaque(false);
+		rdbtnUser.setFont(new Font("Source Code Pro", Font.PLAIN, 11));
 		panel.add(rdbtnUser, gbc_rdbtnUser);
 		
 
@@ -336,10 +409,17 @@ public class EditUserGUI extends JDialog {
 		gbc_rdbtnAdmin.gridx = 6;
 		gbc_rdbtnAdmin.gridy = 12;
 		buttonGroup.add(rdbtnAdmin);
+		rdbtnAdmin.setForeground(Color.WHITE);
+		rdbtnAdmin.setOpaque(false);
+		rdbtnAdmin.setFont(new Font("Source Code Pro", Font.PLAIN, 11));
 		panel.add(rdbtnAdmin, gbc_rdbtnAdmin);
 
 		
-		JButton btnSave = new JButton("Save changes");
+		FancyButton btnSave = new FancyButton("Save changes", new Color(130,130,130),new Color(90,90,90),new Color(123,123,123));
+		btnSave.setBorderPainted(false);
+		btnSave.setFocusPainted(false);
+		btnSave.setFont(new Font("Source Code Pro ExtraLight", Font.BOLD, 16));
+		btnSave.setForeground(Color.WHITE);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				usernameError.setVisible(false);
@@ -395,7 +475,11 @@ public class EditUserGUI extends JDialog {
 		gbc_btnSave.gridy = 14;
 		panel.add(btnSave, gbc_btnSave);
 		
-		JButton btnCancel = new JButton("Cancel");
+		FancyButton btnCancel = new FancyButton("Cancel", new Color(130,130,130),new Color(90,90,90),new Color(123,123,123));
+		btnCancel.setBorderPainted(false);
+		btnCancel.setFocusPainted(false);
+		btnCancel.setFont(new Font("Source Code Pro ExtraLight", Font.BOLD, 16));
+		btnCancel.setForeground(Color.WHITE);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				idField.setText(ID);
@@ -436,13 +520,20 @@ public class EditUserGUI extends JDialog {
 		
 		comboBoxNat.setModel(new DefaultComboBoxModel<String>(Country.namesArray()));
 		comboBoxNat.setSelectedIndex(Country.getValue(country).ordinal());
+		comboBoxNat.setForeground(Color.WHITE);
+		comboBoxNat.setBackground(Color.GRAY);
 		comboBoxDay.setModel(new DefaultComboBoxModel<String>(days));
 		comboBoxDay.setSelectedItem(splitbday[0].replaceAll("^0+", ""));
+		comboBoxDay.setForeground(Color.WHITE);
+		comboBoxDay.setBackground(Color.GRAY);
 		comboBoxMonth.setModel(new DefaultComboBoxModel<String>(months));
 		comboBoxMonth.setSelectedItem(splitbday[1].replaceAll("^0+", ""));
+		comboBoxMonth.setForeground(Color.WHITE);
+		comboBoxMonth.setBackground(Color.GRAY);
 		comboBoxYear.setModel(new DefaultComboBoxModel<String>(years));
 		comboBoxYear.setSelectedItem(splitbday[2]);
-		
+		comboBoxYear.setForeground(Color.WHITE);
+		comboBoxYear.setBackground(Color.GRAY);
 	}
 	public String[] newData() {
 		String status;
@@ -464,7 +555,7 @@ public class EditUserGUI extends JDialog {
 		String date = day + "/" + month + "/" +year;
 		
 		String[] s = {idField.getText(), nameField.getText(), surnameField.getText(), emailField.getText(),
-					Country.values()[comboBoxNat.getSelectedIndex()].getString()  ,cityTextField.getText(),addressTextField.getText(), phnPrefixTextField.getText() + phnTextField.getText(),date ,status};
+					Country.values()[comboBoxNat.getSelectedIndex()].getString()  ,cityTextField.getText(),addressTextField.getText(), phnPrefixTextField.getText() +" "+ phnTextField.getText(),date ,status};
 		return s;
 	}
 }

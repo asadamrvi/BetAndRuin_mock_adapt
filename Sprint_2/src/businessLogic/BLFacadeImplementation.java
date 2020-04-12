@@ -1,18 +1,27 @@
 package businessLogic;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.Vector;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.net.ssl.SSLEngineResult.Status;
+import javax.swing.Timer;
 
 import configuration.ConfigXML;
+import configuration.UtilDate;
 import dataAccess.DataAccess;
 import dataAccess.DataAccessImplementation;
 import domain.Question;
@@ -34,6 +43,9 @@ import exceptions.QuestionAlreadyExist;
 import exceptions.QuestionNotFound;
 import exceptions.invalidID;
 import exceptions.invalidPW;
+import gui.Panels.HomePanel;
+import gui.MainGUI;
+import gui.Panels.BrowsePanel.Pair;
 
 /**
  * It implements the business logic as a web service.
@@ -42,18 +54,16 @@ import exceptions.invalidPW;
 public class BLFacadeImplementation  implements BLFacade {
 
 	private User loggeduser;
-	private Date sessionstart;
-
-
+	private DataAccess dbManager;
+	
 	public BLFacadeImplementation()  {	
 		System.out.println("Creating BLFacadeImplementation instance");
 		ConfigXML c=ConfigXML.getInstance();
-
+		
 		if (c.getDataBaseOpenMode().equals("initialize")) {
-			DataAccessImplementation dbManager=new DataAccessImplementation(c.getDataBaseOpenMode().equals("initialize"));
+			dbManager=new DataAccessImplementation(c.getDataBaseOpenMode().equals("initialize"));
 			dbManager.initializeDB();
-			dbManager.close();
-		}	
+		}		
 	}
 
 
@@ -71,18 +81,14 @@ public class BLFacadeImplementation  implements BLFacade {
 	public Question createQuestion(Event event, String question, float betMinimum,  List<Prediction> predictions) throws EventFinished, QuestionAlreadyExist{
 
 		//The minimum bed must be greater than 0
-		DataAccess dBManager=new DataAccessImplementation();	    
 		if(new Date().compareTo(event.getEventDate())>0) {
-			dBManager.close();
 			throw new EventFinished(ResourceBundle.getBundle("Etiquetas").getString("ErrorEventHasFinished"));
 		}	
 		try {
-			Question qry=dBManager.createQuestion(event,question,betMinimum, predictions);	
-			dBManager.close();
+			Question qry=dbManager.createQuestion(event,question,betMinimum, predictions);	
 			return qry;
 		}
 		catch(QuestionAlreadyExist q) {
-			dBManager.close();
 			throw new QuestionAlreadyExist(q.getMessage());
 		}
 
@@ -96,9 +102,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */
 	@WebMethod	
 	public Vector<Event> getEvents(Date date)  {
-		DataAccess dbManager=new DataAccessImplementation();
 		Vector<Event>  events=dbManager.getEvents(date);
-		dbManager.close();
 		return events;
 	}
 
@@ -111,11 +115,22 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */
 	@WebMethod	
 	public Vector<Event> getEvents(Date date, Sport sport)  {
-		DataAccess dbManager=new DataAccessImplementation();
 		Vector<Event>  events=dbManager.getEvents(date, sport);
-		dbManager.close();
 		return events;
 	}
+
+	/**
+	 * This method invokes the data access to retrieve events scheduled for dates between the
+	 * two input dates.
+	 * 
+	 * @param date1  lower bound date
+	 * @param date2  upper bound date
+	 * @return  collection of events
+	 */
+	public Vector<Event> getEventsBetweenDates(Date date1,Date date2){
+		Vector<Event>  events=dbManager.getEventsBetweenDates(date1, date2);
+		return events;
+	} 
 
 	/**
 	 * This method invokes the data access to retrieve the dates a month for which there are events
@@ -124,9 +139,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	 * @return collection of dates
 	 */
 	@WebMethod public Vector<Date> getEventsMonth(Date date) {
-		DataAccess dbManager=new DataAccessImplementation();
 		Vector<Date>  dates=dbManager.getEventsMonth(date);
-		dbManager.close();
 		return dates;
 	}
 
@@ -140,23 +153,31 @@ public class BLFacadeImplementation  implements BLFacade {
 	@WebMethod public Vector<Date> getEventsMonth(Date date, Competition competition) {
 		Vector<Date>  dates = null;
 		if(competition != null) {
-			DataAccess dbManager=new DataAccessImplementation();
 			dates=dbManager.getEventsMonth(date, competition);
-			dbManager.close();	
 		}
 		else {
 			dates = new Vector<Date>();
 		}
 		return dates;
 	}
-	
-	@WebMethod public Vector<Competition> getCompetitions(Sport sport){
-		DataAccess dbManager=new DataAccessImplementation();
-		Vector<Competition>  events=dbManager.getCompetitions(sport);
-		dbManager.close();
+
+	/**
+	 * This method invokes the data access manager to retrieve the events that are currently live, that is, that the current time
+	 * is between the starting and ending date of said events.
+	 * 
+	 * @return collection of events
+	 */
+	@WebMethod public Vector<Event> getLiveEvents(){
+		Vector<Event> events=dbManager.getLiveEvents();
 		return events;
 	}
-	
+
+
+	@WebMethod public Vector<Competition> getCompetitions(Sport sport){
+		Vector<Competition>  events=dbManager.getCompetitions(sport);
+		return events;
+	}
+
 	/**
 	 * This method registers a new user.
 	 * 
@@ -172,14 +193,10 @@ public class BLFacadeImplementation  implements BLFacade {
 	@WebMethod
 	public void registerUser(String iD, String password, String name, String surname, String email, String address, String phone, 
 			Country nat, String city, Date birthDate, String pic, boolean isAdmin) throws invalidID{
-
-		DataAccess dBManager=new DataAccessImplementation();
 		try {
-			dBManager.registerUser(iD, password, name, surname, email, address, phone, nat, city, birthDate, pic, isAdmin);
-			dBManager.close();
+			dbManager.registerUser(iD, password, name, surname, email, address, phone, nat, city, birthDate, pic, isAdmin);
 		}
 		catch (invalidID i) {
-			dBManager.close();
 			throw new invalidID(i.getMessage());
 		}
 	}
@@ -194,19 +211,15 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */
 	@WebMethod
 	public boolean checkCredentials(String ID, String password) throws invalidID, invalidPW{
-		DataAccess dBManager=new DataAccessImplementation();
 		try {
-			User u = dBManager.retrieveUser(ID, password);
-			dBManager.close();
+			User u = dbManager.retrieveUser(ID, password);
 			loggeduser = u;
 			return u.isAdmin();
 		}	
 		catch (invalidID e) {
-			dBManager.close();
 			throw new invalidID(e.getMessage());
 		}
 		catch (invalidPW e) {
-			dBManager.close();
 			throw new invalidPW(e.getMessage());
 		}
 	}
@@ -216,9 +229,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */
 	@Override
 	public List<User> searchByCriteria(String searchtext, String filter, boolean casesensitive, int match) {
-		DataAccess dbManager = new DataAccessImplementation();
 		List<User> searchResult = dbManager.retrieveUsersByCriteria(searchtext, filter, casesensitive,match);
-		dbManager.close();
 		return searchResult;
 	}
 
@@ -229,7 +240,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	public void removeUser(String ID) {
 		DataAccess dbManager = new DataAccessImplementation();
 		dbManager.removeUser(ID);
-		dbManager.close();
+		;
 	}
 
 	/**
@@ -237,13 +248,10 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */
 	public void updateUserInfo(String key, String iD, String name, String surname, String email,Country nat,String city, String addr, 
 			String phn,  Date birthdt, boolean isAdmin) throws invalidID{
-		DataAccess dbManager = new DataAccessImplementation();
 		try {	
 			dbManager.updateUserInfo(key, iD,name,surname,email,addr,phn,nat,city,birthdt,isAdmin);
-			dbManager.close();
 		}
 		catch(invalidID i) {
-			dbManager.close();
 			throw new invalidID();
 		}
 
@@ -260,20 +268,17 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */	
 	@WebMethod	
 	public void initializeBD(){
-		DataAccess dBManager=new DataAccessImplementation();
-		dBManager.initializeDB();
-		dBManager.close();
+		dbManager.initializeDB();
 	}
 
 
-	public void placeBets(float stake, BetType type, List<Prediction> predictions) throws InsufficientCash{
-		if(stake > loggeduser.getCash()) {
+	public void placeBets(float stake, float totalprice, BetType type, List<Prediction> predictions) throws InsufficientCash{
+		if(totalprice > loggeduser.getCash()) {
 			throw new InsufficientCash();
 		}
 		else {
-			DataAccessImplementation dbManager=new DataAccessImplementation();
-			dbManager.recordBets(loggeduser, stake, type, predictions);
-			dbManager.close();
+			dbManager.recordBets(loggeduser, stake, totalprice,type, predictions);
+			loggeduser.setCash(loggeduser.getCash() - totalprice);
 		}
 
 	}
@@ -293,7 +298,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	public String getUserID() {
 		return loggeduser.getID();
 	}
-	
+
 	/**
 	 * Retrieves the bets the currently logged user has in place
 	 * @return		List<Bet> user's bets
@@ -312,7 +317,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	 */
 	public void logOut() {
 		loggeduser = null;
-		sessionstart = null;
+		//sessionstart = null;
 	}
 
 	/**
@@ -343,38 +348,41 @@ public class BLFacadeImplementation  implements BLFacade {
 	public float getCash() {
 		return loggeduser.getCash();
 	}
-	
+
 	/**
 	 * Adds introduced amount the cash stored on the user's account
 	 * @param amount	amount of money to add(float)
 	 * @return	cash on the account after the addition
 	 */
 	public float addCash(float amount) {
-		DataAccessImplementation dbManager=new DataAccessImplementation();
 		float newcash = dbManager.addCash(loggeduser.getID(), amount);
-		dbManager.close();
 		return newcash;
 	}
 
+	/**
+	 * This method calls to the data access manager to store a new feedback object.
+	 */
 	public void submitFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file) {
-		DataAccessImplementation dbManager=new DataAccessImplementation();	
 		dbManager.storeFeedback(fbtype, email, name, summary, details, file);
-		dbManager.close();
-
 	}
 
+	/**
+	 * This method invokes the data access manager to retrieve the feedback stored in the database.
+	 * @return	Feedback that has been sent and stored previously.
+	 */
+	public Vector<Feedback> getFeedback(){
+		Vector<Feedback> fb = dbManager.retrieveFeedback();
+		return fb;
+	}
 
 	public List<Prediction> getQuestionPredictions(int questionId) throws QuestionNotFound, NoAnswers {
-		DataAccessImplementation dbManager = new DataAccessImplementation();
+
 		try {
 			List<Prediction> pred = dbManager.getQuestionPredictions(questionId);
-			dbManager.close();
 			return pred;
 		} catch (NoAnswers e) {
-			dbManager.close();
 			throw new NoAnswers(e.getMessage());
 		}
-		
 	}
 
 
@@ -382,88 +390,394 @@ public class BLFacadeImplementation  implements BLFacade {
 	public boolean Enable_or_not(Bet b, int Hours) {
 		Date placement_date=b.getPlacementdate();
 		Date finish_date=b.getResolvingdate();
-		 Calendar calendar = Calendar.getInstance();
-		    calendar.setTime(placement_date);
-		    calendar.add(Calendar.HOUR_OF_DAY, Hours);
-		    Date last=calendar.getTime();
-		    int high_low=last.compareTo(finish_date);
-		    if (high_low<0) {
-		    	return true;
-		    }
-		    else
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(placement_date);
+		calendar.add(Calendar.HOUR_OF_DAY, Hours);
+		Date last=calendar.getTime();
+		int high_low=last.compareTo(finish_date);
+		if (high_low<0) {
+			return true;
+		}
+		else
 
-		    	return false;
-		    }
+			return false;
+	}
 
 
 	@Override
 	public Object[][] getDAta(Bet b, ArrayList<Bet> bets) {
-		
-			if (b==null) {
-				Object[][] data = new Object[bets.size()][3];
-				for (int i = 0; i < bets.size(); i++) {
-					data[i][0] = bets.get(i).getStatus();
-				    data[i][1] = bets.get(i).getStake();
-				    data[i][2] = bets.get(i).getPlacementdate();
-				    }
-				return data;
+
+		if (b==null) {
+			Object[][] data = new Object[bets.size()][3];
+			for (int i = 0; i < bets.size(); i++) {
+				data[i][0] = bets.get(i).getStatus();
+				data[i][1] = bets.get(i).getStake();
+				data[i][2] = bets.get(i).getPlacementdate();
 			}
-			else {
-				List<Prediction> predictions=b.getPredictions();
-				Object[][] data = new Object[predictions.size()][5];
-				for (int i = 0; i < predictions.size(); i++) { 
-				data[i][0] =predictions.get(i).getPredictionNumber();
-			    data[i][1] = predictions.get(i).getQuestion().getQuestion();
-			    data[i][2] = predictions.get(i).getAnswer();
-			    data[i][3] = predictions.get(i).getOdds();
-			    data[i][4] = predictions.get(i).getOutcome();
-			    }
-				return data;
-			}
-			
+			return data;
 		}
+		else {
+			List<Prediction> predictions=b.getPredictions();
+			Object[][] data = new Object[predictions.size()][5];
+			for (int i = 0; i < predictions.size(); i++) { 
+				data[i][0] = predictions.get(i).getPredictionNumber();
+				data[i][1] = predictions.get(i).getQuestion().getQuestion();
+				data[i][2] = predictions.get(i).getAnswer();
+				data[i][3] = predictions.get(i).getOdds();
+				data[i][4] = predictions.get(i).getOutcome();
+			}
+			return data;
+		}
+	}
 
 
 	@Override
 	public ArrayList<Bet> getBets(User u) {
-		DataAccessImplementation dbManager = new DataAccessImplementation();
-		//	dbManager.initializeDB();
-			ArrayList<Bet> bets=dbManager.getBets(u);
-			
-	             dbManager.close();
-			return (bets);
+		ArrayList<Bet> bets=dbManager.getBets(u);
+		return (bets);
 	}
 
 
 	@Override
 	public void remove_bet(User bettor, Bet bet) {
-		DataAccess dbManager = new DataAccessImplementation();
-		dbManager.remove_bet(bettor, bet);
-		dbManager.close();
-		
+		dbManager.removeBet(bettor, bet);
 	}
 
 
 	@Override
 	public void updatebets(User bettor, Bet bet, float amount) {
-		DataAccess dbManager = new DataAccessImplementation();
-		dbManager.updatebets(bettor, bet,amount);
-		dbManager.close();
-		
+		dbManager.updatebet(bettor, bet,amount);
 	}
 
-
-	@Override
-	public Profile refreshProfile() {
-		// TODO Auto-generated method stub
-		DataAccess dbManager=new DataAccessImplementation();
-		
-		loggeduser =dbManager.getuserbyid(loggeduser.getID());
-		
-		dbManager.close();
-		return loggeduser.getProfile();
-
+	/**
+	 * This method resolves the outcomes of the questions the event of finished at the given date. The outcomes of the possible 
+	 * predictions a question has are decided by a generated random number. The odds affect the likelihood of the number to be in the
+	 * range of said outcome.
+	 * 
+	 * @param date
+	 */
+	public void resolveQuestions() {
+		Calendar cl  = Calendar.getInstance();
+		dbManager.resolveQuestions(cl.getTime());
 	}
+	
+	/**
+	 * This method invokes the data access to retrieve the bets scheduled to be resolved in the exact date that the method is called,
+	 * computes the winnings earner on each bet and updates the bettor's cash according to them.
+	 */
+	public void resolveBets() {
+		List<Bet> bets = dbManager.getBetsByResolutionDate(new Date()); 
+		Map<User,Float> winningsMap = new HashMap<User, Float>();
+
+		
+		//System.out.println("Bets found: " + bets.size() );
+		 long starttime = System.nanoTime();
+		for(Bet bet : bets) {
+			Float currentwinnings = (float)0;
+			float winnings = calculateBetWinnings(bet);
+			User bettor = bet.getBettor();
+			bet.setStatus(Bet.Status.RESOLVED);
+			if(winnings > 0) {
+				if(bettor.getID().equals(loggeduser.getID())) {
+					loggeduser.setCash(getCash() + winnings);
+				}	
+				if(winningsMap.containsKey(bettor)) {
+					currentwinnings = winningsMap.get(bettor);
+				}
+				winningsMap.put(bettor, currentwinnings+winnings);
+			}
+		}
+		for(User u : winningsMap.keySet()) {
+			dbManager.updateUserCash(u, winningsMap.get(u));
+		}
+		
+		 long endtime = System.nanoTime();
+		 long dif = endtime-starttime;
+		 System.out.println("Execution in miliseconds: " + dif/1000000);
 	}
+	
+	/**
+	 * This method calculates the winnings earned on the given bet, according to the outcomes of the selected predictions and the corresponding odds.
+	 * 
+	 * @param bet 	Bet to calculate winnings for.
+	 * @return		Total winnings earned from the bet(float).
+	 */
+	public float calculateBetWinnings(Bet bet) {
+		int i;
+		int rightpredictions = 0;
+		float winnings = 0;
+		List<Prediction> predictions = new ArrayList<Prediction>();
+		Queue<PartialSol> queue = new LinkedList<PartialSol>();
+		//remove the failed predictions to minimize the computed combinations to calculate total winnings and initialise the queue.
+		for(Prediction p : bet.getPredictions()) {
+			if(p.getOutcome() == true) {
+				rightpredictions++;
+				Event ev = p.getQuestion().getEvent();
+				queue.add(new PartialSol(rightpredictions,ev,p.getOdds()));
+				predictions.add(p);
+			}
+		}
+		//Single bet case
+		if(bet.getType().equals(BetType.SINGLE)) {
+			if(bet.getPredictions().get(0).getOutcome() == true) {
+				winnings = predictions.get(0).getOdds()*bet.getStake(); 
+			}
+		}
+		//Normal combined bet case(DOUBLE,TREBLE,FOURFOLD...)
+		else if(bet.getType().getBetCount() == 1) {
+			if(predictions.size() >= bet.getType().predictionCount()) {
+				winnings = calculateCombinedWinnings(bet.getType().predictionCount(),bet.getStake(), predictions);	
+			}
+		}
+		else {
+			winnings = calculateFullCoverWinnings(bet.getType().predictionCount(),bet.getStake(), predictions);
+			/*
+			PartialSol p = queue.remove();
+			while(p.getList().size() < predictions.size()) {
+				List<Integer> list = p.getList();
+				for(i=(list.get(list.size()-1)+1); i<=rightpredictions;i++) {
+					Prediction pred = predictions.get(i-1);
+					Event ev = pred.getQuestion().getEvent();
+					
+					PartialSol nextParSol = new PartialSol(p, i,ev, predictions.get(i-1).getOdds());
+					//System.out.println("full cover "+nextpair.toString());
+					queue.add(nextParSol);
+					winnings += nextParSol.getOdds()*bet.getStake();
+				}
+				p = queue.remove();
+			}
+			*/
+		}
+		System.out.println("winnings: " + winnings);
+		return winnings;
+	}
+	
+	/**
+	 * Auxiliary class for calculateBetWinnings
+	 */
+	public class PartialSol{
+		private List<Integer> list;
+		private Set<Event> events;
+		private float odds;
+
+		public PartialSol( int i, Event ev, float odds) {
+			list = new ArrayList<Integer>();
+			events = new HashSet<Event>();
+			list.add(i);
+			events.add(ev);
+			this.odds = odds;
+		}
+
+		public PartialSol(PartialSol p, int i,Event ev, float odds) {
+			list = new ArrayList<Integer>(p.getList());
+			list.add(i);
+			events = new HashSet<Event>(p.getEvents());
+			events.add(ev);
+			this.odds = p.getOdds()*odds;
+		}
+
+		public List<Integer> getList(){
+			return list;
+		}
+
+		public Set<Event> getEvents(){
+			return events;
+		}
+		
+		public float getOdds() {
+			return odds;
+		}
+
+		public String toString() {
+			String s = "";
+			for(Integer i : list) {
+				s = s + String.valueOf(i);
+			}
+			return s;
+		}
+	}
+	
+	public float calculateCombinedWinnings(int size, float stake, List<Prediction> predictions) { 
+		int[] solution = new int[size];
+		float winnings = 0;
+		Set<Event> events = new HashSet<Event>();
+		return calculateCombinedWinningsWorker(1,0,solution,(float)1,winnings,stake,predictions,events);
+	}
+	
+	private float calculateCombinedWinningsWorker(int k,int pos, int[] solution, float odds, float winnings,float stake, List<Prediction> predictions, Set<Event> events) {
+		if(pos == solution.length) {
+			winnings += odds*stake;
+		}
+		else {
+			for(int i = k; i<=(predictions.size()-(solution.length-(pos+1)));i++) {
+				Prediction pred = predictions.get(i-1);
+				Event ev = pred.getQuestion().getEvent();
+				if(!events.contains(ev)) {
+					solution[pos]=i;
+					events.add(ev);
+					winnings = calculateCombinedWinningsWorker(i+1,pos+1,solution,odds*predictions.get(i-1).getOdds(),winnings,stake,predictions,events);
+					events.remove(ev);
+				}
+				
+			}	
+		}
+		return winnings;
+	}
+	
+	
+	public float calculateFullCoverWinnings(int size, float stake, List<Prediction> predictions) {
+		Map<Event,List<Prediction>> map = new HashMap<Event, List<Prediction>>();
+		for(Prediction p: predictions) {
+			Event ev = p.getQuestion().getEvent();
+			if(map.containsKey(ev)) {
+				map.get(ev).add(p);
+			}
+			else {
+				List<Prediction> list = new ArrayList<Prediction>();
+				list.add(p);
+				map.put(ev, list);
+			}
+		}
+		int[] arr = computeMultiBets(map);		
+		int[] solution = new int[size];
+		float winnings = 0;
+		Set<Event> events = new HashSet<Event>();
+		return calculateFullCoverWinningsWorker(1,0,arr[size-2],map,solution,(float)1,winnings,stake,predictions,events);
+	}
+	
+	private float calculateFullCoverWinningsWorker(int k,int pos, int size ,  Map map  , int[] solution, float odds, float winnings,float stake, List<Prediction> predictions, Set<Event> events) {
+		System.out.println("next:");
+		if(pos == solution.length) {
+			winnings += odds*stake;
+			
+			
+			System.out.println(pos);
+			String s = "";
+			for (int j = 0; j < pos; j++) {
+				s = s+solution[j];
+			}
+			for (int j = 0; j < pos; j++) {
+				System.out.println("ev" + j + ": "+  predictions.get(solution[j]-1).getQuestion().getEvent().getEventNumber());
+			}
+			System.out.println("sol: " + s + " sum: " + winnings + "odds: " + odds + "stake: " +stake);
+		}
+		else {
+			float test = 0;
+			if(pos>1) {	
+				boolean single = false;
+				for (int i = 0; i < pos; i++) {
+					if(((List<Prediction>)map.get(predictions.get(solution[i]-1).getQuestion().getEvent())).size() > 1) {
+						single = true;
+					}
+				}
+				
+				
+				System.out.println("single: " + single);
+				if(single) {
+					test += odds*stake;
+				}
+				else {
+					test += odds*stake*size;
+				}
+				System.out.println(pos);
+				String s = "";
+				for (int j = 0; j < pos; j++) {
+					s = s+solution[j];
+				}
+				for (int j = 0; j < pos; j++) {
+					System.out.println("ev" + j + ": "+  predictions.get(solution[j]-1).getQuestion().getEvent().getEventNumber());
+				}
+				System.out.println("sol: " + s + " sum: " + test);
+				
+				
+				winnings += test;
+			}
+			for(int i = k; i<=predictions.size();i++) {
+				Prediction pred = predictions.get(i-1);
+				Event ev = pred.getQuestion().getEvent();
+				
+				if(!events.contains(ev)) {
+					solution[pos]=i;
+					events.add(ev);	
+					winnings = calculateFullCoverWinningsWorker(i+1,pos+1, size , map ,solution,odds*predictions.get(i-1).getOdds(),winnings,stake,predictions,events);
+					events.remove(ev);
+				}	
+			}	
+		}
+		return winnings;
+	}
+	
+	/**
+	 * Calculates the number of possible combinations that can be made of each size
+	 * @param map	HashMap storing the predictions made for each event
+	 * @return		array of int, position i stores the number of combinations that can be made of size i+1
+	 */
+	public int[] computeMultiBets(Map<Event, List<Prediction>> map) {
+		int current = 1;
+		int i;
+		int combinationsum = 0;
+		int[] result = new int[map.size()];
+		List<Pair> comblist = new ArrayList<Pair>();
+		Object[] keyset = map.keySet().toArray();
+		for(i=1 ; i <= map.size(); i++) {
+			comblist.add(new Pair(i, map.get(keyset[i-1]).size()));
+		}
+		while(current <= map.size()) {
+			List<Pair> temp = new ArrayList<Pair>();
+			combinationsum=0;
+			for(Pair p: comblist) {	
+				int last = p.getList().get(p.getList().size()-1);
+				for(i=last+1; i<=map.size(); i++) {
+					Pair nextpair = new Pair(p,i,map.get(keyset[i-1]).size());
+					temp.add(nextpair);	
+					combinationsum += nextpair.getCombinations();
+				}	
+			}
+			comblist = new ArrayList<Pair>(temp);
+			result[current-1]=combinationsum;
+
+			current++;
+		}
+		return result;
+	}
+	
+	/**
+	 * Auxiliary class for computeMultiBets
+	 */
+	public class Pair{
+		private ArrayList<Integer> list;
+		private int combinations;
+
+		public Pair( int i, int size) {
+			list = new ArrayList<Integer>();
+			list.add(i);
+			combinations = size;
+		}
+
+		public Pair(Pair p, int i, int size) {
+			list = new ArrayList<Integer>(p.getList());
+			list.add(i);
+			combinations = p.getCombinations()*size;
+		}
+
+		public ArrayList<Integer> getList(){
+			return list;
+		}
+
+		public int getCombinations() {
+			return combinations;
+		}
+
+		public String toString() {
+			String s = "";
+			for(Integer i : list) {
+				s = s + String.valueOf(i);
+			}
+			return s;
+		}
+	}
+	
+	
+}
 
 

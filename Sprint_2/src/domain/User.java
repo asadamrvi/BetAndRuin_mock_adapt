@@ -1,12 +1,9 @@
 package domain;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 
-import javax.imageio.ImageIO;
+import javax.jdo.annotations.Index;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.swing.ImageIcon;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
@@ -28,7 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class User implements Comparable<User>{
+public class User{
 
 	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
@@ -55,7 +51,7 @@ public class User implements Comparable<User>{
 		this.isAdmin = isAdmin;
 		this.bets = new ArrayList<Bet>();
 		this.registrationdate = new Date();
-		this.cash = 50;  
+		this.cash = 9999;  
 	}
 
 	public String getID() {
@@ -135,7 +131,7 @@ public class User implements Comparable<User>{
 		return bets;
 	}
 	
-	public void remove_bet(Bet c) {
+	public void removeBet(Bet c) {
 		int j=0;
 		for (int i=0;i<bets.size();i++) {
 			if (bets.get(i).equals(c)) {
@@ -144,8 +140,6 @@ public class User implements Comparable<User>{
 			}
 		}
 		bets.remove(j);
-		
-
 	}
 	
 	public String statusToString() {
@@ -157,10 +151,4 @@ public class User implements Comparable<User>{
 		}
 	}
 
-	/**
-	 * Natural ordering is decided by the ID's
-	 */
-	public int compareTo(User u) {
-		return this.id.compareTo(u.id);
-	}
 }

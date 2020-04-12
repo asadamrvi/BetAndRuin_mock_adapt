@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.CascadeType;

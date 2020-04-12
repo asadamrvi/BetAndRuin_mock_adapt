@@ -53,6 +53,7 @@ public class LoginGUI extends JDialog {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("serial")
 	public LoginGUI() {
 
 		BLFacade facade = MainGUI.getBusinessLogic();
@@ -148,7 +149,7 @@ public class LoginGUI extends JDialog {
 					passErrorLabel.setText(i.getMessage());
 				}
 				catch (Exception e2) {
-					System.err.println("Error occurred trying to log in");
+					e2.printStackTrace();
 				}
 		    }
 		};

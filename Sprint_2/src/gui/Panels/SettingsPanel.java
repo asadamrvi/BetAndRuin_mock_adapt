@@ -6,11 +6,18 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Locale;
 import java.awt.Font;
 import javax.swing.JComboBox;
 
+@SuppressWarnings("serial")
 public class SettingsPanel extends JPanel {
 
+	private JComboBox<String> langComboBox;
+	private String[] languages = {"English", "Español", "Euskera"};
+	
 	/**
 	 * Create the panel.
 	 */
@@ -42,13 +49,29 @@ public class SettingsPanel extends JPanel {
 		gbc_lblLanguageDesc.gridy = 3;
 		add(lblLanguageDesc, gbc_lblLanguageDesc);
 		
-		JComboBox langComboBox = new JComboBox();
+		langComboBox = new JComboBox<String>(languages);
 		GridBagConstraints gbc_langComboBox = new GridBagConstraints();
 		gbc_langComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_langComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_langComboBox.gridx = 4;
 		gbc_langComboBox.gridy = 3;
 		add(langComboBox, gbc_langComboBox);
+		langComboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String language = (String)langComboBox.getSelectedItem();
+				if(language.equals("English")) {
+					Locale.setDefault(new Locale("en"));
+				}
+				else if (language.equals("Español")) {
+					Locale.setDefault(new Locale("es"));
+				}
+				else if (language.equals("Euskera")) {
+					Locale.setDefault(new Locale("eus"));
+				}
+			}
+		});
 		
 		JLabel lblColor = new JLabel("Color:");
 		lblColor.setFont(new Font("Source Code Pro Black", Font.BOLD, 13));
@@ -69,14 +92,15 @@ public class SettingsPanel extends JPanel {
 		gbc_lblColorDesc.gridy = 6;
 		add(lblColorDesc, gbc_lblColorDesc);
 		
-		JComboBox colorComboBox = new JComboBox();
+		JComboBox<String> colorComboBox = new JComboBox<String> ();
 		GridBagConstraints gbc_colorComboBox = new GridBagConstraints();
 		gbc_colorComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_colorComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_colorComboBox.gridx = 4;
 		gbc_colorComboBox.gridy = 6;
 		add(colorComboBox, gbc_colorComboBox);
-
+		
 	}
 
+	
 }

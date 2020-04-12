@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
 import businessLogic.BLFacade;
@@ -24,6 +23,7 @@ import domain.Profile;
 import gui.Panels.BrowsePanel;
 import gui.Panels.CreateQuestionPanel;
 import gui.Panels.FeedbackPanel;
+import gui.Panels.FeedbackResponsePanel;
 import gui.Panels.HomePanel;
 import gui.Panels.ProfilePanel;
 import gui.Panels.SettingsPanel;
@@ -32,8 +32,12 @@ import gui.components.Clock;
 import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -48,27 +52,27 @@ import javax.swing.border.BevelBorder;
 public class MainGUI extends JFrame {
 
 	boolean admin;
-	
+
 	private static BLFacade appFacadeInterface;
+
+	Timer timer;
 
 	public static BLFacade getBusinessLogic(){
 		return appFacadeInterface;
 	}
 
 	private static MainGUI mainInstance;
-	
+
 	public static MainGUI getInstance() {
 		return mainInstance;
 	}
-	
+
 	public static void setBussinessLogic (BLFacade afi){
 		appFacadeInterface=afi;
 	}
-	
-	private int selectedTab; //currently selected panel index
-	
+
 	private JLayeredPane layeredPane;
-	
+
 	//JPanel
 	private JPanel contentPane;
 	private JPanel currentPanel;
@@ -78,15 +82,15 @@ public class MainGUI extends JFrame {
 	private JPanel loggedPanel;
 	private JPanel topPanel;
 	private JPanel unloggedPanel;
-	
-	private HomePanel hmPanel;
+
+	//private HomePanel hmPanel;
 	//private BrowsePanel brwPanel;
 	//private userManagementPanel umPanel;
 	//private ProfilePanel pfPanel;
 	//private CreateQuestionPanel cqPanel;
 	//private SettingsPanel stgPanel;
 	//private FeedbackPanel fbPanel;
-	
+
 	//JButton
 	private JButton userManagementButton;
 	private JButton createQuestionButton;
@@ -100,10 +104,10 @@ public class MainGUI extends JFrame {
 	private JButton addcashButton;
 	private JButton menuButton;
 	private JButton feedbackButton;
-	
-	
+
+
 	private Map<JButton,JPanel> menubuttons;
-	
+
 	//JLabel
 	private JLabel IDTitleLabel;
 	private JLabel cashTitleLabel;
@@ -111,39 +115,24 @@ public class MainGUI extends JFrame {
 	private JLabel IDLabel;
 	private JLabel cashLabel;
 	private JLabel bottomImgLabel;
-		
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainGUI frame = new MainGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public MainGUI() {
+	public MainGUI(BLFacade blogic) {
 		setTitle("BET & RUIN");
-		
+
 		//will need to be removed for remote
-		appFacadeInterface=new BLFacadeImplementation();
 		mainInstance = this;
-		
+		setBussinessLogic(blogic);
 		admin = false;
+
 		menubuttons = new HashMap<JButton,JPanel>();
-		
+
+		setMinimumSize(new Dimension(1200,813));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 940, 684);
-		//setMinimumSize(new Dimension(1260, 800));
+
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(null);
@@ -154,7 +143,7 @@ public class MainGUI extends JFrame {
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
-		
+
 		topPanel = new JPanel();
 		topPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		topPanel.setBackground(new Color(0, 0, 0));
@@ -170,7 +159,26 @@ public class MainGUI extends JFrame {
 		gbl_topPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_topPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		topPanel.setLayout(gbl_topPanel);
-		
+
+		layeredPane = new JLayeredPane();
+		GridBagConstraints gbc_layeredPane = new GridBagConstraints();
+		gbc_layeredPane.fill = GridBagConstraints.BOTH;
+		gbc_layeredPane.gridx = 3;
+		gbc_layeredPane.gridy = 0;
+		topPanel.add(layeredPane, gbc_layeredPane);
+
+		loggedPanel = new JPanel();
+		loggedPanel.setBackground(new Color(0, 0, 0));
+		loggedPanel.setBounds(10, 0, 305, 71);
+		layeredPane.add(loggedPanel);
+		loggedPanel.setLayout(null);
+
+		miniprofilePanel = new JPanel();
+		miniprofilePanel.setLayout(null);
+		miniprofilePanel.setBackground(Color.WHITE);
+		miniprofilePanel.setBounds(4, 5, 234, 60);
+		loggedPanel.add(miniprofilePanel);
+
 		JPanel timerPanel = new Clock();
 		timerPanel.setBackground(new Color(0, 0, 0));
 		GridBagConstraints gbc_timerPanel = new GridBagConstraints();
@@ -178,38 +186,19 @@ public class MainGUI extends JFrame {
 		gbc_timerPanel.gridx = 0;
 		gbc_timerPanel.gridy = 0;
 		topPanel.add(timerPanel, gbc_timerPanel);
-		
-		layeredPane = new JLayeredPane();
-		GridBagConstraints gbc_layeredPane = new GridBagConstraints();
-		gbc_layeredPane.fill = GridBagConstraints.BOTH;
-		gbc_layeredPane.gridx = 3;
-		gbc_layeredPane.gridy = 0;
-		topPanel.add(layeredPane, gbc_layeredPane);
-		
-		loggedPanel = new JPanel();
-		loggedPanel.setBackground(new Color(0, 0, 0));
-		loggedPanel.setBounds(10, 0, 305, 71);
-		layeredPane.add(loggedPanel);
-		loggedPanel.setLayout(null);
-		
-		miniprofilePanel = new JPanel();
-		miniprofilePanel.setLayout(null);
-		miniprofilePanel.setBackground(Color.WHITE);
-		miniprofilePanel.setBounds(4, 5, 234, 60);
-		loggedPanel.add(miniprofilePanel);
-		
+
 		IDTitleLabel = new JLabel("ID:");
 		IDTitleLabel.setBackground(new Color(255, 255, 255));
 		IDTitleLabel.setForeground(Color.BLACK);
 		IDTitleLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD | Font.ITALIC, 13));
 		IDTitleLabel.setBounds(77, 9, 45, 17);
 		miniprofilePanel.add(IDTitleLabel);
-		
+
 		cashTitleLabel = new JLabel("Cash:\r\n");
 		cashTitleLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD | Font.ITALIC, 13));
 		cashTitleLabel.setBounds(77, 34, 45, 17);
 		miniprofilePanel.add(cashTitleLabel);
-		
+
 		addcashButton = new JButton("");
 		addcashButton.setBorderPainted(false);
 		addcashButton.setFocusPainted(false);
@@ -243,15 +232,15 @@ public class MainGUI extends JFrame {
 				}	
 			}
 		});
-		
+
 		IDLabel = new JLabel("");
 		IDLabel.setBounds(126, 8, 70, 18);
 		miniprofilePanel.add(IDLabel);
-		
+
 		cashLabel = new JLabel("");
 		cashLabel.setBounds(127, 34, 70, 17);
 		miniprofilePanel.add(cashLabel);
-		
+
 		profilepicLabel = new JLabel("\r\n");
 		profilepicLabel.setBounds(9, 5, 64, 50);
 		miniprofilePanel.add(profilepicLabel);
@@ -259,7 +248,7 @@ public class MainGUI extends JFrame {
 		profilepicLabel.setBackground(Color.WHITE);
 		profilepicLabel.setVerticalAlignment(SwingConstants.TOP);
 		profilepicLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		logoutButton = new JButton("");
 		logoutButton.setToolTipText("Log out");
 		logoutButton.setBorderPainted(false);
@@ -275,14 +264,14 @@ public class MainGUI extends JFrame {
 				admin=false;
 				visitorView();
 			}
-		});
-		
+		});		
+
 		unloggedPanel = new JPanel();
 		unloggedPanel.setBackground(new Color(0, 0, 0));
 		unloggedPanel.setBounds(10, 0, 305, 71);
 		layeredPane.add(unloggedPanel);
 		unloggedPanel.setLayout(null);
-		
+
 		loginButton = new JButton("Login");
 		loginButton.setBorderPainted(false);
 		loginButton.setFocusPainted(false);
@@ -299,7 +288,7 @@ public class MainGUI extends JFrame {
 				d.setVisible(true);		
 			}
 		});
-		
+
 		registerButton = new JButton("Register");
 		registerButton.setForeground(new Color(255, 255, 255));
 		registerButton.setBackground(new Color(0, 0, 0));
@@ -317,7 +306,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		loggedPanel.setEnabled(false);
-		
+
 		menuPanel = new JPanel();
 		GridBagConstraints gbc_menuPanel = new GridBagConstraints();
 		gbc_menuPanel.fill = GridBagConstraints.BOTH;
@@ -327,12 +316,12 @@ public class MainGUI extends JFrame {
 		menuPanel.setBackground(new Color(51, 51, 51));
 		menuPanel.setBorder(null);
 		GridBagLayout gbl_menuPanel = new GridBagLayout();
-		gbl_menuPanel.columnWidths = new int[] {40, 141};
+		gbl_menuPanel.columnWidths = new int[] {40, 148};
 		gbl_menuPanel.rowHeights = new int[]{40, 41, 41, 41, 41, 41, 41, 0, 40, 166, 20, 0};
 		gbl_menuPanel.columnWeights = new double[]{0.0, 0.0};
 		gbl_menuPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		menuPanel.setLayout(gbl_menuPanel);
-		
+
 		currentPanel = new JPanel();
 		GridBagConstraints gbc_currentPanel = new GridBagConstraints();
 		gbc_currentPanel.fill = GridBagConstraints.BOTH;
@@ -342,7 +331,7 @@ public class MainGUI extends JFrame {
 		contentPane.add(currentPanel, gbc_currentPanel);
 		currentPanel.setBackground(Color.WHITE);
 		currentPanel.setLayout(new CardLayout(0, 0));
-		
+
 		menuButton = new MenuButton("Dashboard", new ImageIcon("images/menu.png"));
 		GridBagConstraints gbc_menuButton = new GridBagConstraints();
 		gbc_menuButton.insets = new Insets(0, 0, 0, 0);
@@ -351,7 +340,7 @@ public class MainGUI extends JFrame {
 		gbc_menuButton.gridx = 0;
 		gbc_menuButton.gridy = 0;
 		menuPanel.add(menuButton, gbc_menuButton);
-		
+
 		homeButton = new MenuButton("Home", new ImageIcon("images/home1.png"));
 		GridBagConstraints gbc_homeButton = new GridBagConstraints();
 		gbc_homeButton.insets = new Insets(0, 0, 0, 0);
@@ -371,8 +360,7 @@ public class MainGUI extends JFrame {
 		gbc_browseButton.gridy = 2;
 		menuPanel.add(browseButton, gbc_browseButton);
 		browseButton.addActionListener(menuAction);
-		
-		
+
 		settingsButton = new MenuButton("Settings", new ImageIcon("images/settings.png"));
 		GridBagConstraints gbc_settingsButton = new GridBagConstraints();
 		gbc_settingsButton.insets = new Insets(0, 0, 0, 0);
@@ -382,7 +370,7 @@ public class MainGUI extends JFrame {
 		gbc_settingsButton.gridy = 3;
 		menuPanel.add(settingsButton, gbc_settingsButton);
 		settingsButton.addActionListener(menuAction);
-		
+
 		homeButton.setEnabled(true);
 		homeButton.setVisible(true);
 		browseButton.setEnabled(true);
@@ -390,7 +378,7 @@ public class MainGUI extends JFrame {
 		settingsButton.setVisible(true);
 		settingsButton.setVisible(true);
 		loggedPanel.setVisible(false);
-		
+
 		feedbackButton = new MenuButton("Feedback", new ImageIcon("images/feedback1.png"));
 		GridBagConstraints gbc_feedbackButton = new GridBagConstraints();
 		gbc_feedbackButton.insets = new Insets(0, 0, 0, 0);
@@ -400,7 +388,7 @@ public class MainGUI extends JFrame {
 		gbc_feedbackButton.gridy = 4;
 		menuPanel.add(feedbackButton, gbc_feedbackButton);		
 		feedbackButton.addActionListener(menuAction);
-		
+
 		profileButton = new MenuButton("Profile\r\n", new ImageIcon("images/profileicon.png"));
 		profileButton.setBackground(new Color(51, 51, 51));
 		GridBagConstraints gbc_profileButton = new GridBagConstraints();
@@ -411,7 +399,7 @@ public class MainGUI extends JFrame {
 		gbc_profileButton.gridy = 5;
 		menuPanel.add(profileButton, gbc_profileButton);
 		profileButton.addActionListener(menuAction);
-			
+
 		createQuestionButton = new MenuButton("<html><left>  Create<br>  question</left></html>", new ImageIcon("images/create_question.png"));	
 		GridBagConstraints gbc_createQuestionButton = new GridBagConstraints();
 		gbc_createQuestionButton.insets = new Insets(0, 0, 0, 0);
@@ -421,7 +409,7 @@ public class MainGUI extends JFrame {
 		gbc_createQuestionButton.gridy = 6;
 		menuPanel.add(createQuestionButton, gbc_createQuestionButton);
 		createQuestionButton.addActionListener(menuAction);
-			
+
 		userManagementButton = new MenuButton("<html><left>  User<br>  management</left></html>", new ImageIcon("images/user_management.png"));
 		GridBagConstraints gbc_userManagementButton = new GridBagConstraints();
 		gbc_userManagementButton.insets = new Insets(0, 0, 0, 0);
@@ -430,24 +418,30 @@ public class MainGUI extends JFrame {
 		gbc_userManagementButton.gridx = 0;
 		gbc_userManagementButton.gridy = 7;
 		menuPanel.add(userManagementButton, gbc_userManagementButton);
-		userManagementButton.addActionListener(menuAction);
-		
-		//set up menu button list(Order is important, starts from the top button in the menu vertically)
-		menubuttons.put(menuButton,null);
-		resetPanels();
-		
+		userManagementButton.addActionListener(menuAction);		
+
+		//menubuttons.put(homeButton,new HomePanel());
+		resetPanels();		
+
 		bottomImgLabel = new JLabel(randomSilouette());
 		bottomImgLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_bottomImgLabel = new GridBagConstraints();
-		gbc_bottomImgLabel.gridwidth = 3;
+		gbc_bottomImgLabel.gridwidth = 2;
 		gbc_bottomImgLabel.gridx = 0;
 		gbc_bottomImgLabel.gridy = 9;
 		menuPanel.add(bottomImgLabel, gbc_bottomImgLabel);
-		
+
 		//initialise on visitor view
 		visitorView();
 	}
-	
+
+	/*
+	 * 
+	 */
+	public void refreshCash() {
+		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
+	}
+
 	/**
 	 * Displays the elements on screen that a regular user should be able to see/interact with.
 	 */
@@ -459,18 +453,24 @@ public class MainGUI extends JFrame {
 		createQuestionButton.setEnabled(false);
 		createQuestionButton.setVisible(false);
 
-		
+
 		unloggedPanel.setEnabled(false);
 		unloggedPanel.setVisible(false);
 		loggedPanel.setEnabled(true);
 		loggedPanel.setVisible(true);
-		
+
+		menubuttons.put(feedbackButton, new FeedbackPanel());
 		Profile p = appFacadeInterface.getProfile();
 		IDLabel.setText(p.getID());
 		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
 		profilepicLabel.setIcon(new ImageIcon(p.getProfilepic()));
+
+		currentPanel.removeAll();
+		currentPanel.add(menubuttons.get(homeButton));	
+		select(homeButton);
+		currentPanel.updateUI();
 	}
-	
+
 	/**
 	 * Displays the elements on screen that an admin should be able to see/interact with.
 	 */
@@ -481,18 +481,25 @@ public class MainGUI extends JFrame {
 		userManagementButton.setVisible(true);
 		createQuestionButton.setEnabled(true);
 		createQuestionButton.setVisible(true);
-		
+
 		unloggedPanel.setEnabled(false);
 		unloggedPanel.setVisible(false);
 		loggedPanel.setEnabled(true);
 		loggedPanel.setVisible(true);
-		
+
+		menubuttons.put(feedbackButton, new FeedbackResponsePanel());
 		Profile p = appFacadeInterface.getProfile();
 		IDLabel.setText(p.getID());
 		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
 		profilepicLabel.setIcon(new ImageIcon(p.getProfilepic()));
+
+		currentPanel.removeAll();
+		currentPanel.add(menubuttons.get(homeButton));	
+		select(homeButton);
+
+		currentPanel.updateUI();
 	}
-	
+
 	/**
 	 * Displays the elements on screen that a logged out visitor should be able to see/interact with.
 	 */
@@ -503,18 +510,19 @@ public class MainGUI extends JFrame {
 		userManagementButton.setVisible(false);
 		createQuestionButton.setEnabled(false);
 		createQuestionButton.setVisible(false);
-		
+
 		loggedPanel.setEnabled(false);
 		loggedPanel.setVisible(false);
 		unloggedPanel.setEnabled(true);
 		unloggedPanel.setVisible(true);
-		
+
+		menubuttons.put(feedbackButton, new FeedbackPanel());
 		currentPanel.removeAll();
 		currentPanel.add(menubuttons.get(homeButton));	
 		select(homeButton);
 		currentPanel.updateUI();
 	}
-	
+
 	public void select(JButton button) {
 		for(JButton jb : menubuttons.keySet()) {
 			jb.setBackground(new Color(51,51,51));
@@ -523,8 +531,8 @@ public class MainGUI extends JFrame {
 		button.setSelected(true);
 		button.setBackground(new Color(105, 105, 105));
 	}
-	
-	
+
+
 	public ImageIcon randomSilouette() {
 		ArrayList<String> imagelist = new ArrayList<String>();
 		imagelist.add("images/football.png");
@@ -532,28 +540,40 @@ public class MainGUI extends JFrame {
 		imagelist.add("images/tennis.png");
 		imagelist.add("images/golf.png");
 		//imagelist.add("images/boxing.png");
-		
+
 		Random r = new Random();
-		
+
 		int rnd = r.nextInt(imagelist.size());
 		return (new ImageIcon(imagelist.get(rnd)));
 	}
-	
-	 
-	
+
+
+
 	Action menuAction = new  AbstractAction() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			menubuttons.put(profileButton,new ProfilePanel());
-
+			if(e.getSource().equals(browseButton) ) {
+				menubuttons.put(browseButton, new BrowsePanel());
+			}
+			
 			Object panel = menubuttons.get(e.getSource());
-			currentPanel.removeAll();
-			currentPanel.add((JPanel)panel);
+			if(panel instanceof ProfilePanel) {
+				currentPanel.removeAll();
+				ProfilePanel p = new ProfilePanel();
+				menubuttons.put((JButton)e.getSource(),(JPanel)p);
+				currentPanel.add(p);
+			}
+			else {
+				currentPanel.removeAll();
+				currentPanel.add((JPanel)panel);
+			}
+
+
 			currentPanel.updateUI();
 			select((JButton)e.getSource());		
 		}
 	};
-	
+
 	public void resetPanels() {
 		menubuttons.put(homeButton,new HomePanel());
 		menubuttons.put(browseButton, new BrowsePanel());
@@ -563,44 +583,83 @@ public class MainGUI extends JFrame {
 		menubuttons.put(createQuestionButton,new CreateQuestionPanel());
 		menubuttons.put(userManagementButton,new userManagementPanel());
 	}
-	
 
-/**
- * Predefined JButton class for the buttons that go in the left menu
- */
-public class MenuButton extends JButton{
-	
-	private static final long serialVersionUID = 1L;
-
-	public MenuButton(String text, ImageIcon icon) {
-		this.setText(text);
-		setHorizontalAlignment(SwingConstants.LEFT);
-		setFont(new Font("Source Code Pro Medium", Font.BOLD, 16));
-		setFocusPainted(false);
-		setBorderPainted(false);
-		setIcon(icon);
-		setForeground(new Color(255, 255, 255));
-		setBackground(new Color(51, 51, 51));
+	public Timer getTimer() {
+		if(timer == null) {
+			timer = new Timer(1000, null);
+			timer.setInitialDelay(0);
+			timer.start();
+		}
+		return timer;
 	}
 	
-	@Override
-	 protected void paintComponent(Graphics g) {
-		
-		if (getModel().isPressed()) {
-			setBackground(new Color(105, 105, 105));
-       } else if (getModel().isRollover()) {
-    	   setBackground(new Color(128,128,128));
-       } else if (isSelected()) {
-			setBackground(new Color(105, 105, 105));
-       }   
-       else {
-    	   setBackground(new Color(51, 51, 51));
-       }
-       super.paintComponent(g);
-	 }
-	
-	
-}
+	public void configureTimer() {
+		//configure timer user application wide
+		if(timer == null) {
+			timer = new Timer(1000, null);
+			timer.setInitialDelay(0);
+			timer.start();
+		}
+		timer.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				if(calendar.get(Calendar.SECOND) == 0) {
+					((HomePanel)menubuttons.get(homeButton)).refreshPage();
+				}			
+			}
+		});
 
-	
-}	
+		timer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				if(calendar.get(Calendar.SECOND) == 0) {
+					appFacadeInterface.resolveQuestions();
+					appFacadeInterface.resolveBets();
+					if(appFacadeInterface.isLoggedIn()) {
+						refreshCash();
+					}
+				}	
+			}
+		});
+	}
+	/**
+	 * Predefined JButton class for the buttons that go in the left menu
+	 */
+	public class MenuButton extends JButton{
+
+		private static final long serialVersionUID = 1L;
+
+		public MenuButton(String text, ImageIcon icon) {
+			this.setText(text);
+			setHorizontalAlignment(SwingConstants.LEFT);
+			setFont(new Font("Source Code Pro Medium", Font.BOLD, 16));
+			setFocusPainted(false);
+			setBorderPainted(false);
+			setIcon(icon);
+			setForeground(new Color(255, 255, 255));
+			setBackground(new Color(51, 51, 51));
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+
+			if (getModel().isPressed()) {
+				setBackground(new Color(105, 105, 105));
+			} else if (getModel().isRollover()) {
+				setBackground(new Color(128,128,128));
+			} else if (isSelected()) {
+				setBackground(new Color(105, 105, 105));
+			}   
+			else {
+				setBackground(new Color(51, 51, 51));
+			}
+			super.paintComponent(g);
+		}
+
+
+	}
+}

@@ -5,9 +5,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-//import domain.Booking;
 import domain.Question;
 import domain.Sport;
 import domain.User;
@@ -17,6 +14,7 @@ import domain.Bet;
 import domain.BetType;
 import domain.Competition;
 import domain.Event;
+import domain.Feedback;
 import domain.Country;
 import domain.Profile;
 import exceptions.EventFinished;
@@ -29,6 +27,7 @@ import exceptions.invalidPW;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.swing.Timer;
 
 /**
  * Interface that specifies the business logic.
@@ -36,7 +35,7 @@ import javax.jws.WebService;
 @WebService
 public interface BLFacade  {
 	
-
+	
 	/**
 	 * This method creates a question for an event, with a question text and the minimum bet
 	 * 
@@ -65,6 +64,25 @@ public interface BLFacade  {
 	 * @return collection of events
 	 */
 	@WebMethod public Vector<Event> getEvents(Date date, Sport sport);
+	
+	
+	/**
+	 * This method invokes the data access to retrieve events scheduled for dates between the
+	 * two input dates.
+	 * 
+	 * @param date1  lower bound date
+	 * @param date2  upper bound date
+	 * @return  collection of events
+	 */
+	public Vector<Event> getEventsBetweenDates(Date date1,Date date2);
+	
+	/**
+	 * This method invokes the data access manager to retrieve the events that are currently live, that is, that the current time
+	 * is between the starting and ending date of said events.
+	 * 
+	 * @return collection of events
+	 */
+	@WebMethod public Vector<Event> getLiveEvents();
 	
 	/**
 	 * This method retrieves from the database the dates a month for which there are events
@@ -147,7 +165,7 @@ public interface BLFacade  {
 	 * @param q
 	 * @param amount
 	 */
-	@WebMethod public void placeBets(float stake, BetType type, List<Prediction> predictions) throws InsufficientCash;
+	@WebMethod public void placeBets(float stake, float totalprice, BetType type, List<Prediction> predictions) throws InsufficientCash;
 	
 	/**
 	 * This method calls the data access to initialize the database with some events and questions.
@@ -250,9 +268,52 @@ public interface BLFacade  {
 	 */
 	public void updatebets (User bettor, Bet bet, float amount);
 	
+	
+	/**
+	 * This method invokes the data access manager to retrieve the feedback stored in the database.
+	 * @return	Feedback that has been sent and stored previously.
+	 */
+	public Vector<Feedback> getFeedback();
+	
+	/**
+	 * This method returns the User object that holds information about the user logged in currently.
+	 * @return 	User object.
+	 */
 	public User getLoggeduser();
 	
-	public Profile refreshProfile();
+	/**
+	 * This method resolves the outcomes of the questions the event of finished at the given date. The outcomes of the possible 
+	 * predictions a question has are decided by a generated random number. The odds affect the likelihood of the number to be in the
+	 * range of said outcome.
+	 * 
+	 * @param date
+	 */
+	public void resolveQuestions();
+	
+	/**
+	 * This method invokes the data access to retrieve the bets scheduled to be resolved in the exact date that the method is called,
+	 * computes the winnings earner on each bet and updates the bettor's cash according to them.
+	 */
+	public void resolveBets();
 
+	/**
+	 * This method calculates the winnings for a combined bet
+	 * 
+	 * @param size			Combined bet size(Double: 2, Treble:3 ...)
+	 * @param stake			Amount placed on the bet(float)
+	 * @param predictions   Collection of predictions made when placing the bet(List<Prediction>)
+	 * @return				winnings earned from the bet(float)
+	 */
+	public float calculateCombinedWinnings(int size, float stake, List<Prediction> predictions);
+	
+	/**
+	 * This method calculates the winnings for a full cover bet
+	 * 
+	 * @param size			Combined bet size(Double: 2, Treble:3 ...)
+	 * @param stake			Amount placed on the bet(float)
+	 * @param predictions   Collection of predictions made when placing the bet(List<Prediction>)
+	 * @return				winnings earned from the bet(float)
+	 */
+	public float calculateFullCoverWinnings(int size, float stake, List<Prediction> predictions);
 	
 }

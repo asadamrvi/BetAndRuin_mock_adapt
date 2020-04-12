@@ -10,10 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/**
- * Association class between the classes user and question. Represents the prediction a user made on the outcome of a question of an event.
- *
- */
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class Prediction implements Serializable{
@@ -44,7 +41,7 @@ public class Prediction implements Serializable{
 	public Integer getPredictionNumber() {
 		return predictionNumber;
 	}
-	
+	 
 	public void setPredictionNumber(Integer predictionNumber) {
 		this.predictionNumber = predictionNumber;
 	}

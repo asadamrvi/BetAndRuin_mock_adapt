@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
  * Buttons of the left panel on the browse tab designating the country
  *
  */
+@SuppressWarnings("serial")
 public class CountryButton extends JButton{
 
 	public CountryButton(String country, JPanel panel) {

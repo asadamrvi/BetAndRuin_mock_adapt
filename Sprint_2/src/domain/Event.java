@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Vector;
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,8 +12,7 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import exceptions.QuestionAlreadyExist;
-
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 public class Event implements Serializable {
@@ -26,13 +22,10 @@ public class Event implements Serializable {
 	@Id @GeneratedValue
 	private Integer eventNumber;
 	private String description; 
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date eventdate;
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endingdate;
-	public Date getEventdate() {
-		return eventdate;
-	}
-
-
 	private Sport sport;
 	
 	@XmlIDREF
@@ -100,6 +93,9 @@ public class Event implements Serializable {
 		this.competition = competition;
 	}
 	
+	public Date getEventdate() {
+		return eventdate;
+	}
 
 	public void setEventdate(Date eventdate) {
 		this.eventdate = eventdate;

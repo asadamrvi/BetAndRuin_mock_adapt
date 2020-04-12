@@ -3,7 +3,6 @@ package gui.Panels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +10,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,8 +21,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Vector;
-
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -37,9 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
 import com.toedter.calendar.JCalendar;
-
 import businessLogic.BLFacade;
 import configuration.UtilDate;
 import domain.Competition;
@@ -50,12 +43,9 @@ import domain.Sport;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
 import gui.MainGUI;
-import gui.Panels.BrowsePanel.CompetitionChangeEvent;
 import gui.components.ButtonColumn;
 import gui.components.HintTextField;
-
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
@@ -68,6 +58,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import gui.components.CompetitionPanel;
 
+@SuppressWarnings("serial")
 public class CreateQuestionPanel extends JPanel {
 
 	//private Image backgroundImage;
@@ -229,7 +220,6 @@ public class CreateQuestionPanel extends JPanel {
 		this.jCalendar.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent propertychangeevent) {
 				SimpleDateFormat df = new SimpleDateFormat("dd/MM");
-				Sport sport = (Sport)sportComboBox.getSelectedItem();
 				if (propertychangeevent.getPropertyName().equals("locale")) {
 					jCalendar.setLocale((Locale) propertychangeevent.getNewValue());
 				} else if (propertychangeevent.getPropertyName().equals("calendar")) {
@@ -295,6 +285,7 @@ public class CreateQuestionPanel extends JPanel {
 		answerTable.getColumnModel().getColumn(3).setMaxWidth(50);
 		answerTable.getTableHeader().setFont(new Font("Source sans Pro", Font.BOLD, 16));
 		answerTable.setFont(new Font("Source sans Pro", Font.BOLD, 14));
+		@SuppressWarnings("unused")
 		ButtonColumn deleteButtonColumn = new ButtonColumn(answerTable, delete, 3, new Color(255,0,51));
 
 		sportComboBox.setModel(new DefaultComboBoxModel<Sport>(Sport.values()));
@@ -309,8 +300,6 @@ public class CreateQuestionPanel extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				Sport selectedsport = (Sport)sportComboBox.getSelectedItem();
-				Date firstDay = UtilDate.trim(new Date(jCalendar.getCalendar().getTime().getTime()));
-
 
 				competitionScrollPane.remove(competitionPanel);
 				Vector<Competition> competitions = facade.getCompetitions(selectedsport);
@@ -382,7 +371,6 @@ public class CreateQuestionPanel extends JPanel {
 		jHintFieldQuery.setBounds(new Rectangle(100, 211, 75, 33));
 		jHintFieldQuery.setFont(new Font("Tahoma",Font.ITALIC,14));
 
-		GridBagConstraints gbc_scrollPane;
 		gbc_competitionScrollPane = new GridBagConstraints();
 		gbc_competitionScrollPane.gridheight = 11;
 		gbc_competitionScrollPane.gridwidth = 4;

@@ -10,9 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,15 +23,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Color;
 import javax.swing.JRadioButton;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
@@ -564,8 +558,8 @@ public class RegisterGUI extends JDialog {
 		comboBoxDay.setModel(new DefaultComboBoxModel<String>(days));
 		comboBoxMonth.setModel(new DefaultComboBoxModel<String>(months));
 		comboBoxYear.setModel(new DefaultComboBoxModel<String>(years));
+		
 		termsErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
 		termsErrorLabel.setForeground(Color.RED);
 		GridBagConstraints gbc_termsErrorLabel = new GridBagConstraints();
 		gbc_termsErrorLabel.insets = new Insets(0, 0, 5, 0);
@@ -703,11 +697,12 @@ public class RegisterGUI extends JDialog {
 	}
 
 	/**
-	 * Checks if the a date is valid both format and wheter they are possible dates(Ex. Feb 30 would be an impossible date)
+	 * Checks if the a date is valid both format and whether they are possible dates(Ex. Feb 30 would be an impossible date)
 	 * 
 	 * @param date		the date to check.
 	 * @return			boolean indicating if the date is valid.
 	 */
+	/*
 	private boolean isDateValid(String date) {
 		try {
 			String d_format = "dd-MM-yyyy";
@@ -720,7 +715,8 @@ public class RegisterGUI extends JDialog {
 			return false;
 		}	
 	}
-
+	*/
+	
 	/**
 	 * Checks if an email has the correct format.
 	 * @param email			email String to check.
@@ -743,6 +739,7 @@ public class RegisterGUI extends JDialog {
 		return pnumber.matches("^[+][0-9]{7,10}");
 	}
 
+	/*
 	private ImageIcon resizeImage(String path) {
 		BufferedImage i = null;
 		try {
@@ -756,7 +753,7 @@ public class RegisterGUI extends JDialog {
 		return new ImageIcon(i);
 
 	}
-	
+	*/
 		
 
 

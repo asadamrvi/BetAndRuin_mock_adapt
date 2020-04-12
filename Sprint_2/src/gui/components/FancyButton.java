@@ -9,6 +9,7 @@ import javax.swing.JButton;
 /**
  * Buttons that change color dinamically when user presses, hovers or selects them.
  */
+@SuppressWarnings("serial")
 public class FancyButton extends JButton{
 	
 	private Color background ;

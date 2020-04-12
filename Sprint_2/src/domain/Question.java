@@ -1,13 +1,8 @@
 package domain;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -30,6 +25,7 @@ public class Question implements Serializable {
 	@OneToMany(cascade = CascadeType.PERSIST ,fetch = FetchType.EAGER)
 	private List<Prediction> predictions;
 	@XmlIDREF
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Event event;
 	
 	
@@ -182,7 +178,21 @@ public class Question implements Serializable {
 		return this.predictions;
 	}
 
-	
+	/**
+	 * Finds and retrieves the prediction corresponding to the input answer
+	 * @param ans  answer to search for
+	 * @return	   Prediction object if matches answer, null else;
+	 */
+	public Prediction getPredictionByAnswer(String ans) {
+		Prediction prediction = null;
+		for(Prediction p : predictions) {
+			if(p.getAnswer().equals(ans)) {
+				prediction = p;
+				break;
+			}
+		}
+		return prediction;
+	}
 	/**
 	 * Set the answers associated to the question
 	 * 
