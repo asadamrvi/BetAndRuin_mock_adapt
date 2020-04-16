@@ -57,12 +57,11 @@ public class JNumericField extends JTextField {
 
 	public void setEnabled(boolean enable) {
 		super.setEnabled(enable);
-
 		if (enable) {
 			setBackground(Color.white);
 			setForeground(Color.black);
 		} else {
-			setBackground(Color.lightGray);
+			setBackground(new Color(220,220,220));
 			setForeground(Color.darkGray);
 		}
 	}

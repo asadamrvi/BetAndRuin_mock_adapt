@@ -95,6 +95,8 @@ public class RegisterGUI extends JDialog {
 	private final passVisibleLabel passVisibleToggle = new passVisibleLabel(passwordField);
 	private final passVisibleLabel passConfirmVisibleToggle = new passVisibleLabel(passwordConfirmField);
 	private final cancelLabel cancelLabel_ = new cancelLabel(this);
+	private final HintTextField IDCardTextField = new HintTextField("Enter ID card number");
+	private final JLabel IDCardLabel = new JLabel("Identity Card number:");
 
 
 
@@ -115,7 +117,7 @@ public class RegisterGUI extends JDialog {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{40, 50, 30, 0, 0, 80, 30, 15, 40, 40, 10, 75, 5, 70, 5, 40, 0};
 		gridBagLayout.rowHeights = new int[]{20, 15, 20, 12, 25, 30, 0, 0, 30, 0, 0, 30, 0, 0, 30, 0, 0, 30, 20, 25, 30, 0, 25, 0, 28, 23, 25, 30, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 
@@ -145,6 +147,16 @@ public class RegisterGUI extends JDialog {
 		lblUsername.setForeground(Color.WHITE);
 		lblUsername.setFont(new Font("Source Code Pro Light", Font.BOLD, 15));
 		getContentPane().add(lblUsername, gbc_lblUsername);
+		
+		GridBagConstraints gbc_IDCardLabel = new GridBagConstraints();
+		gbc_IDCardLabel.anchor = GridBagConstraints.WEST;
+		gbc_IDCardLabel.gridwidth = 7;
+		gbc_IDCardLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_IDCardLabel.gridx = 8;
+		gbc_IDCardLabel.gridy = 3;
+		IDCardLabel.setForeground(Color.WHITE);
+		IDCardLabel.setFont(new Font("Source Code Pro Light", Font.BOLD, 15));
+		getContentPane().add(IDCardLabel, gbc_IDCardLabel);
 
 		usernameTextField.setColumns(10);
 		GridBagConstraints gbc_usernameTextField = new GridBagConstraints();
@@ -154,6 +166,14 @@ public class RegisterGUI extends JDialog {
 		gbc_usernameTextField.gridx = 1;
 		gbc_usernameTextField.gridy = 4;
 		getContentPane().add(usernameTextField, gbc_usernameTextField);
+		
+		GridBagConstraints gbc_IDCardTextField = new GridBagConstraints();
+		gbc_IDCardTextField.gridwidth = 4;
+		gbc_IDCardTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_IDCardTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_IDCardTextField.gridx = 8;
+		gbc_IDCardTextField.gridy = 4;
+		getContentPane().add(IDCardTextField, gbc_IDCardTextField);
 
 		usernameErrorLabel.setForeground(new Color(255, 51, 51));
 		GridBagConstraints gbc_usernameErrorLabel = new GridBagConstraints();
@@ -562,7 +582,7 @@ public class RegisterGUI extends JDialog {
 		termsErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		termsErrorLabel.setForeground(Color.RED);
 		GridBagConstraints gbc_termsErrorLabel = new GridBagConstraints();
-		gbc_termsErrorLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_termsErrorLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_termsErrorLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_termsErrorLabel.anchor = GridBagConstraints.NORTH;
 		gbc_termsErrorLabel.gridwidth = 9;
@@ -628,6 +648,7 @@ public class RegisterGUI extends JDialog {
 					String username = usernameTextField.getText();
 					String pass = new String(passwordField.getPassword());
 					String passconfirm = new String(passwordConfirmField.getPassword());
+					String ID = IDCardTextField.getText();
 					String name = nameTextField.getText();
 					String surname = surnameTextField.getText();
 					String email = emailTextField.getText();
@@ -678,7 +699,7 @@ public class RegisterGUI extends JDialog {
 							Date bdate = f.parse(date);
 
 							System.out.println(username + " " + pass + " " + passconfirm + " " + name + " " + surname + " " + email);
-							facade.registerUser(username, pass, name, surname, email, address,phone, nat ,city,bdate, "images/profilepic/smiley.png",rights);
+							facade.registerUser(username,ID, pass, name, surname, email, address,phone, nat ,city,bdate, "images/profilepic/smiley.png",rights);
 							JOptionPane.showMessageDialog(null, "Registration sucessfull");
 							dispose();
 						}
@@ -736,25 +757,6 @@ public class RegisterGUI extends JDialog {
 	 * @return				boolean indicating if the input corresponds to a phone number.
 	 */
 	private boolean isPhoneValid(String pnumber) {
-		return pnumber.matches("^[+][0-9]{7,10}");
+		return pnumber.matches("^[+][0-9]{7,11}");
 	}
-
-	/*
-	private ImageIcon resizeImage(String path) {
-		BufferedImage i = null;
-		try {
-			i = ImageIO.read(new File(path));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Graphics2D g = i.createGraphics();
-		g.drawImage(i, 0, 0, 50, 50, null);
-		return new ImageIcon(i);
-
-	}
-	*/
-		
-
-
 }

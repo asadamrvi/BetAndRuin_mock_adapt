@@ -45,6 +45,8 @@ import exceptions.QuestionAlreadyExist;
 import gui.MainGUI;
 import gui.components.ButtonColumn;
 import gui.components.HintTextField;
+import gui.components.JNumericField;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -57,6 +59,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import gui.components.CompetitionPanel;
+import gui.components.FancyButton;
 
 @SuppressWarnings("serial")
 public class CreateQuestionPanel extends JPanel {
@@ -72,23 +75,23 @@ public class CreateQuestionPanel extends JPanel {
 	private JLabel questionLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Query")); //$NON-NLS-1$ //$NON-NLS-2$
 	private JLabel jLabelMinBet = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("MinimumBetPrice")); //$NON-NLS-1$ //$NON-NLS-2$
 	private JLabel eventDateLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("EventDate"));
-	private JLabel jLabelMsg = new JLabel();
+	private JLabel createQuestionErrorLabel = new JLabel();
 	private JLabel answerErrorLabel = new JLabel();
 	private JLabel oddLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("CreateQuestionGUI.oddLabel.text")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
 	private JLabel answerLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("CreateQuestionPanel.answerLabel.text"));  //$NON-NLS-1$ //$NON-NLS-2$
-	
+
 	private HintTextField jHintFieldQuery = new HintTextField("Introduce question here", new Color(255, 255, 255), new Color(0,0,0), new Color(0,0,0), new Color(169,169,169),  new Color(169,169,169));
 
 	private JCalendar jCalendar = new JCalendar();
 	private Calendar calendarMio = null;
 
 
-	private JButton jButtonCreate = new JButton(ResourceBundle.getBundle("Etiquetas").getString("CreateQuery"));
-	private JButton answerButton  = new JButton(ResourceBundle.getBundle("Etiquetas").getString("AddAnswer"));
+	private JButton jButtonCreate;
+	private JButton answerButton;
 
-	private  JTextField answerTextField = new JTextField();
-	private JTextField oddTextField  = new JTextField();;
-	private JTextField jTextFieldPrice = new JTextField();
+	private  JTextField answerTextField;
+	private JNumericField oddTextField;
+	private JNumericField minPriceTextField;
 
 	private final JTable answerTable = new JTable();
 	private final JTable questionTable = new JTable();
@@ -121,8 +124,8 @@ public class CreateQuestionPanel extends JPanel {
 		setBackground(Color.WHITE);
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{30, 30, 0, 34, 0, 30, 38, 0, 30, 20, -20, 100, 0, 20, 37, 0, 30, 30, 40, 20, 50, 0, 109, 50};
-		gridBagLayout.rowHeights = new int[]{23, 0, 4, 8, 16, 25, 0, 0, 25, 0, 20, 30, 41, 29, 30, 20, 96, 70, 0, 25, 20, 30, 30, 40, 0};
+		gridBagLayout.columnWidths = new int[]{40, 30, 0, 34, 0, 30, 38, 0, 30, 20, -20, 100, 0, 20, 37, 0, 30, 30, 40, 20, 50, 0, 109, 50};
+		gridBagLayout.rowHeights = new int[]{23, 0, 4, 8, 16, 25, 0, 0, 25, 0, 20, 40, 41, 29, 30, 20, 96, 70, 0, 25, 20, 30, 30, 40, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
@@ -219,74 +222,23 @@ public class CreateQuestionPanel extends JPanel {
 		// Code for JCalendar
 		this.jCalendar.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent propertychangeevent) {
-				SimpleDateFormat df = new SimpleDateFormat("dd/MM");
+				//Date firstDay = UtilDate.trim(new Date(jCalendar.getCalendar().getTime().getTime()));
+				Competition selectedcompetition = competitionPanel.getSelectedCompetition();
 				if (propertychangeevent.getPropertyName().equals("locale")) {
 					jCalendar.setLocale((Locale) propertychangeevent.getNewValue());
 				} else if (propertychangeevent.getPropertyName().equals("calendar")) {
 					calendarMio = (Calendar) propertychangeevent.getNewValue();
-
-					DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar.getLocale());
 					jCalendar.setCalendar(calendarMio);
-					Date firstDay = UtilDate.trim(new Date(jCalendar.getCalendar().getTime().getTime()));
-					Competition selectedcompetition = competitionPanel.getSelectedCompetition();
-					try {
-						jComboBoxEvents.removeAllItems();
-						if(selectedcompetition != null) {
-							for (domain.Event ev : selectedcompetition.getEvents()) {
-								if(df.format(ev.getEventDate()).equals(df.format(jCalendar.getDate())))
-									modelEvents.addElement(ev);			
-							}
-						}
-						if (modelEvents.getSize() == 0)
-							listOfEventsLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("NoEvents")
-									+ ": " + dateformat1.format(calendarMio.getTime()));
-						else {
-							loadQuestions(modelEvents.getElementAt(0));
-							listOfEventsLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("Events") + ": "
-									+ dateformat1.format(calendarMio.getTime()));
-						}
-						jComboBoxEvents.repaint();
+					refreshPage(selectedcompetition, jCalendar);
 
-						if (modelEvents.getSize() == 0) {
-							jButtonCreate.setEnabled(false);
-							answerButton.setEnabled(false);
-							jTextFieldPrice.setEnabled(false);
-							answerTextField.setEnabled(false);
-							oddTextField.setEnabled(false);
-						}	    
-						else {
-							jButtonCreate.setEnabled(true);
-							answerButton.setEnabled(true);	
-							jTextFieldPrice.setEnabled(true);
-							answerTextField.setEnabled(true);
-							oddTextField.setEnabled(true);
-						}
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					BrowsePanel.paintDaysWithEvents(jCalendar, facade.getEventsMonth(firstDay, selectedcompetition));
+
 				}
 
 			}
 		});
 
 		answerTableModel = new DefaultTableModel(null, columNameAnswers);
-		answerTableModel.setColumnCount(4); 
-		answerTable.setRowHeight(28);
-		answerTable.setModel(answerTableModel);
-		answerTable.getColumnModel().getColumn(0).setPreferredWidth(60);
-		answerTable.getColumnModel().getColumn(0).setMinWidth(60);
-		answerTable.getColumnModel().getColumn(0).setMaxWidth(60);
-		answerTable.getColumnModel().getColumn(2).setPreferredWidth(80);
-		answerTable.getColumnModel().getColumn(2).setMinWidth(80);
-		answerTable.getColumnModel().getColumn(2).setMaxWidth(80);
-		answerTable.getColumnModel().getColumn(3).setPreferredWidth(50);
-		answerTable.getColumnModel().getColumn(3).setMinWidth(50);
-		answerTable.getColumnModel().getColumn(3).setMaxWidth(50);
-		answerTable.getTableHeader().setFont(new Font("Source sans Pro", Font.BOLD, 16));
-		answerTable.setFont(new Font("Source sans Pro", Font.BOLD, 14));
-		@SuppressWarnings("unused")
-		ButtonColumn deleteButtonColumn = new ButtonColumn(answerTable, delete, 3, new Color(255,0,51));
+		resetAnswerTable();
 
 		sportComboBox.setModel(new DefaultComboBoxModel<Sport>(Sport.values()));
 		GridBagConstraints gbc_sportComboBox = new GridBagConstraints();
@@ -370,7 +322,19 @@ public class CreateQuestionPanel extends JPanel {
 		this.add(jHintFieldQuery, gbc_jTextFieldQuery);
 		jHintFieldQuery.setBounds(new Rectangle(100, 211, 75, 33));
 		jHintFieldQuery.setFont(new Font("Tahoma",Font.ITALIC,14));
+		answerErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+		answerErrorLabel.setBounds(new Rectangle(196, 322, 371, 30));
+		answerErrorLabel.setForeground(Color.red);
+		GridBagConstraints gbc_answerErrorLabel = new GridBagConstraints();
+		gbc_answerErrorLabel.gridwidth = 2;
+		gbc_answerErrorLabel.anchor = GridBagConstraints.SOUTH;
+		gbc_answerErrorLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_answerErrorLabel.gridx = 17;
+		gbc_answerErrorLabel.gridy = 11;
+		this.add(answerErrorLabel, gbc_answerErrorLabel);
+
+		GridBagConstraints gbc_competitionScrollPane;
 		gbc_competitionScrollPane = new GridBagConstraints();
 		gbc_competitionScrollPane.gridheight = 11;
 		gbc_competitionScrollPane.gridwidth = 4;
@@ -379,27 +343,17 @@ public class CreateQuestionPanel extends JPanel {
 		gbc_competitionScrollPane.gridx = 1;
 		gbc_competitionScrollPane.gridy = 12;
 		add(competitionScrollPane, gbc_competitionScrollPane);
-		answerErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-		answerErrorLabel.setBounds(new Rectangle(196, 322, 371, 30));
-		answerErrorLabel.setForeground(Color.red);
-		GridBagConstraints gbc_answerErrorLabel = new GridBagConstraints();
-		gbc_answerErrorLabel.gridwidth = 3;
-		gbc_answerErrorLabel.anchor = GridBagConstraints.NORTH;
-		gbc_answerErrorLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_answerErrorLabel.gridx = 17;
-		gbc_answerErrorLabel.gridy = 11;
-		this.add(answerErrorLabel, gbc_answerErrorLabel);
-
-		answerButton.setBackground(Color.LIGHT_GRAY);
-		answerButton.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
+		answerButton = new FancyButton(ResourceBundle.getBundle("Etiquetas").getString("AddAnswer"),new Color(51,51,51),new Color(170,170,170),new Color(150,150,150));
+		answerButton.setForeground(Color.white);
+		answerButton.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
 		answerButton.setEnabled(false);
 		answerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
 					answerErrorLabel.setText("");
-					jLabelMsg.setText("");
+					createQuestionErrorLabel.setText("");
 					if (answerTextField.getText().equals("") ) {
 						answerErrorLabel.setText("Enter an answer");
 						answerTextField.setBorder(new LineBorder(Color.RED, 2));
@@ -435,7 +389,7 @@ public class CreateQuestionPanel extends JPanel {
 		});
 
 
-		
+
 		answerLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 14));
 		answerLabel.setBounds(25, 254, 75, 20);
 		GridBagConstraints gbc_answerLabel = new GridBagConstraints();
@@ -445,7 +399,22 @@ public class CreateQuestionPanel extends JPanel {
 		gbc_answerLabel.gridy = 12;
 		add(answerLabel, gbc_answerLabel);
 
+		answerTextField = new JTextField() {
+			@Override
+			public void setEnabled(boolean enable) {
+				super.setEnabled(enable);
+
+				if (enable) {
+					setBackground(Color.white);
+					setForeground(Color.black);
+				} else {
+					setBackground(new Color(220,220,220));
+					setForeground(Color.darkGray);
+				}
+			}
+		};
 		answerTextField.setEnabled(false);
+		answerTextField.setBorder(new LineBorder(Color.black));
 		answerTextField.setBounds(100, 254, 299, 20);
 		answerTextField.setColumns(10);
 
@@ -456,7 +425,7 @@ public class CreateQuestionPanel extends JPanel {
 		gbc_answerTextField.gridx = 7;
 		gbc_answerTextField.gridy = 12;
 		add(answerTextField, gbc_answerTextField);
-		
+
 		oddLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 14));
 		oddLabel.setBounds(25, 304, 75, 20);
 		GridBagConstraints gbc_oddLabel = new GridBagConstraints();
@@ -466,7 +435,8 @@ public class CreateQuestionPanel extends JPanel {
 		gbc_oddLabel.gridy = 12;
 		add(oddLabel, gbc_oddLabel);
 
-		oddTextField = new JTextField();
+		oddTextField = new JNumericField();
+		oddTextField.setBorder(new LineBorder(Color.black));
 		oddTextField.setEnabled(false);
 		oddTextField.setBounds(100, 304, 86, 20);
 		GridBagConstraints gbc_oddTextField = new GridBagConstraints();
@@ -499,22 +469,21 @@ public class CreateQuestionPanel extends JPanel {
 		answerScrollPane.getViewport().setBackground(new Color(250,250,250));
 		answerTable.getTableHeader().setBackground(new Color(245,245,245));
 		answerTable.setBackground(new Color(250,250,250));
-		jButtonCreate.setBackground(Color.LIGHT_GRAY);
-		jButtonCreate.setFont(new Font("Source Sans Pro", Font.PLAIN, 16));
+		
+		jButtonCreate = new FancyButton(ResourceBundle.getBundle("Etiquetas").getString("CreateQuery"),new Color(51,51,51),new Color(170,170,170),new Color(150,150,150));
+		jButtonCreate.setForeground(Color.white);
+		jButtonCreate.setFont(new Font("Source Sans Pro", Font.BOLD, 15));
 		jButtonCreate.setEnabled(false);
-
 		jButtonCreate.setBounds(new Rectangle(100, 400, 130, 100));
-
 		jButtonCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jButtonCreate_actionPerformed(e);
 			}
 		});
 
-		jLabelMsg.setHorizontalAlignment(SwingConstants.CENTER);
-
-		jLabelMsg.setBounds(new Rectangle(275, 182, 305, 20));
-		jLabelMsg.setForeground(Color.red);
+		createQuestionErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		createQuestionErrorLabel.setBounds(new Rectangle(275, 182, 305, 20));
+		createQuestionErrorLabel.setForeground(Color.red);
 
 		GridBagConstraints gbc_jLabelMsg = new GridBagConstraints();
 		gbc_jLabelMsg.fill = GridBagConstraints.VERTICAL;
@@ -522,7 +491,7 @@ public class CreateQuestionPanel extends JPanel {
 		gbc_jLabelMsg.insets = new Insets(0, 0, 5, 5);
 		gbc_jLabelMsg.gridx = 21;
 		gbc_jLabelMsg.gridy = 17;
-		this.add(jLabelMsg, gbc_jLabelMsg);
+		this.add(createQuestionErrorLabel, gbc_jLabelMsg);
 		jLabelMinBet.setFont(new Font("Source Sans Pro", Font.BOLD, 14));
 		jLabelMinBet.setBounds(new Rectangle(25, 359, 75, 20));
 
@@ -533,15 +502,18 @@ public class CreateQuestionPanel extends JPanel {
 		gbc_jLabelMinBet.gridy = 18;
 		this.add(jLabelMinBet, gbc_jLabelMinBet);
 
-		jTextFieldPrice.setBounds(new Rectangle(100, 359, 60, 20));
-		jTextFieldPrice.setEnabled(false);
+		minPriceTextField = new JNumericField(8);
+		minPriceTextField.setAllowNegative(false);
+		minPriceTextField.setBorder(new LineBorder(Color.black));
+		minPriceTextField.setBounds(new Rectangle(100, 359, 60, 20));
+		minPriceTextField.setEnabled(false);
 		GridBagConstraints gbc_jTextFieldPrice = new GridBagConstraints();
 		gbc_jTextFieldPrice.gridwidth = 2;
 		gbc_jTextFieldPrice.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jTextFieldPrice.insets = new Insets(0, 0, 5, 5);
 		gbc_jTextFieldPrice.gridx = 21;
 		gbc_jTextFieldPrice.gridy = 19;
-		this.add(jTextFieldPrice, gbc_jTextFieldPrice);
+		this.add(minPriceTextField, gbc_jTextFieldPrice);
 		GridBagConstraints gbc_jButtonCreate = new GridBagConstraints();
 		gbc_jButtonCreate.gridheight = 2;
 		gbc_jButtonCreate.fill = GridBagConstraints.BOTH;
@@ -557,6 +529,7 @@ public class CreateQuestionPanel extends JPanel {
 		competitionScrollPane.add(competitionPanel);
 		competitionScrollPane.setViewportView(competitionPanel);
 		competitionScrollPane.updateUI();
+		disableInputFields();
 	}
 
 	/**
@@ -570,6 +543,13 @@ public class CreateQuestionPanel extends JPanel {
 		}
 	}
 
+	public void resetErrorHighlights() {
+		answerErrorLabel.setText("");
+		createQuestionErrorLabel.setText("");
+		oddTextField.setBorder(new LineBorder(Color.black));
+		answerTextField.setBorder(new LineBorder(Color.black));
+	}
+
 	/**
 	 * Disables areas/buttons where users can usually press/enter information related with question creation.
 	 */
@@ -579,7 +559,7 @@ public class CreateQuestionPanel extends JPanel {
 		jLabelMinBet.setEnabled(false);
 		jButtonCreate.setEnabled(false);
 		answerButton.setEnabled(false);
-		jTextFieldPrice.setEnabled(false);
+		minPriceTextField.setEnabled(false);
 		answerTextField.setEnabled(false);
 		oddTextField.setEnabled(false);	
 	}
@@ -593,7 +573,7 @@ public class CreateQuestionPanel extends JPanel {
 		jLabelMinBet.setEnabled(true);
 		jButtonCreate.setEnabled(true);
 		answerButton.setEnabled(true);
-		jTextFieldPrice.setEnabled(true);
+		minPriceTextField.setEnabled(true);
 		answerTextField.setEnabled(true);
 		oddTextField.setEnabled(true);
 	}
@@ -605,19 +585,41 @@ public class CreateQuestionPanel extends JPanel {
 	 * @param date	user selected date
 	 */
 	public void refreshPage(Competition comp, JCalendar jCalendar) {
-		if(comp != null) {
+		resetErrorHighlights();
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat dateformat1 = DateFormat.getDateInstance(1, jCalendar.getLocale());
+
+		calendarMio = jCalendar.getCalendar();
+		Competition selectedcompetition = competitionPanel.getSelectedCompetition();
+		try {
 			jComboBoxEvents.removeAllItems();
-			for(Event ev: comp.getEvents()) {
-				if(ev.getEventDate().equals(jCalendar.getDate()))
-					modelEvents.addElement(ev);			
+			if(selectedcompetition != null) {
+				for (domain.Event ev : selectedcompetition.getEvents()) {
+					if(df.format(ev.getEventDate()).equals(df.format(jCalendar.getDate())))
+						modelEvents.addElement(ev);			
+				}
+			}
+			if (modelEvents.getSize() == 0)
+				listOfEventsLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("NoEvents")
+						+ ": " + dateformat1.format(calendarMio.getTime()));
+			else {
+				loadQuestions(modelEvents.getElementAt(0));
+				listOfEventsLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("Events") + ": "
+						+ dateformat1.format(calendarMio.getTime()));
 			}
 			jComboBoxEvents.repaint();
-			if(modelEvents.getSize() > 0) {
+
+			if (modelEvents.getSize() == 0) {
+				disableInputFields();
+			}	    
+			else {
 				enableInputFields();
 			}
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
-		Vector<Date> eventsMonth = facade.getEventsMonth(jCalendar.getDate(), comp);
-		BrowsePanel.paintDaysWithEvents(jCalendar, eventsMonth);
+		BrowsePanel.paintDaysWithEvents(jCalendar, facade.getEventsMonth(jCalendar.getDate(), selectedcompetition));
 	}
 
 	private void jButtonCreate_actionPerformed(ActionEvent e) {
@@ -625,7 +627,7 @@ public class CreateQuestionPanel extends JPanel {
 
 		try {
 			answerErrorLabel.setText("");
-			jLabelMsg.setText("");
+			createQuestionErrorLabel.setText("");
 
 			// Displays an exception if the query field is empty
 			String inputQuery = jHintFieldQuery.getText(); 
@@ -636,43 +638,37 @@ public class CreateQuestionPanel extends JPanel {
 					answerErrorLabel.setText("Introduce answers");
 				}else {
 					// It could be to trigger an exception if the introduced string is not a number
-					float inputPrice = Float.parseFloat(jTextFieldPrice.getText());
-					if (inputPrice <= 0)
-						answerErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorNumber"));
-					else {
-
-						// Obtain the business logic from a StartWindow class (local or remote)
-						BLFacade facade = MainGUI.getBusinessLogic();
-
-						List<Prediction> predictions = new ArrayList<Prediction>();
-						for(String ans: answers.keySet()) {
-							predictions.add(new Prediction(ans,answers.get(ans)));
-						}
-						
-						facade.createQuestion(event, inputQuery, inputPrice, predictions);
-						System.out.println(event.getQuestions());
-						loadQuestions(event);
-						Object[] row = new Object[2];
-						row[0] = questionTableModel.getRowCount()+1;
-						row[1] = inputQuery;
-						questionTableModel.addRow(row);
-
-						answers = new HashMap<String, Float>();
-						answerTableModel.setDataVector(null, columNameAnswers);
-
-						jLabelMsg.setText(ResourceBundle.getBundle("Etiquetas").getString("QueryCreated"));
-
+					float inputPrice = Float.parseFloat(minPriceTextField.getText());
+					// Obtain the business logic from a StartWindow class (local or remote)
+					BLFacade facade = MainGUI.getBusinessLogic();
+					List<Prediction> predictions = new ArrayList<Prediction>();
+					for(String ans: answers.keySet()) {
+						predictions.add(new Prediction(ans,answers.get(ans)));
 					}
+
+					Question q = facade.createQuestion(event, inputQuery, inputPrice, predictions);
+					event.addQuestion(q.getQuestion(), q.getBetMinimum(), predictions);
+					loadQuestions(event);
+
+					answers = new HashMap<String, Float>();
+					resetAnswerTable();
+
+					createQuestionErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("QueryCreated"));
 				}
+
+				minPriceTextField.setText("");
+				answerTextField.setText("");
+				oddTextField.setText("");
+
 			} else
-				jLabelMsg.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorQuery"));
+				createQuestionErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorQuery"));
 		} catch (EventFinished e1) {
-			jLabelMsg.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorEventHasFinished") + ": "
+			createQuestionErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorEventHasFinished") + ": "
 					+ event.getDescription());
 		} catch (QuestionAlreadyExist e1) {
-			jLabelMsg.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
+			createQuestionErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
 		} catch (java.lang.NumberFormatException e1) {
-			answerErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorNumber"));
+			createQuestionErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("ErrorNumber"));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -698,6 +694,26 @@ public class CreateQuestionPanel extends JPanel {
 		}	
 	}
 
+	public void resetAnswerTable() {
+		answerTableModel.setDataVector(null, columNameAnswers);
+		answerTableModel.setColumnCount(4); 
+		answerTable.setRowHeight(28);
+		answerTable.setModel(answerTableModel);
+		answerTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+		answerTable.getColumnModel().getColumn(0).setMinWidth(60);
+		answerTable.getColumnModel().getColumn(0).setMaxWidth(60);
+		answerTable.getColumnModel().getColumn(2).setPreferredWidth(80);
+		answerTable.getColumnModel().getColumn(2).setMinWidth(80);
+		answerTable.getColumnModel().getColumn(2).setMaxWidth(80);
+		answerTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+		answerTable.getColumnModel().getColumn(3).setMinWidth(50);
+		answerTable.getColumnModel().getColumn(3).setMaxWidth(50);
+		answerTable.getTableHeader().setFont(new Font("Source sans Pro", Font.BOLD, 16));
+		answerTable.setFont(new Font("Source sans Pro", Font.BOLD, 14));
+		@SuppressWarnings("unused")
+		ButtonColumn deleteButtonColumn = new ButtonColumn(answerTable, delete, 3, new Color(255,0,51));
+	}
+
 	public void answerTableAdd(String answer, Float odds) {
 
 		Object[] row = new Object[4];
@@ -715,17 +731,7 @@ public class CreateQuestionPanel extends JPanel {
 			int row = answerTable.getSelectedRow();
 			answers.remove(answerTable.getValueAt(row, 1));
 			answerTableModel.removeRow(row);
-
 		}
 	};
-	private GridBagConstraints gbc_competitionScrollPane;
 
-
-	/*
-	  @Override
-	  public void paintComponent(Graphics g) {
-		    super.paintComponent(g);
-		    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this); // draw the image
-		  }
-	 */
 }

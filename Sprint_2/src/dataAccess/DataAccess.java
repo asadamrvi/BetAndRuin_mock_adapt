@@ -12,10 +12,12 @@ import domain.Event;
 import domain.Feedback;
 import domain.Feedback.FeedbackType;
 import domain.Prediction;
+import domain.Profile;
 import domain.Bet;
 import domain.BetType;
 import domain.Competition;
 import domain.Country;
+import domain.CreditCard;
 import domain.Question;
 import domain.Sport;
 import domain.User;
@@ -106,17 +108,17 @@ public interface DataAccess {
 	/**
 	 * This method registers a new user in the database.
 	 * 
-	 * @param iD				ID of the new user.
+	 * @param username			username of the new user.
+	 * @param ID				National ID number of the new user.
 	 * @param password			password of the new user.
 	 * @param name				name of the new user.
 	 * @param surname			surname of the new user.
 	 * @param email				email of the new user.
 	 * @param isAdmin			whether this user has admin. privileges or not.
-	 *  
-	 * @return					the newly created User object.
+	 * 
 	 * @throws invalidID		exception thrown when there is a pre existing user with this ID in the database.
 	 */
-	public User registerUser(String iD, String password, String name, String surname, String email, String address, String phone, 
+	public User registerUser(String username,String ID, String password, String name, String surname, String email, String address, String phone, 
 			Country nat,String city, Date birthdDate, String pic, boolean isAdmin) throws invalidID;
 	/**
 	 * This methods checks the validity of the credentials (id / password) inputed upon login.
@@ -144,6 +146,29 @@ public interface DataAccess {
 	 * @return
 	 */
 	public void removeUser(String iD);
+	
+	/**
+	 * This stores the given credit card on the database with the owner set as the given user
+	 * 
+	 * @param number	Credit card number
+	 * @param number	Credit card expiration date
+	 */
+	public void storeCreditCard(User user, CreditCard cc);
+	
+	/**
+	 * This method deletes the given credit card from the database
+	 * 
+	 * @param cc	CreditCard to delete
+	 */
+	public void removeCreditCard(CreditCard cc);
+
+	/**
+	 * This method updates the default credit card value of the given user to the given credit card
+	 * 
+	 * @param user			User to update default card of
+	 * @param defaultcc		New default credit card
+	 */
+	public void updateDefaultCreditCard(User user, CreditCard defaultcc);
 
 	/**
 	 * 
@@ -160,9 +185,29 @@ public interface DataAccess {
 	 * @param isAdmin
 	 * @throws invalidID
 	 */
-	public void updateUserInfo(String key, String iD, String name, String surname, String email, String addr, 
+	public User updateUserInfo(String key, String iD, String name, String surname, String email, String addr, 
 			String phn, Country nat,String city, Date birthdt, boolean isAdmin) throws invalidID;
 
+	/**
+	 *	This method updates the value of the password of the given user to the new value.
+	 * 
+	 * @param u					User to update password of
+	 * @param newpass			new value the password should be updated to
+	 * @return					true if update completes successfully, false if the new password and confirmation don't match
+	 */
+	public void updatePassword(User u, String newpass); 
+	
+	
+	/**
+	 * This method replaces the existing profile picture of the given user with the new picture.
+	 * Only the pathname of the pictures are stored
+	 * 
+	 * @param p		Profile of the user to change the profile picture of
+	 * @param path  Pathname of the file with the picture(must be .jpg or .png)
+	 */
+	public void updateProfilePic(Profile p, String path);
+	
+	
 	/**
 	 * 
 	 * @param q

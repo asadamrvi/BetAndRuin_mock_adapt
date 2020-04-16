@@ -220,7 +220,7 @@ public class ProfilePanel extends JPanel {
 		JButton btnNewButton = new JButton("Delete Profile");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				facade.removeUser(facade.getLoggeduser().getID());
+				facade.removeUser(facade.getLoggeduser().getUsername());
 				facade.logOut();
 				MainGUI mai=MainGUI.getInstance();
 				mai.resetPanels();

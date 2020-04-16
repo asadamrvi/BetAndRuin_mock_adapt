@@ -57,6 +57,9 @@ public class Question implements Serializable {
 		this.betMinimum=betMinimum;
 
 		this.event = event;
+		for(Prediction p : predictions) {
+			p.setQuestion(this);
+		}
 		this.predictions = predictions;
 	}
 

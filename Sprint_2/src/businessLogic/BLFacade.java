@@ -16,6 +16,7 @@ import domain.Competition;
 import domain.Event;
 import domain.Feedback;
 import domain.Country;
+import domain.CreditCard;
 import domain.Profile;
 import exceptions.EventFinished;
 import exceptions.InsufficientCash;
@@ -111,7 +112,8 @@ public interface BLFacade  {
 	/**
 	 * This method registers a new user.
 	 * 
-	 * @param iD				ID of the new user.
+	 * @param username			username of the new user.
+	 * @param ID				National ID number of the new user.
 	 * @param password			password of the new user.
 	 * @param name				name of the new user.
 	 * @param surname			surname of the new user.
@@ -120,7 +122,7 @@ public interface BLFacade  {
 	 * 
 	 * @throws invalidID		exception thrown when there is a pre existing user with this ID in the database.
 	 */
-	@WebMethod public void registerUser(String iD, String password, String name, String surname, String email, String address, String phone, 
+	@WebMethod public void registerUser(String username,String ID, String password, String name, String surname, String email, String address, String phone, 
 			Country nat, String city, Date birthDate, String pic, boolean isAdmin) throws invalidID;
 
 	/**
@@ -152,12 +154,35 @@ public interface BLFacade  {
 	@WebMethod public void removeUser(String ID);
 	
 	/**
+	 * This method creates a new CreditCard object, invokes the adata access to store it and assigns it to the logged user
+	 * 
+	 * @param number	Credit card number
+	 * @param number	Credit card expiration date
+	 */
+	public CreditCard addCreditCard(String number, Date dueDate);
+	
+	/**
+	 * This method invokes the data access manager to delete the given credit card
+	 * 
+	 * @param cc	CreditCard to delete
+	 */
+	public void removeCreditCard(CreditCard cc); 
+	
+
+	/**
+	 * This method sets the default credit card to the given credit card and invokes the data access to store the new default card
+	 * 
+	 * @param defaultcc		CreditCard to set as default
+	 */
+	public void setDefaultCreditCard(CreditCard defaultcc);
+	
+	/**
 	 * 
 	 * @param searchtext
 	 * @param filter
 	 * @return
 	 */
-	@WebMethod public void updateUserInfo(String key, String iD, String name, String surname, String email,Country nat,String city, String addr, 
+	@WebMethod public User updateUserInfo(String key, String username, String name, String surname, String email,Country nat,String city, String addr, 
 			String phn,  Date birthdt, boolean isAdmin) throws invalidID;
 	
 	/**
@@ -197,6 +222,29 @@ public interface BLFacade  {
 	public Profile getProfile();
 	
 	/**
+	 * This method replaces the existing profile picture of the given user with the new picture.
+	 * Only the pathname of the pictures are stored
+	 * 
+	 * @param p		Profile of the user to change the profile picture of
+	 * @param path  Pathname of the file with the picture(must be .jpg or .png)
+	 */
+	public void updateProfilePic(Profile p, String path);
+	
+	/**
+	 * This method invokes the data access manager to replace the current password of the given user to the new value.
+	 * Fails the inputed current password doesn't match the user's(exception is thrown) or when the confirmation password
+	 * doesn't match the new password.
+	 * 
+	 * @param u					User to update password of
+	 * @param currentpass		current password
+	 * @param newpass			new value the password should be updated to
+	 * @param confirmpass		confirmation for the new password
+	 * @return					true if update completes successfully, false if the new password and confirmation don't match
+	 * @throws invalidPW		exception thrown when currentpass doesn't match the actual current password of the user
+	 */
+	public boolean updatePassword(User u, String currentpass, String newpass, String confirmpass) throws invalidPW;
+	
+	/**
 	 * Indicates if the logged user has an admin status.
 	 * @return	boolean(true: if loggeduser is an admin, false:else)
 	 */
@@ -209,11 +257,13 @@ public interface BLFacade  {
 	public float getCash();
 	
 	/**
-	 * Retrieves the currently logged users ID
-	 * @return ID field value of the logged user
+	 * Retrieves the currently logged users username
+	 * @return username field value of the logged user
 	 */
-	public String getUserID();
+	public String getUsername();
 		
+	public void setLoggeduser(User loggeduser);
+	
 	/**
 	 * Adds introduced amount the cash stored on the user's account
 	 * @param amount	amount of money to add(float)

@@ -129,6 +129,7 @@ public class Event implements Serializable {
         return q;
 	}
 	
+	
 	/**
 	 * This method creates a bet with a question, minimum bet ammount and percentual profit
 	 * 

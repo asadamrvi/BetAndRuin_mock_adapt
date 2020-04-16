@@ -33,8 +33,7 @@ public class Bet implements Serializable{
 	}
 
 	@XmlIDREF
-	@ManyToOne
-	@OneToMany(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	private User bettor;
 	private BetType type;
 	private Status status;

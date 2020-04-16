@@ -2,13 +2,18 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jdo.annotations.Index;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,10 +34,13 @@ public class User{
 	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
 	@Id
-	private String id;
+	private String username;
 	private String password;
 	private boolean isAdmin;
 	private float cash;
+	
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private CreditCard defaultcard;
 	private Date registrationdate;
 	private Date lastlogin;
 	
@@ -42,10 +50,15 @@ public class User{
 	@OneToMany(fetch=FetchType.EAGER)
 	private ArrayList<Bet> bets;
 
+	@ElementCollection
+	@CollectionTable(name="CreditCard")
+	@MapKeyColumn(name="cardNumber")
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL , orphanRemoval = true)
+	private Map<String,CreditCard> creditcards;
 
-	public User(String iD, String password, boolean isAdmin, Profile p) {
+	public User(String username, String password, boolean isAdmin, Profile p) {
 		super();
-		this.id = iD;
+		this.username = username;
 		this.password = password;
 		this.profile = p;
 		this.isAdmin = isAdmin;
@@ -54,12 +67,12 @@ public class User{
 		this.cash = 9999;  
 	}
 
-	public String getID() {
-		return id;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setID(String iD) {
-		id = iD;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -78,10 +91,17 @@ public class User{
 		this.profile = p;
 	}
 
+	public CreditCard getDefaultCreditCard() {
+		return this.defaultcard;
+	}
+	
+	public void setDefaultCreditCard(CreditCard cc) {
+		this.defaultcard = cc;
+	}
+	
 	public Date getRegistrationdate() {
 		return registrationdate;
 	}
-
 
 	public void setRegistrationdate(Date registrationdate) {
 		this.registrationdate = registrationdate;
@@ -113,6 +133,14 @@ public class User{
 	public void setCash(float cash) {
 		this.cash = cash;
 	}
+	
+	public Map<String,CreditCard> getCreditCards() {
+		return creditcards;
+	}
+	
+	public void setCreditCards(HashMap<String,CreditCard> creditcards) {
+		this.creditcards = creditcards;
+	}
 
 	/**
 	 * Registers the bet performed by a user
@@ -140,6 +168,14 @@ public class User{
 			}
 		}
 		bets.remove(j);
+	}
+	
+	public void addCreditCard(CreditCard cc) {
+		if(creditcards == null) {
+			creditcards = new HashMap<String,CreditCard>();
+		}
+		creditcards.put(cc.getCardNumber(),cc);
+		cc.setOwner(this);
 	}
 	
 	public String statusToString() {

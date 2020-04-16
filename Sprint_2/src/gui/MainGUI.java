@@ -1,24 +1,23 @@
 package gui;
 
 
-import java.awt.EventQueue;
-
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-
 import businessLogic.BLFacade;
-import businessLogic.BLFacadeImplementation;
 import domain.Profile;
 import gui.Panels.BrowsePanel;
 import gui.Panels.CreateQuestionPanel;
@@ -26,6 +25,7 @@ import gui.Panels.FeedbackPanel;
 import gui.Panels.FeedbackResponsePanel;
 import gui.Panels.HomePanel;
 import gui.Panels.ProfilePanel;
+import gui.Panels.ProfilePanel2;
 import gui.Panels.SettingsPanel;
 import gui.Panels.userManagementPanel;
 import gui.components.Clock;
@@ -33,8 +33,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -106,13 +107,13 @@ public class MainGUI extends JFrame {
 	private JButton feedbackButton;
 
 
-	private Map<JButton,JPanel> menubuttons;
+	private Map<JButton,Component> menubuttons;
 
 	//JLabel
 	private JLabel IDTitleLabel;
 	private JLabel cashTitleLabel;
 	private JLabel profilepicLabel;
-	private JLabel IDLabel;
+	private JLabel usernameLabel;
 	private JLabel cashLabel;
 	private JLabel bottomImgLabel;
 
@@ -127,7 +128,7 @@ public class MainGUI extends JFrame {
 		setBussinessLogic(blogic);
 		admin = false;
 
-		menubuttons = new HashMap<JButton,JPanel>();
+		menubuttons = new HashMap<JButton,Component>();
 
 		setMinimumSize(new Dimension(1200,813));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,7 +155,7 @@ public class MainGUI extends JFrame {
 		gbc_topPanel.gridy = 0;
 		contentPane.add(topPanel, gbc_topPanel);
 		GridBagLayout gbl_topPanel = new GridBagLayout();
-		gbl_topPanel.columnWidths = new int[]{179, 157, 314, 315, 0};
+		gbl_topPanel.columnWidths = new int[]{179, 157, 494, 365, 0};
 		gbl_topPanel.rowHeights = new int[]{71, 0};
 		gbl_topPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_topPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
@@ -169,14 +170,14 @@ public class MainGUI extends JFrame {
 
 		loggedPanel = new JPanel();
 		loggedPanel.setBackground(new Color(0, 0, 0));
-		loggedPanel.setBounds(10, 0, 305, 71);
+		loggedPanel.setBounds(10, 0, 355, 71);
 		layeredPane.add(loggedPanel);
 		loggedPanel.setLayout(null);
 
 		miniprofilePanel = new JPanel();
 		miniprofilePanel.setLayout(null);
 		miniprofilePanel.setBackground(Color.WHITE);
-		miniprofilePanel.setBounds(4, 5, 234, 60);
+		miniprofilePanel.setBounds(4, 5, 264, 60);
 		loggedPanel.add(miniprofilePanel);
 
 		JPanel timerPanel = new Clock();
@@ -187,15 +188,15 @@ public class MainGUI extends JFrame {
 		gbc_timerPanel.gridy = 0;
 		topPanel.add(timerPanel, gbc_timerPanel);
 
-		IDTitleLabel = new JLabel("ID:");
+		IDTitleLabel = new JLabel("Account:");
 		IDTitleLabel.setBackground(new Color(255, 255, 255));
 		IDTitleLabel.setForeground(Color.BLACK);
-		IDTitleLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD | Font.ITALIC, 13));
-		IDTitleLabel.setBounds(77, 9, 45, 17);
+		IDTitleLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD | Font.ITALIC, 12));
+		IDTitleLabel.setBounds(77, 9, 72, 17);
 		miniprofilePanel.add(IDTitleLabel);
 
 		cashTitleLabel = new JLabel("Cash:\r\n");
-		cashTitleLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD | Font.ITALIC, 13));
+		cashTitleLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD | Font.ITALIC, 12));
 		cashTitleLabel.setBounds(77, 34, 45, 17);
 		miniprofilePanel.add(cashTitleLabel);
 
@@ -204,7 +205,7 @@ public class MainGUI extends JFrame {
 		addcashButton.setFocusPainted(false);
 		addcashButton.setIcon(new ImageIcon("images/addIncome.png"));
 		addcashButton.setBackground(new Color(255, 255, 255));
-		addcashButton.setBounds(196, 22, 32, 29);
+		addcashButton.setBounds(226, 26, 38, 34);
 		miniprofilePanel.add(addcashButton);
 		addcashButton.addActionListener(new ActionListener() {	
 			@Override
@@ -233,12 +234,12 @@ public class MainGUI extends JFrame {
 			}
 		});
 
-		IDLabel = new JLabel("");
-		IDLabel.setBounds(126, 8, 70, 18);
-		miniprofilePanel.add(IDLabel);
+		usernameLabel = new JLabel("");
+		usernameLabel.setBounds(147, 8, 88, 18);
+		miniprofilePanel.add(usernameLabel);
 
 		cashLabel = new JLabel("");
-		cashLabel.setBounds(127, 34, 70, 17);
+		cashLabel.setBounds(147, 34, 80, 17);
 		miniprofilePanel.add(cashLabel);
 
 		profilepicLabel = new JLabel("\r\n");
@@ -255,7 +256,7 @@ public class MainGUI extends JFrame {
 		logoutButton.setFocusPainted(false);
 		logoutButton.setIcon(new ImageIcon("images/logout.png"));
 		logoutButton.setBackground(new Color(0,0,0));	
-		logoutButton.setBounds(239, 5, 66, 60);
+		logoutButton.setBounds(279, 5, 66, 60);
 		loggedPanel.add(logoutButton);
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -268,31 +269,31 @@ public class MainGUI extends JFrame {
 
 		unloggedPanel = new JPanel();
 		unloggedPanel.setBackground(new Color(0, 0, 0));
-		unloggedPanel.setBounds(10, 0, 305, 71);
+		unloggedPanel.setBounds(10, 0, 355, 71);
 		layeredPane.add(unloggedPanel);
 		unloggedPanel.setLayout(null);
-
-		loginButton = new JButton("Login");
-		loginButton.setBorderPainted(false);
-		loginButton.setFocusPainted(false);
-		loginButton.setIcon(new ImageIcon("images/login.png"));
-		loginButton.setFont(new Font("Source Code Pro Medium", Font.BOLD, 14));
-		loginButton.setBackground(new Color(0, 0, 0));
-		loginButton.setForeground(new Color(255, 255, 255));
-		loginButton.setBounds(10, 0, 146, 71);
-		unloggedPanel.add(loginButton);
-		loginButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JDialog d = new LoginGUI();
-				d.setVisible(true);		
-			}
-		});
+		
+				loginButton = new JButton("Login");
+				loginButton.setBorderPainted(false);
+				loginButton.setFocusPainted(false);
+				loginButton.setIcon(new ImageIcon("images/login.png"));
+				loginButton.setFont(new Font("Source Code Pro Medium", Font.BOLD, 14));
+				loginButton.setBackground(new Color(0, 0, 0));
+				loginButton.setForeground(new Color(255, 255, 255));
+				loginButton.setBounds(60, 0, 146, 71);
+				unloggedPanel.add(loginButton);
+				loginButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						JDialog d = new LoginGUI();
+						d.setVisible(true);		
+					}
+				});
 
 		registerButton = new JButton("Register");
 		registerButton.setForeground(new Color(255, 255, 255));
 		registerButton.setBackground(new Color(0, 0, 0));
-		registerButton.setBounds(150, 0, 155, 71);
+		registerButton.setBounds(200, 0, 155, 71);
 		unloggedPanel.add(registerButton);
 		registerButton.setBorderPainted(false);
 		registerButton.setFocusPainted(false);
@@ -442,6 +443,17 @@ public class MainGUI extends JFrame {
 		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
 	}
 
+	public void refreshProfilePic() {
+		Profile p = appFacadeInterface.getProfile();
+		try {
+			Image img = ImageIO.read(new File(p.getProfilepic()));
+			profilepicLabel.setIcon(new ImageIcon(img.getScaledInstance(
+					60,50, Image.SCALE_SMOOTH)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Displays the elements on screen that a regular user should be able to see/interact with.
 	 */
@@ -461,9 +473,9 @@ public class MainGUI extends JFrame {
 
 		menubuttons.put(feedbackButton, new FeedbackPanel());
 		Profile p = appFacadeInterface.getProfile();
-		IDLabel.setText(p.getID());
+		usernameLabel.setText(p.getID());
 		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
-		profilepicLabel.setIcon(new ImageIcon(p.getProfilepic()));
+		refreshProfilePic();
 
 		currentPanel.removeAll();
 		currentPanel.add(menubuttons.get(homeButton));	
@@ -489,9 +501,11 @@ public class MainGUI extends JFrame {
 
 		menubuttons.put(feedbackButton, new FeedbackResponsePanel());
 		Profile p = appFacadeInterface.getProfile();
-		IDLabel.setText(p.getID());
+		usernameLabel.setText(appFacadeInterface.getUsername());
 		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
-		profilepicLabel.setIcon(new ImageIcon(p.getProfilepic()));
+		
+		refreshProfilePic();
+		//profilepicLabel.setIcon(new ImageIcon(p.getProfilepic()));
 
 		currentPanel.removeAll();
 		currentPanel.add(menubuttons.get(homeButton));	
@@ -557,15 +571,15 @@ public class MainGUI extends JFrame {
 			}
 			
 			Object panel = menubuttons.get(e.getSource());
-			if(panel instanceof ProfilePanel) {
+			if(panel instanceof ProfilePanel2) {
 				currentPanel.removeAll();
-				ProfilePanel p = new ProfilePanel();
+				ProfilePanel2 p = new ProfilePanel2();
 				menubuttons.put((JButton)e.getSource(),(JPanel)p);
 				currentPanel.add(p);
 			}
 			else {
 				currentPanel.removeAll();
-				currentPanel.add((JPanel)panel);
+				currentPanel.add((Component)panel);
 			}
 
 
@@ -577,7 +591,9 @@ public class MainGUI extends JFrame {
 	public void resetPanels() {
 		menubuttons.put(homeButton,new HomePanel());
 		menubuttons.put(browseButton, new BrowsePanel());
-		menubuttons.put(profileButton,new ProfilePanel());
+		if(appFacadeInterface.isLoggedIn()) {
+			menubuttons.put(profileButton,new ProfilePanel2());
+		}
 		menubuttons.put(settingsButton,new SettingsPanel());
 		menubuttons.put(feedbackButton, new FeedbackPanel());
 		menubuttons.put(createQuestionButton,new CreateQuestionPanel());

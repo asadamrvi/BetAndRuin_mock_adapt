@@ -35,6 +35,7 @@ import domain.Competition;
 import domain.Event;
 import domain.Feedback;
 import domain.Country;
+import domain.CreditCard;
 import domain.Profile;
 import exceptions.EventFinished;
 import exceptions.InsufficientCash;
@@ -64,8 +65,16 @@ public class BLFacadeImplementation  implements BLFacade {
 			dbManager=new DataAccessImplementation(c.getDataBaseOpenMode().equals("initialize"));
 			dbManager.initializeDB();
 		}		
-	}
+	} 
 
+	
+	public User getLoggeduser() {
+		return loggeduser;
+	}
+	
+	public void setLoggeduser(User loggeduser) {
+		this.loggeduser = loggeduser;
+	}
 
 	/** 
 	 * This method creates a question for an event, with a question text and the minimum bet
@@ -181,7 +190,8 @@ public class BLFacadeImplementation  implements BLFacade {
 	/**
 	 * This method registers a new user.
 	 * 
-	 * @param iD				ID of the new user.
+	 * @param username			username of the new user.
+	 * @param ID				National ID number of the new user.
 	 * @param password			password of the new user.
 	 * @param name				name of the new user.
 	 * @param surname			surname of the new user.
@@ -191,10 +201,10 @@ public class BLFacadeImplementation  implements BLFacade {
 	 * @throws invalidID		exception thrown when there is a pre existing user with this ID in the database.
 	 */
 	@WebMethod
-	public void registerUser(String iD, String password, String name, String surname, String email, String address, String phone, 
+	public void registerUser(String username,String ID, String password, String name, String surname, String email, String address, String phone, 
 			Country nat, String city, Date birthDate, String pic, boolean isAdmin) throws invalidID{
 		try {
-			dbManager.registerUser(iD, password, name, surname, email, address, phone, nat, city, birthDate, pic, isAdmin);
+			dbManager.registerUser( username, ID, password, name, surname, email, address, phone, nat, city, birthDate, pic, isAdmin);
 		}
 		catch (invalidID i) {
 			throw new invalidID(i.getMessage());
@@ -213,7 +223,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	public boolean checkCredentials(String ID, String password) throws invalidID, invalidPW{
 		try {
 			User u = dbManager.retrieveUser(ID, password);
-			loggeduser = u;
+			setLoggeduser(u);
 			return u.isAdmin();
 		}	
 		catch (invalidID e) {
@@ -224,6 +234,8 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 	}
 
+
+	
 	/**
 	 * 
 	 */
@@ -240,26 +252,90 @@ public class BLFacadeImplementation  implements BLFacade {
 	public void removeUser(String ID) {
 		DataAccess dbManager = new DataAccessImplementation();
 		dbManager.removeUser(ID);
-		;
 	}
 
+
 	/**
+	 * This method creates a new CreditCard object, invokes the adata access to store it and assigns it to the logged user
 	 * 
+	 * @param number	Credit card number
+	 * @param number	Credit card expiration date
 	 */
-	public void updateUserInfo(String key, String iD, String name, String surname, String email,Country nat,String city, String addr, 
+	public CreditCard addCreditCard(String number, Date dueDate) {
+		CreditCard cc = new CreditCard(number,dueDate);
+		DataAccess dbManager = new DataAccessImplementation();
+		dbManager.storeCreditCard(loggeduser,cc);
+		loggeduser.addCreditCard(cc);
+		return cc;
+	}
+	
+	/**
+	 * This method invokes the data access to delete the given credit card
+	 * 
+	 * @param cc	CreditCard to delete
+	 */
+	public void removeCreditCard(CreditCard cc) {
+		DataAccess dbManager = new DataAccessImplementation();
+		dbManager.removeCreditCard(cc);
+		if(cc.equals(loggeduser.getDefaultCreditCard())){
+			loggeduser.setDefaultCreditCard(null);
+		}
+	}
+	
+	/**
+	 * This method sets the default credit card to the given credit card and invokes the data access to store the new default card
+	 * 
+	 * @param defaultcc		CreditCard to set as default
+	 */
+	public void setDefaultCreditCard(CreditCard defaultcc) {
+		if(!defaultcc.equals(loggeduser.getDefaultCreditCard())) {
+			DataAccess dbManager = new DataAccessImplementation();
+			dbManager.updateDefaultCreditCard(loggeduser,defaultcc);
+			loggeduser.setDefaultCreditCard(defaultcc);
+		}
+	}
+	
+	/**
+	 * This method invokes the data access to update the profile information for a given user
+	 */
+	public User updateUserInfo(String key, String username, String name, String surname, String email,Country nat,String city, String addr, 
 			String phn,  Date birthdt, boolean isAdmin) throws invalidID{
 		try {	
-			dbManager.updateUserInfo(key, iD,name,surname,email,addr,phn,nat,city,birthdt,isAdmin);
+			return dbManager.updateUserInfo(key, username,name,surname,email,addr,phn,nat,city,birthdt,isAdmin);
 		}
 		catch(invalidID i) {
 			throw new invalidID();
 		}
 
 	}
-
-	public User getLoggeduser() {
-		return loggeduser;
+	
+	/**
+	 * This method invokes the data access manager to replace the current password of the given user to the new value.
+	 * Fails the inputed current password doesn't match the user's(exception is thrown) or when the confirmation password
+	 * doesn't match the new password.
+	 * 
+	 * @param u					User to update password of
+	 * @param currentpass		current password
+	 * @param newpass			new value the password should be updated to
+	 * @param confirmpass		confirmation for the new password
+	 * @return					true if update completes successfully, false if the new password and confirmation don't match or the password is too short
+	 * @throws invalidPW		exception thrown when currentpass doesn't match the actual current password of the user
+	 */
+	public boolean updatePassword(User u, String currentpass, String newpass, String confirmpass) throws invalidPW{
+		if(u.getPassword().equals(currentpass)) {
+			if(newpass.equals(confirmpass) && newpass.length() >= 8) {
+				dbManager.updatePassword(u,newpass);
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			throw new invalidPW("Incorrect password");
+		}
 	}
+
 
 
 	/**
@@ -292,11 +368,11 @@ public class BLFacadeImplementation  implements BLFacade {
 	}
 
 	/**
-	 * Retrieves the currently logged users ID
-	 * @return ID field value of the logged user
+	 * Retrieves the currently logged users username
+	 * @return username field value of the logged user
 	 */
-	public String getUserID() {
-		return loggeduser.getID();
+	public String getUsername() {
+		return loggeduser.getUsername();
 	}
 
 	/**
@@ -334,6 +410,17 @@ public class BLFacadeImplementation  implements BLFacade {
 	}
 
 	/**
+	 * This method replaces the existing profile picture of the given user with the new picture.
+	 * Only the pathname of the pictures are stored
+	 * 
+	 * @param p		Profile of the user to change the profile picture of
+	 * @param path  Pathname of the file with the picture(must be .jpg or .png)
+	 */
+	public void updateProfilePic(Profile p, String path) {
+		dbManager.updateProfilePic(p,path);
+	}
+	
+	/**
 	 * Indicates if the logged user has an admin status.
 	 * @return	boolean(true: if loggeduser is an admin, false:else)
 	 */
@@ -355,7 +442,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	 * @return	cash on the account after the addition
 	 */
 	public float addCash(float amount) {
-		float newcash = dbManager.addCash(loggeduser.getID(), amount);
+		float newcash = dbManager.addCash(loggeduser.getUsername(), amount);
 		return newcash;
 	}
 
@@ -478,7 +565,7 @@ public class BLFacadeImplementation  implements BLFacade {
 			User bettor = bet.getBettor();
 			bet.setStatus(Bet.Status.RESOLVED);
 			if(winnings > 0) {
-				if(bettor.getID().equals(loggeduser.getID())) {
+				if(bettor.getUsername().equals(loggeduser.getUsername())) {
 					loggeduser.setCash(getCash() + winnings);
 				}	
 				if(winningsMap.containsKey(bettor)) {
@@ -651,15 +738,7 @@ public class BLFacadeImplementation  implements BLFacade {
 			winnings += odds*stake;
 			
 			
-			System.out.println(pos);
-			String s = "";
-			for (int j = 0; j < pos; j++) {
-				s = s+solution[j];
-			}
-			for (int j = 0; j < pos; j++) {
-				System.out.println("ev" + j + ": "+  predictions.get(solution[j]-1).getQuestion().getEvent().getEventNumber());
-			}
-			System.out.println("sol: " + s + " sum: " + winnings + "odds: " + odds + "stake: " +stake);
+		
 		}
 		else {
 			float test = 0;

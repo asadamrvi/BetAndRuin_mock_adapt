@@ -81,13 +81,11 @@ public class FeedbackPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public FeedbackPanel() {
+		
 		setBackground(Color.WHITE);
 		setLayout(new MigLayout("", "[30px:n][67.00][39.00][34.00][18.00][][77.00,trailing][100px,grow][230.00][57.00][30px:50.00]", 
 				"[-23.00][20px:5.00][1.00][20px:n:20px][24.00,grow][53.00][20px:9.00][55.00][1.00][25px:40.00,fill][][10px:n][][400px,grow][-154.00][10px:n][7.00][10px:26.00:26.00][30px:n]"));
-
-
-
-				
+		
 		//PANEL INITIALIZATION
 
 		pinfoPanel = new JPanel();
@@ -95,7 +93,6 @@ public class FeedbackPanel extends JPanel {
 		pinfoPanel.setBackground(Color.WHITE);
 		add(pinfoPanel, "cell 8 4 2 4,grow");
 		pinfoPanel.setLayout(null);
-
 
 		//LABEL INITIALIZATION
 
@@ -317,12 +314,12 @@ public class FeedbackPanel extends JPanel {
 						optionErrorLabel.setVisible(true);
 						valid = false;
 					}
-					if(name.trim().isEmpty() && email.trim().isEmpty()) {
+					if(name.trim().isEmpty() || email.trim().isEmpty()) {
 						identityErrorLabel.setText("Enter identity information");
 						identityErrorLabel.setVisible(true);
 						valid = false;
 					}
-					if(!isEmailValid(email)) {
+					else if(!isEmailValid(email)) {
 						identityErrorLabel.setText("Invalid email address");
 						identityErrorLabel.setVisible(true);
 						valid = false;

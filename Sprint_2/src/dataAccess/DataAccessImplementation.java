@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Vector;
+
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -29,6 +31,7 @@ import domain.Feedback;
 import domain.Feedback.FeedbackType;
 import domain.Prediction;
 import domain.Country;
+import domain.CreditCard;
 import domain.Profile;
 import domain.Question;
 import domain.Sport;
@@ -38,6 +41,7 @@ import exceptions.QuestionAlreadyExist;
 import exceptions.QuestionNotFound;
 import exceptions.invalidID;
 import exceptions.invalidPW;
+import gui.Panels.CreateQuestionPanel;
 
 /**
  * It implements the data access to the objectDb database
@@ -128,7 +132,7 @@ public class DataAccessImplementation implements DataAccess {
 			Event ev25=new Event(25, "Liverpool-Tottenham Hotspur",  df.parse("15:00 25/5/2020"),df.parse("16:45 25/5/2020"),Sport.FOOTBALL);
 			Event ev26=new Event(26, "Arsenal-Chelsea", df.parse("18:00 25/5/2020"),df.parse("19:45 25/5/2020"),Sport.FOOTBALL);
 
-			Event ev27=new Event(27, "Miami Heat-Lakers",df.parse("15:20 12/4/2020"),df.parse("16:50 12/4/2020"),Sport.BASKETBALL);
+			Event ev27=new Event(27, "Miami Heat-Lakers",df.parse("18:30 12/4/2020"),df.parse("20:00 12/4/2020"),Sport.BASKETBALL);
 			Event ev28=new Event(28, "Boston Celtics-Toronto Raptors",  df.parse("15:30 16/5/2020"),df.parse("17:15 16/5/2020"),Sport.BASKETBALL);
 			Event ev29=new Event(29, "San Antonio Spurs-Houston Rockets", df.parse("18:00 17/5/2020"),df.parse("19:45 17/5/2020"),Sport.BASKETBALL);
 			Event ev30=new Event(30, "Golden State Warrions-Chicago Bulls", df.parse("15:00 25/5/2020"),df.parse("16:45 25/5/2020"),Sport.BASKETBALL);
@@ -321,8 +325,9 @@ public class DataAccessImplementation implements DataAccess {
 				q11=ev6.addQuestion("Zeinek irabaziko du partidua?",1);
 				q12=ev6.addQuestion("Golak sartuko dira lehenengo zatian?",2);
 			}
-			q1.addPrediction("Atlético", Float.valueOf((float) 2.0));
-			q1.addPrediction("Athletic", Float.valueOf((float) 2.3));
+			q1.addPrediction("Atlético", Float.valueOf((float) 1.4));
+			q1.addPrediction("X", Float.valueOf((float) 1.5));
+			q1.addPrediction("Athletic", Float.valueOf((float) 1.8));
 			q2.addPrediction("João Félix", Float.valueOf((float) 1.3));
 			q2.addPrediction("Álvaro Morata", Float.valueOf((float) 1.5));
 			q2.addPrediction("Diego Costa", Float.valueOf((float) 2.5));
@@ -370,7 +375,7 @@ public class DataAccessImplementation implements DataAccess {
 			today.set(Calendar.SECOND, 0);
 			today.set(Calendar.MILLISECOND, 0);
 
-			Profile p1 = new Profile("aaa" , "Julen", "Urroz", "testemail@gmail.com", "testaddr", "+34 688689414", Country.ES, "Zarautz",today.getTime() , "images/profilepic/palmera.png");
+			Profile p1 = new Profile("754888121A" , "Julen", "Urroz", "testemail@gmail.com", "testaddr", "+34 688689414", Country.ES, "Zarautz",today.getTime() , "images/profilepic/testprofile.png");
 			Profile p2 = new Profile("bbb","JonAnder", "Beroz", "testemail2@gmail.com", "testaddr", "+34 6478646", Country.ES, "Hondarribi", today.getTime(), "images/profilepic/smiley.png");
 			Profile p3 = new Profile("ccc","Asad", "Hayat", "testemail3@gmail.com","testaddr", "+34 7543734", Country.ES, "Donostia", today.getTime(), "images/profilepic/smiley.png");
 			Profile p4 = new Profile("a","a", "a", "a@gmail.com","testaddr", "+11 1111111", Country.CI, "a",today.getTime(), "images/profilepic/smiley.png");	
@@ -406,7 +411,18 @@ public class DataAccessImplementation implements DataAccess {
 			User u16 = new User("Antonio", "bbb", false, p16);
 			User u17 = new User("Carl", "bbb", false, p17);
 
-
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, 2020);
+			cal.set(Calendar.MONTH, 8);
+					
+			CreditCard card1 = new CreditCard("5412753456789010", cal.getTime());
+			CreditCard card2 = new CreditCard("5412753456789011", cal.getTime());
+			
+			
+			u1.addCreditCard(card1);
+			u1.addCreditCard(card2);
+			u1.setDefaultCreditCard(card1);
+			
 			db.persist(u1);
 			db.persist(u2);
 			db.persist(u3);
@@ -493,7 +509,7 @@ public class DataAccessImplementation implements DataAccess {
 	 * @return the created question, or null, or an exception
 	 * @throws QuestionAlreadyExist if the same question already exists for the event
 	 */
-	public Question createQuestion(Event event, String question, float betMinimum,List<Prediction> predicitons) throws  QuestionAlreadyExist {
+	public Question createQuestion(Event event, String question, float betMinimum,List<Prediction> predictions) throws  QuestionAlreadyExist {
 		System.out.println(">> DataAccess: createQuestion=> event= "+event+" question= "+question+" betMinimum="+betMinimum);
 		EntityManager db = createEntityManager();
 		Event ev = db.find(Event.class, event.getEventNumber());
@@ -501,10 +517,10 @@ public class DataAccessImplementation implements DataAccess {
 		if (ev.DoesQuestionExists(question)) throw new QuestionAlreadyExist(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
 
 		db.getTransaction().begin();
-		Question q = ev.addQuestion(question, betMinimum,predicitons);
 
+		Question q = ev.addQuestion(question, betMinimum, predictions);
 		db.persist(ev); // db.persist(q) not required when CascadeType.PERSIST is added in questions property of Event class
-		// @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+		
 		db.getTransaction().commit();
 		db.close();
 		return q;
@@ -671,24 +687,24 @@ public class DataAccessImplementation implements DataAccess {
 	/**
 	 * This method registers a new user in the database.
 	 * 
-	 * @param iD				ID of the new user.
+	 * @param username			username of the new user.
+	 * @param ID				National ID number of the new user.
 	 * @param password			password of the new user.
 	 * @param name				name of the new user.
 	 * @param surname			surname of the new user.
 	 * @param email				email of the new user.
 	 * @param isAdmin			whether this user has admin. privileges or not.
-	 *  
-	 * @return					the newly created User object.
+	 * 
 	 * @throws invalidID		exception thrown when there is a pre existing user with this ID in the database.
 	 */
-	public User registerUser(String iD, String password, String name, String surname, String email, String addr, String phn, 
+	public User registerUser(String username,String ID, String password, String name, String surname, String email, String addr, String phn, 
 			Country nat,String city, Date birthdt, String pic, boolean isAdmin ) throws invalidID{
 		EntityManager db = createEntityManager();
-		if(db.find(User.class, iD) != null) {throw new invalidID("This ID is taken");}
+		if(db.find(User.class, username) != null) {throw new invalidID("This username is taken");}
 
 		db.getTransaction().begin();
-		Profile p = new Profile(iD, name, surname, email, addr, phn, nat, city, birthdt, pic);
-		User u = new User(iD, password,isAdmin, p);
+		Profile p = new Profile(ID, name, surname, email, addr, phn, nat, city, birthdt, pic);
+		User u = new User(username, password,isAdmin, p);
 		db.persist(u);
 		db.persist(p);
 		db.getTransaction().commit();
@@ -697,6 +713,23 @@ public class DataAccessImplementation implements DataAccess {
 
 	}
 
+	/**
+	 *	This method updates the value of the password of the given user to the new value.
+	 * 
+	 * @param u					User to update password of
+	 * @param newpass			new value the password should be updated to
+	 * @return					true if update completes successfully, false if the new password and confirmation don't match
+	 */
+	public void updatePassword(User u, String newpass) {
+		EntityManager db = createEntityManager();
+		User user = db.find(User.class, u.getUsername());
+		db.getTransaction().begin();
+		user.setPassword(newpass);
+		db.getTransaction().commit();
+		db.close();
+	}
+	
+	
 	/**
 	 * This methods checks the validity of the credentials (id / password) inputed upon login.
 	 * @param ID			ID of the presumed user.
@@ -747,12 +780,12 @@ public class DataAccessImplementation implements DataAccess {
 				if(!casesensitive) {
 					searchtext = Character.toUpperCase(searchtext.charAt(0)) + searchtext.substring(1);
 				}
-				query = db.createQuery("SELECT u FROM User u,Profile p WHERE p." + filter.toLowerCase() + " =?1 AND u.id = p.id", User.class);
+				query = db.createQuery("SELECT u FROM User u INNER JOIN u.profile Profile WHERE u.profile." + filter.toLowerCase() + " =?1", User.class);
 				query.setParameter(1, Country.getValue(searchtext));
 			}
 			else if(filter.equals("Birthdate")) {
 				SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				query = db.createQuery("SELECT u FROM User u,Profile p WHERE p." + filter.toLowerCase() + " =?1 AND u.id = p.id", User.class);
+				query = db.createQuery("SELECT u FROM User u INNER JOIN u.profile Profile WHERE u.profile." + filter.toLowerCase() + " =?1", User.class);
 				try {
 					query.setParameter(1, df.parse(searchtext));
 				} catch (ParseException e) {
@@ -763,24 +796,48 @@ public class DataAccessImplementation implements DataAccess {
 			else {
 				filter = filter.replaceAll(" ", "");
 				String pattern = null;
-				if(casesensitive) {
-					pattern = " p." + filter.toLowerCase();
+				if(filter.equals("Username")) {
+					if(casesensitive) {
+						pattern = " u." + filter.toLowerCase();
+					}
+					else {
+						pattern = " LOWER(u." + filter.toLowerCase() + ") ";
+						searchtext = searchtext.toLowerCase();
+					}
+					if(match == 0) {
+						pattern = pattern + " = \"" + searchtext +"\"";
+					}
+					else if(match == 1) {
+						pattern = pattern +" LIKE '" + searchtext + "%'";
+					}
+					else if(match == 2) {
+						pattern = pattern + " LIKE '%" + searchtext + "%'";
+					}
+					query = db.createQuery("SELECT u FROM User u WHERE" + pattern, User.class);
+					query.setParameter(1, Country.getValue(searchtext));
 				}
 				else {
-					pattern = " LOWER(p." + filter.toLowerCase() + ") ";
-					searchtext = searchtext.toLowerCase();
-				}
+					if(casesensitive) {
+						pattern = " u.profile." + filter.toLowerCase();
+					}
+					else {
+						pattern = " LOWER(u.profile." + filter.toLowerCase() + ") ";
+						searchtext = searchtext.toLowerCase();
+					}
 
-				if(match == 0) {
-					pattern = pattern + " = \"" + searchtext +"\"";
+					if(match == 0) {
+						pattern = pattern + " = \"" + searchtext +"\"";
+					}
+					else if(match == 1) {
+						pattern = pattern +" LIKE '" + searchtext + "%'";
+					}
+					else if(match == 2) {
+						pattern = pattern + " LIKE '%" + searchtext + "%'";
+					}
+					query = db.createQuery("SELECT u FROM User u INNER JOIN u.profile Profile WHERE" + pattern, User.class);
 				}
-				else if(match == 1) {
-					pattern = pattern +" LIKE '" + searchtext + "%'";
-				}
-				else if(match == 2) {
-					pattern = pattern + " LIKE '%" + searchtext + "%'";
-				}
-				query = db.createQuery("SELECT u FROM User u, Profile p WHERE" + pattern +" AND u.id = p.id", User.class);
+				
+				
 			}
 		}
 		searchResult = query.getResultList();
@@ -797,27 +854,98 @@ public class DataAccessImplementation implements DataAccess {
 		EntityManager db = createEntityManager();
 		User u = db.find(User.class, iD);
 		db.getTransaction().begin();
-		TypedQuery<User> query = db.createQuery("DELETE FROM User user where id ="+"'"+ u.getID()+"'",User.class);
+		TypedQuery<User> query = db.createQuery("DELETE FROM User user where id ="+"'"+ u.getUsername()+"'",User.class);
 		query.executeUpdate();
 		db.getTransaction().commit();
 		db.close();
 		System.out.println(iD + " has been deleted");
 	}
 
+	
+	/**
+	 * This stores the given credit card on the database with the owner set as the given user
+	 * 
+	 * @param number	Credit card number
+	 * @param number	Credit card expiration date
+	 */
+	public void storeCreditCard(User user, CreditCard cc) {
+		EntityManager db = createEntityManager();
+		User u = db.find(User.class, user.getUsername());
+		if(u != null) {
+			db.getTransaction().begin();
+			u.addCreditCard(cc);
+			db.getTransaction().commit();
+			db.close();
+			System.out.println("Credit card: " + cc.getCardNumber() + " has been added to: " + user.getUsername());
+		}
+		else {
+			System.out.println("User not found, could not store credit card");
+		}
+	}
+	
+	/**
+	 * This method deletes the given credit card from the database
+	 * 
+	 * @param cc	CreditCard to delete
+	 */
+	public void removeCreditCard(CreditCard card) {
+		EntityManager db = createEntityManager();
+		CreditCard cc = db.find(CreditCard.class, card.getCardNumber());
+		User owner = db.find(User.class, cc.getOwner().getUsername());
+		if(cc != null) {
+			db.getTransaction().begin();
+
+			if(cc.equals(cc.getOwner().getDefaultCreditCard())) {
+				owner.setDefaultCreditCard(null);
+				owner.getCreditCards().remove(cc.getCardNumber());
+			}
+			else {
+				TypedQuery<CreditCard> query = db.createQuery("DELETE FROM CreditCard cc WHERE cardNumber ="+"'"+ cc.getCardNumber()+"'", CreditCard.class);
+				query.executeUpdate();
+			}
+			db.getTransaction().commit();
+			db.close();
+			System.out.println("Credit card: " + cc.getCardNumber() + " has been deleted");
+		}
+		else {
+			System.out.println("Credit card not found");
+		}
+	}
+	
+	/**
+	 * This method updates the default credit card value of the given user to the given credit card
+	 * 
+	 * @param user			User to update default card of
+	 * @param defaultcc		New default credit card
+	 */
+	public void updateDefaultCreditCard(User user, CreditCard defaultcc) {
+		EntityManager db = createEntityManager();
+		User u = db.find(User.class,user.getUsername());
+		CreditCard cc = db.find(CreditCard.class, defaultcc.getCardNumber());
+		if(u != null) {
+			db.getTransaction().begin();
+			u.setDefaultCreditCard(cc);
+			db.getTransaction().commit();
+			db.close();
+			user.setDefaultCreditCard(defaultcc);
+		}
+		
+	}
+	
 	/**
 	 * 
-	 * @param iD
+	 * @param username
 	 * @param name
 	 * @param surname
 	 * @param email
 	 * @param isAdmin
 	 */
-	public void updateUserInfo(String key, String iD, String name, String surname, String email, String addr, 
+	public User updateUserInfo(String key, String username, String name, String surname, String email, String addr, 
 			String phn, Country nat,String city, Date birthdt, boolean isAdmin) throws invalidID{
 		EntityManager db = createEntityManager();
-		User u = db.find(User.class, iD);
+		User u = db.find(User.class, username);
 		//check if there is an existing user for the new ID
-		if(!key.equals(iD)) {
+		if(!key.equals(username)) {
 			if(u != null) {
 				throw new invalidID();
 			}
@@ -825,8 +953,8 @@ public class DataAccessImplementation implements DataAccess {
 				u = db.find(User.class, key);
 				db.getTransaction().begin();
 				db.remove(u);
-				Profile p = new Profile(iD,name,surname,email, addr, phn, nat, city, birthdt);	
-				User w = new User(iD,u.getPassword(),isAdmin,p);
+				Profile p = new Profile(username,name,surname,email, addr, phn, nat, city, birthdt);	
+				User w = new User(username,u.getPassword(),isAdmin,p);
 				db.persist(w);
 				db.getTransaction().commit();
 			}
@@ -847,12 +975,32 @@ public class DataAccessImplementation implements DataAccess {
 			db.getTransaction().commit();
 		}
 		db.close();
-		System.out.println(iD + " has been updated");
+		System.out.println(username + " has been updated");
+		return u;
+
 	}
+	
+	/**
+	 * This method replaces the existing profile picture of the given user with the new picture.
+	 * Only the pathname of the pictures are stored
+	 * 
+	 * @param p		Profile of the user to change the profile picture of
+	 * @param path  Pathname of the file with the picture(must be .jpg or .png)
+	 */
+	public void updateProfilePic(Profile p, String path) {
+		EntityManager db = createEntityManager();
+		Profile profile = db.find(Profile.class, p);
+		
+		db.getTransaction().begin();
+		profile.setProfilepic(path);
+		db.getTransaction().commit();
+		db.close();
+	}
+	
 
 	public void recordBets(User bettor, float stake, float price, BetType type, List<Prediction> predictions){
 		EntityManager db = createEntityManager();
-		User u = db.find(User.class, bettor.getID());
+		User u = db.find(User.class, bettor.getUsername());
 		
 		List<Prediction> predictionInstances = new ArrayList<Prediction>();
 		for(Prediction pred : predictions){
@@ -972,8 +1120,8 @@ public class DataAccessImplementation implements DataAccess {
 
 	public ArrayList<Bet> getBets(User bettor){
 		EntityManager db = createEntityManager();
-		User u = db.find(User.class, bettor.getID());
-		TypedQuery<User> q1 = db.createQuery("select user FROM User user where id ="+"'"+ u.getID()+"'",User.class);
+		User u = db.find(User.class, bettor.getUsername());
+		TypedQuery<User> q1 = db.createQuery("select user FROM User user where id ="+"'"+ u.getUsername()+"'",User.class);
 		List<User> results = q1.getResultList();
 		ArrayList<Bet> bets =  results.get(0).getBets();
 		db.close();
@@ -1009,7 +1157,7 @@ public class DataAccessImplementation implements DataAccess {
 	@Override
 	public void removeBet(User bettor, Bet bet) {
 		EntityManager db = createEntityManager();
-		User u = db.find(User.class, bettor.getID());
+		User u = db.find(User.class, bettor.getUsername());
 		db.getTransaction().begin();	
 		u.removeBet(bet);
 		db.getTransaction().commit();
@@ -1038,7 +1186,7 @@ public class DataAccessImplementation implements DataAccess {
 	 */
 	public void updateUserCash(User user, float update) {
 		EntityManager db = createEntityManager();
-		User u = db.getReference(User.class, user.getID());
+		User u = db.getReference(User.class, user.getUsername());
 		db.getTransaction().begin();
 		u.setCash(u.getCash() + update);
 		db.getTransaction().commit();

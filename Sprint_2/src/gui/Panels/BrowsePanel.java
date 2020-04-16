@@ -157,7 +157,6 @@ public class BrowsePanel extends JPanel {
 
 	private BLFacade facade = MainGUI.getBusinessLogic();
 
-
 	/**
 	 * Create the panel.
 	 */
@@ -344,9 +343,6 @@ public class BrowsePanel extends JPanel {
 		gbc_bettingPanel.gridy = 1;
 		couponPanel.add(bettingPanel, gbc_bettingPanel);
 
-
-
-
 		multibetButton = new FancyButton(ResourceBundle.getBundle("Etiquetas").getString("ShowMultipleBetOptions"), new Color(210,210,210),new Color(169,169,169),new Color(130, 130, 130)) {
 			@Override
 			public Dimension getMaximumSize()
@@ -383,8 +379,6 @@ public class BrowsePanel extends JPanel {
 			}
 		});
 
-
-
 		betScrollPane = new JScrollPane(){
 			@Override
 			public Dimension getMinimumSize()
@@ -398,8 +392,6 @@ public class BrowsePanel extends JPanel {
 		betScrollPane.setViewportView(betPane);
 		//betScrollPane.setBorder(null);
 		//betScrollPane.getVerticalScrollBar().setUI(new MyScrollBarUI());
-
-
 
 		multibetScrollPanel = new JScrollPane();
 
@@ -1589,8 +1581,8 @@ public class BrowsePanel extends JPanel {
 					setWinnings(bd);
 				}
 				catch(NumberFormatException n) {
-					setStake(minbet);
-					setWinnings(minbet);
+					setStake(new BigDecimal(0));
+					setWinnings(new BigDecimal(0));
 				}
 				calcTotalBetValues();	
 				globalStakeTextField.getDocument().addDocumentListener(allStakeListener);
@@ -1606,8 +1598,8 @@ public class BrowsePanel extends JPanel {
 					setWinnings(bd);
 				}
 				catch(NumberFormatException n) {
-					setStake(minbet);
-					setWinnings(minbet);
+					setStake(new BigDecimal(0));
+					setWinnings(new BigDecimal(0));
 				}
 				calcTotalBetValues();
 				globalStakeTextField.getDocument().addDocumentListener(allStakeListener);
@@ -1623,8 +1615,8 @@ public class BrowsePanel extends JPanel {
 					setWinnings(bd);
 				}
 				catch(NumberFormatException n) {
-					setStake(minbet);
-					setWinnings(minbet);
+					setStake(new BigDecimal(0));
+					setWinnings(new BigDecimal(0));
 				}
 				calcTotalBetValues();
 				globalStakeTextField.getDocument().addDocumentListener(allStakeListener);

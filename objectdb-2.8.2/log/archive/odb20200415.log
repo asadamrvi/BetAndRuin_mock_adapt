@@ -1,0 +1,28 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-15 14:24:15 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-11)
+
+[2020-04-15 14:24:15 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 3700@DESKTOP-00OS7EM
+
+[2020-04-15 14:24:15 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-15 14:27:43 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 3700@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-04-15 23:52:38 #1 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' has been recovered (tr. 1-9)
+
+[2020-04-15 23:52:38 #2 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is opened by 13216@DESKTOP-00OS7EM
+
+[2020-04-15 23:52:38 #3 store] 
+Configuration path: C:\Users\Usuario\git\Sprint_2\objectdb-2.8.2\objectdb.conf
+
+[2020-04-15 23:53:16 #4 store] 
+Database 'C:\Users\Usuario\git\Sprint_2\Sprint_2\resources\bets.temp' is closed by 13216@DESKTOP-00OS7EM
+
