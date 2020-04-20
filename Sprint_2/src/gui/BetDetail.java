@@ -33,20 +33,6 @@ public class BetDetail extends JDialog {
 	private JTable table;
 	private DefaultTableModel TableModel;
 
-
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			BetDetail dialog = new BetDetail();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 	/**
 	 * Create the dialog.
 	 */
@@ -94,7 +80,7 @@ public class BetDetail extends JDialog {
 		JTextArea StaketextArea = new JTextArea();
 		StaketextArea.setEditable(false);
 		StaketextArea.setBorder(border);
-		StaketextArea.setText(Float.toString(bet.getAmount()));
+		StaketextArea.setText(Float.toString(bet.getStake()));
 		StaketextArea.setBounds(138, 114, 118, 22);
 		contentPanel.add(StaketextArea);
 		

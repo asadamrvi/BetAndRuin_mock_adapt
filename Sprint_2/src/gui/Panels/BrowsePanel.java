@@ -447,6 +447,7 @@ public class BrowsePanel extends JPanel {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()) {//This line prevents double events
 				int i=tableEvents.getSelectedRow();
 				if(i != -1) {
 					domain.Event ev=(domain.Event)tableModelEvents.getValueAt(i,4); // obtain ev object
@@ -477,13 +478,10 @@ public class BrowsePanel extends JPanel {
 					tableQueries.getColumnModel().removeColumn(tableQueries.getColumnModel().getColumn(3));
 				}
 				
-
+				}
 			}
 		});
 
-		/*
-
-		 */
 		scrollPaneEvents.setViewportView(tableEvents);
 
 		tableModelEvents = new NonEditableTableModel(null, columnNamesEvents);
@@ -708,7 +706,6 @@ public class BrowsePanel extends JPanel {
 							addToCouponButton.setEnabled(false);
 							addToCouponButton.setText(ResourceBundle.getBundle("Etiquetas").getString("MaximumAmountReached"));
 						}
-
 					}					
 				}	
 			}
@@ -799,7 +796,9 @@ public class BrowsePanel extends JPanel {
 						answerComboBox.addItem(item);
 					}
 				}
-				addToCouponButton.setEnabled(true);
+				if(selectedpredictions.size() < 10) {
+					addToCouponButton.setEnabled(true);
+				}
 			}
 		}
 		else {
@@ -821,7 +820,7 @@ public class BrowsePanel extends JPanel {
 	}
 
 	/**
-	 * Calculates the addition of all individual possible winnings of each bet nad the total price.
+	 * Calculates the addition of all individual possible winnings of each bet and the total price.
 	 */
 	public void calcTotalBetValues() {
 		double winnings = 0;
@@ -888,14 +887,15 @@ public class BrowsePanel extends JPanel {
 			if(comp != null) {
 				for(Event e: comp.getEvents()) {
 					System.out.println(e.toString());
-					//Date date = e.getEventDate();
-					if(df2.format(e.getEventDate()).equals(df2.format(jCalendar1.getDate()))) {
+					
+					//only display the events for the selected day if this hasn't passed yet
+					if(df2.format(e.getEventDate()).equals(df2.format(jCalendar1.getDate())) && e.getEndingdate().compareTo(new Date())>=0) {
 						Vector<Object> row = new Vector<Object>();
 						System.out.println("Events "+e);
 
 						row.add(e.getEventNumber());
 						row.add(e.getDescription());
-						row.add(df1.format(e.getEventdate()));
+						row.add(df1.format(e.getEventDate()));
 						row.add(df1.format(e.getEndingdate()));
 						row.add(e); // ev object added in order to obtain it with tableModelEvents.getValueAt(i,4)
 						tableModelEvents.addRow(row);				
@@ -949,7 +949,7 @@ public class BrowsePanel extends JPanel {
 	public void generateMultiBetOptions() {
 		multibetPanel.removeAll();
 		int multivalidcount = selectedevents.size();
-		int[] combinations = computeMultiBets(selectedevents);
+		int[] combinations = facade.computeMultiBets(selectedevents);
 		if( betPane.getComponents().length > multivalidcount && multivalidcount > 1) {
 			errorlabel.setText("Multi betting options have been restricted");
 			errorlabel.setVisible(true);
@@ -1087,13 +1087,13 @@ public class BrowsePanel extends JPanel {
 					temp.add(nextprediction);
 					pred.add(nextprediction);
 					if(((BetPanel)c).getStake().intValue() > 0) {								
-						facade.placeBets(((BetPanel)c).getStake().floatValue(),((BetPanel)c).getStake().floatValue(), BetType.SINGLE, temp);
+						facade.placeBet(((BetPanel)c).getStake().floatValue(),((BetPanel)c).getStake().floatValue(), BetType.SINGLE, temp);
 					}
 				}
 				//MULTIPLE
 				for(Component c: multibetPanel.getComponents()) {
 					if(((multibetOption)c).getStake() > 0) {						
-						facade.placeBets(((multibetOption)c).getStake(),((multibetOption)c).getPrice(), ((multibetOption)c).getType(), pred);
+						facade.placeBet(((multibetOption)c).getStake(),((multibetOption)c).getPrice(), ((multibetOption)c).getType(), pred);
 					}
 				}
 				JOptionPane.showMessageDialog(null, "Bets placed sucesfully");
@@ -1108,71 +1108,7 @@ public class BrowsePanel extends JPanel {
 
 	/**
 	 * 
-	 */
-	public int[] computeMultiBets(Map<Event, List<Prediction>> map) {
-		int current = 1;
-		int i;
-		int combinationsum = 0;
-		int[] result = new int[map.size()];
-		List<Pair> comblist = new ArrayList<Pair>();
-		Object[] keyset = map.keySet().toArray();
-		for(i=1 ; i <= map.size(); i++) {
-			comblist.add(new Pair(i, map.get(keyset[i-1]).size()));
-		}
-		while(current <= map.size()) {
-			List<Pair> temp = new ArrayList<Pair>();
-			combinationsum=0;
-			for(Pair p: comblist) {	
-				int last = p.getList().get(p.getList().size()-1);
-				for(i=last+1; i<=map.size(); i++) {
-					Pair nextpair = new Pair(p,i,map.get(keyset[i-1]).size());
-					temp.add(nextpair);	
-					combinationsum += nextpair.getCombinations();
-				}	
-			}
-			comblist = new ArrayList<Pair>(temp);
-			result[current-1]=combinationsum;
-
-			current++;
-		}
-		return result;
-	}
-
-	/**
-	 * Auxiliary class for computeMultiBets
-	 */
-	public class Pair{
-		private ArrayList<Integer> list;
-		private int combinations;
-
-		public Pair( int i, int size) {
-			list = new ArrayList<Integer>();
-			list.add(i);
-			combinations = size;
-		}
-
-		public Pair(Pair p, int i, int size) {
-			list = new ArrayList<Integer>(p.getList());
-			list.add(i);
-			combinations = p.getCombinations()*size;
-		}
-
-		public ArrayList<Integer> getList(){
-			return list;
-		}
-
-		public int getCombinations() {
-			return combinations;
-		}
-
-		public String toString() {
-			String s = "";
-			for(Integer i : list) {
-				s = s + String.valueOf(i);
-			}
-			return s;
-		}
-	}
+	
 
 
 	public class multiBetListener implements DocumentListener {

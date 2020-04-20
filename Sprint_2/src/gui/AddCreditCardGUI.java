@@ -179,17 +179,14 @@ public class AddCreditCardGUI extends JDialog {
 					||	monthTextField.getText().equals("") || yearTextField.getText().equals("") || securityCodeTextField.getText().equals("")) {
 					valid = false;
 					fillAllAreasLabel.setVisible(true);	
-					System.out.println("aaaa");
 				}
-				else if(cardtype.equals(CardType.UNKNOWN)) {
+				else if(cardtype.equals(CardType.UNKNOWN) || !isValid(cardnumber)) {
 					valid = false;
 					cardErrorLabel.setVisible(true);
-					System.out.println("bbbb");
 				}
 				else if(monthTextField.getInt()<1 || monthTextField.getInt()>12 || yearTextField.getInt()<20 || yearTextField.getInt() > 21) {
 					valid = false;
 					dateErrorLabel.setVisible(true);
-					System.out.println("cccc");	
 				}
 				System.out.println(valid);
 				if(valid) {
@@ -244,6 +241,23 @@ public class AddCreditCardGUI extends JDialog {
 		back.setBounds(0,0,551,442);
 		contentPane.add(back);
 
+	}
+	
+	public boolean isValid(String cardNumber) {
+	    int sum = 0;
+	    boolean alternate = false;
+	    for (int i = cardNumber.length() - 1; i >= 0; i--) {
+	        int n = Integer.parseInt(cardNumber.substring(i, i + 1));
+	        if (alternate) {
+	            n *= 2;
+	            if (n > 9) {
+	                n = (n % 10) + 1;
+	            }
+	        }
+	        sum += n;
+	        alternate = !alternate;
+	    }
+	    return (sum % 10 == 0);
 	}
 	
 	public class numberListener implements DocumentListener{

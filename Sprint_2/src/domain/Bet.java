@@ -24,13 +24,7 @@ public class Bet implements Serializable{
 	@GeneratedValue
 	private Integer betNumber;
 	
-	public float getStake() {
-		return stake;
-	}
 
-	public void setStake(float stake) {
-		this.stake = stake;
-	}
 
 	@XmlIDREF
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -39,7 +33,9 @@ public class Bet implements Serializable{
 	private Status status;
 	private float stake;
 	private Date placementdate;
+	private Date startingdate;
 	private Date resolvingdate;
+	private float winnings;
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	private List<Prediction> predictions;
@@ -53,6 +49,17 @@ public class Bet implements Serializable{
 		this.type = type;
 		this.predictions = predictions;
 		this.status = Status.ONGOING;
+		
+		//stating date is set to the starting date of the closest even in time
+		if(predictions.size() > 0) {
+			this.startingdate = predictions.get(0).getQuestion().getEvent().getEventDate();
+			for(Prediction p : predictions) {
+				Event e = p.getQuestion().getEvent();
+				if(e.getEventDate().compareTo(startingdate) < 0) {
+					startingdate = e.getEventDate();
+				}
+			}
+		}
 		this.placementdate = new Date();
 		this.setResolvingdate(latestPredictionDate(predictions));
 	}
@@ -61,12 +68,12 @@ public class Bet implements Serializable{
 		this.bettor = user;
 	}
 
-	public float getAmount() {
+	public float getStake() {
 		return stake;
 	}
 
-	public void setAmount(float amount) {
-		this.stake = amount;
+	public void setStake(float stake) {
+		this.stake = stake;
 	}
 
 	public Integer getBetNumber() {
@@ -100,6 +107,14 @@ public class Bet implements Serializable{
 	public void setPlacementdate(Date placementdate) {
 		this.placementdate = placementdate;
 	}
+	
+	public Date getStartingDate() {
+		return startingdate;
+	}
+ 
+	public void setStartingDate(Date startingdate) {
+		this.startingdate = startingdate;
+	}
 
 	public Date getResolvingdate() {
 		return resolvingdate;
@@ -123,6 +138,14 @@ public class Bet implements Serializable{
 
 	public User getBettor() {
 		return bettor;
+	}
+	
+	public float getWinnings() {
+		return winnings;
+	}
+	
+	public void setWinnings(float winnings) {
+		this.winnings = winnings;
 	}
 	
 	/**

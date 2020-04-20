@@ -39,12 +39,12 @@ public class User{
 	private boolean isAdmin;
 	private float cash;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "owner", orphanRemoval = true)
 	private CreditCard defaultcard;
 	private Date registrationdate;
 	private Date lastlogin;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user", orphanRemoval = true)
 	private Profile profile;
 
 	@OneToMany(fetch=FetchType.EAGER)
@@ -53,7 +53,7 @@ public class User{
 	@ElementCollection
 	@CollectionTable(name="CreditCard")
 	@MapKeyColumn(name="cardNumber")
-	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL , orphanRemoval = true)
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "owner", orphanRemoval = true)
 	private Map<String,CreditCard> creditcards;
 
 	public User(String username, String password, boolean isAdmin, Profile p) {
@@ -65,6 +65,8 @@ public class User{
 		this.bets = new ArrayList<Bet>();
 		this.registrationdate = new Date();
 		this.cash = 9999;  
+		this.creditcards = new HashMap<String, CreditCard>();
+		setProfile(p);
 	}
 
 	public String getUsername() {
@@ -88,6 +90,7 @@ public class User{
 	}
 	
 	public void setProfile(Profile p) {
+		p.setUser(this);
 		this.profile = p;
 	}
 

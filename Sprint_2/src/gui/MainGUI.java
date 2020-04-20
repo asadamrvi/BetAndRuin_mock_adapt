@@ -24,10 +24,9 @@ import gui.Panels.CreateQuestionPanel;
 import gui.Panels.FeedbackPanel;
 import gui.Panels.FeedbackResponsePanel;
 import gui.Panels.HomePanel;
+import gui.Panels.MyBetsPanel;
 import gui.Panels.ProfilePanel;
-import gui.Panels.ProfilePanel2;
-import gui.Panels.SettingsPanel;
-import gui.Panels.userManagementPanel;
+import gui.Panels.UserManagementPanel;
 import gui.components.Clock;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -48,6 +47,7 @@ import javax.swing.JOptionPane;
 import java.awt.CardLayout;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
+import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
 public class MainGUI extends JFrame {
@@ -76,6 +76,7 @@ public class MainGUI extends JFrame {
 
 	//JPanel
 	private JPanel contentPane;
+	private JPanel containerPanel;
 	private JPanel currentPanel;
 	private JPanel menuPanel;
 	//private JPanel profilepicPanel;
@@ -95,7 +96,7 @@ public class MainGUI extends JFrame {
 	//JButton
 	private JButton userManagementButton;
 	private JButton createQuestionButton;
-	private JButton settingsButton;
+	private JButton myBetsButton;
 	private JButton profileButton; 
 	private JButton browseButton;
 	private JButton homeButton;
@@ -103,7 +104,7 @@ public class MainGUI extends JFrame {
 	private JButton loginButton;
 	private JButton logoutButton;
 	private JButton addcashButton;
-	private JButton menuButton;
+	private JButton dashboardButton;
 	private JButton feedbackButton;
 
 
@@ -117,10 +118,14 @@ public class MainGUI extends JFrame {
 	private JLabel cashLabel;
 	private JLabel bottomImgLabel;
 
+	boolean menuhidden = false;
+
 	/**
 	 * Create the frame.
 	 */
 	public MainGUI(BLFacade blogic) {
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		setTitle("BET & RUIN");
 
 		//will need to be removed for remote
@@ -141,7 +146,7 @@ public class MainGUI extends JFrame {
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{150, 200, 273, 0};
 		gbl_contentPane.rowHeights = new int[]{76, 534, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 
@@ -149,6 +154,7 @@ public class MainGUI extends JFrame {
 		topPanel.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		topPanel.setBackground(new Color(0, 0, 0));
 		GridBagConstraints gbc_topPanel = new GridBagConstraints();
+		gbc_topPanel.insets = new Insets(0, 0, 0, 0);
 		gbc_topPanel.gridwidth = 3;
 		gbc_topPanel.fill = GridBagConstraints.BOTH;
 		gbc_topPanel.gridx = 0;
@@ -160,6 +166,24 @@ public class MainGUI extends JFrame {
 		gbl_topPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_topPanel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		topPanel.setLayout(gbl_topPanel);
+
+		menuPanel = new JPanel();
+		menuPanel.setMaximumSize(new Dimension(181,Integer.MAX_VALUE));
+		menuPanel.setPreferredSize(new Dimension(181,Integer.MAX_VALUE));
+		menuPanel.setMinimumSize(new Dimension(181,Integer.MAX_VALUE));
+		menuPanel.setBackground(new Color(51, 51, 51));
+		menuPanel.setBorder(null);
+
+		GridBagLayout gbl_menuPanel = new GridBagLayout();
+		gbl_menuPanel.columnWidths = new int[] {8, 155};
+		gbl_menuPanel.rowHeights = new int[]{40, 166, 20, 0};
+		gbl_menuPanel.columnWeights = new double[]{0.0, 0.0};
+		gbl_menuPanel.rowWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
+		menuPanel.setLayout(gbl_menuPanel);
+
+		containerPanel = new JPanel();
+		containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.X_AXIS));
+		containerPanel.add(menuPanel);	
 
 		layeredPane = new JLayeredPane();
 		GridBagConstraints gbc_layeredPane = new GridBagConstraints();
@@ -272,23 +296,23 @@ public class MainGUI extends JFrame {
 		unloggedPanel.setBounds(10, 0, 355, 71);
 		layeredPane.add(unloggedPanel);
 		unloggedPanel.setLayout(null);
-		
-				loginButton = new JButton("Login");
-				loginButton.setBorderPainted(false);
-				loginButton.setFocusPainted(false);
-				loginButton.setIcon(new ImageIcon("images/login.png"));
-				loginButton.setFont(new Font("Source Code Pro Medium", Font.BOLD, 14));
-				loginButton.setBackground(new Color(0, 0, 0));
-				loginButton.setForeground(new Color(255, 255, 255));
-				loginButton.setBounds(60, 0, 146, 71);
-				unloggedPanel.add(loginButton);
-				loginButton.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						JDialog d = new LoginGUI();
-						d.setVisible(true);		
-					}
-				});
+
+		loginButton = new JButton("Login");
+		loginButton.setBorderPainted(false);
+		loginButton.setFocusPainted(false);
+		loginButton.setIcon(new ImageIcon("images/login.png"));
+		loginButton.setFont(new Font("Source Code Pro Medium", Font.BOLD, 14));
+		loginButton.setBackground(new Color(0, 0, 0));
+		loginButton.setForeground(new Color(255, 255, 255));
+		loginButton.setBounds(60, 0, 146, 71);
+		unloggedPanel.add(loginButton);
+		loginButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JDialog d = new LoginGUI();
+				d.setVisible(true);		
+			}
+		});
 
 		registerButton = new JButton("Register");
 		registerButton.setForeground(new Color(255, 255, 255));
@@ -308,39 +332,174 @@ public class MainGUI extends JFrame {
 		});
 		loggedPanel.setEnabled(false);
 
-		menuPanel = new JPanel();
-		GridBagConstraints gbc_menuPanel = new GridBagConstraints();
-		gbc_menuPanel.fill = GridBagConstraints.BOTH;
-		gbc_menuPanel.gridx = 0;
-		gbc_menuPanel.gridy = 1;
-		contentPane.add(menuPanel, gbc_menuPanel);
-		menuPanel.setBackground(new Color(51, 51, 51));
-		menuPanel.setBorder(null);
-		GridBagLayout gbl_menuPanel = new GridBagLayout();
-		gbl_menuPanel.columnWidths = new int[] {40, 148};
-		gbl_menuPanel.rowHeights = new int[]{40, 41, 41, 41, 41, 41, 41, 0, 40, 166, 20, 0};
-		gbl_menuPanel.columnWeights = new double[]{0.0, 0.0};
-		gbl_menuPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		menuPanel.setLayout(gbl_menuPanel);
+
+		GridBagConstraints gbc_containerPanel = new GridBagConstraints();
+		gbc_containerPanel.gridwidth = 3;
+		gbc_containerPanel.insets = new Insets(0, 0, 0, 0);
+		gbc_containerPanel.fill = GridBagConstraints.BOTH;
+		gbc_containerPanel.gridx = 0;
+		gbc_containerPanel.gridy = 1;
+		contentPane.add(containerPanel, gbc_containerPanel);
+		
+		menubuttonsPanel = new JPanel();
+		menubuttonsPanel.setLayout(new BoxLayout(menubuttonsPanel, BoxLayout.Y_AXIS));
+		menubuttonsPanel.setBackground(new Color(51,51,51));
+		GridBagConstraints gbc_menubuttonsPanel = new GridBagConstraints();
+		gbc_menubuttonsPanel.gridwidth = 2;
+		gbc_menubuttonsPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_menubuttonsPanel.fill = GridBagConstraints.BOTH;
+		gbc_menubuttonsPanel.gridx = 0;
+		gbc_menubuttonsPanel.gridy = 0;
+		menuPanel.add(menubuttonsPanel, gbc_menubuttonsPanel);
+
+
+		bottomImgLabel = new JLabel(randomSilouette());
+		bottomImgLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_bottomImgLabel = new GridBagConstraints();
+		gbc_bottomImgLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_bottomImgLabel.gridx = 1;
+		gbc_bottomImgLabel.gridy = 1;
+		menuPanel.add(bottomImgLabel, gbc_bottomImgLabel);
 
 		currentPanel = new JPanel();
-		GridBagConstraints gbc_currentPanel = new GridBagConstraints();
-		gbc_currentPanel.fill = GridBagConstraints.BOTH;
-		gbc_currentPanel.gridwidth = 2;
-		gbc_currentPanel.gridx = 1;
-		gbc_currentPanel.gridy = 1;
-		contentPane.add(currentPanel, gbc_currentPanel);
+		containerPanel.add(currentPanel);
 		currentPanel.setBackground(Color.WHITE);
 		currentPanel.setLayout(new CardLayout(0, 0));
-
-		menuButton = new MenuButton("Dashboard", new ImageIcon("images/menu.png"));
+		currentPanel.setPreferredSize(new Dimension(600,400));
+		currentPanel.setMinimumSize(new Dimension(600,400));
+		
+		dashboardButton = new MenuButton("Dashboard", new ImageIcon("images/menu.png"));
 		GridBagConstraints gbc_menuButton = new GridBagConstraints();
 		gbc_menuButton.insets = new Insets(0, 0, 0, 0);
 		gbc_menuButton.fill = GridBagConstraints.BOTH;
 		gbc_menuButton.gridwidth = 2;
 		gbc_menuButton.gridx = 0;
 		gbc_menuButton.gridy = 0;
-		menuPanel.add(menuButton, gbc_menuButton);
+
+		dashboardButton.addActionListener(new ActionListener() {
+				@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Timer t = new Timer(1, new ActionListener() {
+
+					public void actionPerformed(ActionEvent evt) {
+						int width = menuPanel.getWidth();
+						double w = currentPanel.getPreferredSize().getWidth();
+						double h = currentPanel.getPreferredSize().getHeight();
+
+						if(!menuhidden) {
+							bottomImgLabel.setVisible(false);
+							width-=4;
+							menuPanel.setSize(new Dimension(width,Integer.MAX_VALUE));
+							menuPanel.setPreferredSize(new Dimension(width,Integer.MAX_VALUE));
+							menuPanel.setMaximumSize(new Dimension(width,Integer.MAX_VALUE));
+
+							w-=4;
+							currentPanel.setPreferredSize(new Dimension((int)w,(int)h));
+							currentPanel.setMinimumSize(new Dimension((int)w,(int)h));
+
+							menuPanel.repaint();
+							menuPanel.revalidate();
+							currentPanel.repaint(); 
+							currentPanel.revalidate();
+
+							if(width<=64) {
+
+								menuhidden = true;
+								((Timer)evt.getSource()).stop();
+							}
+						}	
+						else {
+							bottomImgLabel.setVisible(true);
+							width+=4;
+							menuPanel.setSize(new Dimension(width,Integer.MAX_VALUE));
+							menuPanel.setPreferredSize(new Dimension(width,Integer.MAX_VALUE));
+							menuPanel.setMaximumSize(new Dimension(width,Integer.MAX_VALUE));
+
+							w+=4;
+							currentPanel.setPreferredSize(new Dimension((int)w,(int)h));
+							currentPanel.setMinimumSize(new Dimension((int)w,(int)h));
+
+							menuPanel.repaint();
+							menuPanel.revalidate();
+							currentPanel.repaint();
+							currentPanel.revalidate();
+							
+							if(width>=180) {
+
+								menuhidden = false;
+								((Timer)evt.getSource()).stop();
+							}
+						}
+
+					}
+				});
+				t.start();
+			}
+		});
+
+/*
+			 public void actionPerformed(ActionEvent evt) {
+				Thread t = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							int width = menuPanel.getWidth();
+							double w = currentPanel.getPreferredSize().getWidth();
+							double h = currentPanel.getPreferredSize().getHeight();
+
+							if(!menuhidden) {
+								bottomImgLabel.setVisible(false);
+								for(int i=width;i>60;i--) {
+									menuPanel.setSize(new Dimension(i,Integer.MAX_VALUE));
+									menuPanel.setPreferredSize(new Dimension(i,Integer.MAX_VALUE));
+									menuPanel.setMaximumSize(new Dimension(i,Integer.MAX_VALUE));
+
+									w--;
+									currentPanel.setPreferredSize(new Dimension((int)w,(int)h));
+									currentPanel.setMinimumSize(new Dimension((int)w,(int)h));
+
+									menuPanel.repaint();
+									menuPanel.revalidate();
+									if(i%2 == 0) {
+										Thread.sleep(1);
+									}
+
+								}	
+
+							}
+							else {
+								bottomImgLabel.setVisible(true);
+								for(int i=width;i<181;i++) {
+									menuPanel.setSize(new Dimension(i,Integer.MAX_VALUE));
+									menuPanel.setPreferredSize(new Dimension(i,Integer.MAX_VALUE));
+									menuPanel.setMaximumSize(new Dimension(i,Integer.MAX_VALUE));
+
+									w++;
+									currentPanel.setPreferredSize(new Dimension((int)w,(int)h));
+									currentPanel.setMinimumSize(new Dimension((int)w,(int)h));
+
+									menuPanel.repaint();
+									menuPanel.revalidate();
+									if(i%2 == 0) {
+										Thread.sleep(1);
+									}
+								}
+							}
+							menuhidden = !menuhidden;
+						}
+						catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}//run
+				});
+				t.setDaemon(true);
+				t.start();
+			}
+
+		});	
+*/
 
 		homeButton = new MenuButton("Home", new ImageIcon("images/home1.png"));
 		GridBagConstraints gbc_homeButton = new GridBagConstraints();
@@ -349,7 +508,6 @@ public class MainGUI extends JFrame {
 		gbc_homeButton.fill = GridBagConstraints.BOTH;
 		gbc_homeButton.gridx = 0;
 		gbc_homeButton.gridy = 1;
-		menuPanel.add(homeButton, gbc_homeButton);
 		homeButton.addActionListener(menuAction);
 
 		browseButton = new MenuButton("Browse", new ImageIcon("images/browse.png"));
@@ -359,26 +517,16 @@ public class MainGUI extends JFrame {
 		gbc_browseButton.fill = GridBagConstraints.BOTH;
 		gbc_browseButton.gridx = 0;
 		gbc_browseButton.gridy = 2;
-		menuPanel.add(browseButton, gbc_browseButton);
 		browseButton.addActionListener(menuAction);
 
-		settingsButton = new MenuButton("Settings", new ImageIcon("images/settings.png"));
+		myBetsButton = new MenuButton("My bets", new ImageIcon("images/myBets.png"));
 		GridBagConstraints gbc_settingsButton = new GridBagConstraints();
 		gbc_settingsButton.insets = new Insets(0, 0, 0, 0);
 		gbc_settingsButton.fill = GridBagConstraints.BOTH;
 		gbc_settingsButton.gridwidth = 2;
 		gbc_settingsButton.gridx = 0;
 		gbc_settingsButton.gridy = 3;
-		menuPanel.add(settingsButton, gbc_settingsButton);
-		settingsButton.addActionListener(menuAction);
-
-		homeButton.setEnabled(true);
-		homeButton.setVisible(true);
-		browseButton.setEnabled(true);
-		browseButton.setVisible(true);
-		settingsButton.setVisible(true);
-		settingsButton.setVisible(true);
-		loggedPanel.setVisible(false);
+		myBetsButton.addActionListener(menuAction);
 
 		feedbackButton = new MenuButton("Feedback", new ImageIcon("images/feedback1.png"));
 		GridBagConstraints gbc_feedbackButton = new GridBagConstraints();
@@ -387,7 +535,6 @@ public class MainGUI extends JFrame {
 		gbc_feedbackButton.fill = GridBagConstraints.BOTH;
 		gbc_feedbackButton.gridx = 0;
 		gbc_feedbackButton.gridy = 4;
-		menuPanel.add(feedbackButton, gbc_feedbackButton);		
 		feedbackButton.addActionListener(menuAction);
 
 		profileButton = new MenuButton("Profile\r\n", new ImageIcon("images/profileicon.png"));
@@ -398,7 +545,6 @@ public class MainGUI extends JFrame {
 		gbc_profileButton.gridwidth = 3;
 		gbc_profileButton.gridx = 0;
 		gbc_profileButton.gridy = 5;
-		menuPanel.add(profileButton, gbc_profileButton);
 		profileButton.addActionListener(menuAction);
 
 		createQuestionButton = new MenuButton("<html><left>  Create<br>  question</left></html>", new ImageIcon("images/create_question.png"));	
@@ -408,7 +554,6 @@ public class MainGUI extends JFrame {
 		gbc_createQuestionButton.gridwidth = 3;
 		gbc_createQuestionButton.gridx = 0;
 		gbc_createQuestionButton.gridy = 6;
-		menuPanel.add(createQuestionButton, gbc_createQuestionButton);
 		createQuestionButton.addActionListener(menuAction);
 
 		userManagementButton = new MenuButton("<html><left>  User<br>  management</left></html>", new ImageIcon("images/user_management.png"));
@@ -418,22 +563,37 @@ public class MainGUI extends JFrame {
 		gbc_userManagementButton.gridwidth = 3;
 		gbc_userManagementButton.gridx = 0;
 		gbc_userManagementButton.gridy = 7;
-		menuPanel.add(userManagementButton, gbc_userManagementButton);
 		userManagementButton.addActionListener(menuAction);		
+
+
+		Dimension menubuttonDimension = new Dimension(181,50);
+		dashboardButton.setMinimumSize(menubuttonDimension);
+		dashboardButton.setPreferredSize(menubuttonDimension);
+		dashboardButton.setMaximumSize(menubuttonDimension);
+		dashboardButton.setPreferredSize(menubuttonDimension);
+		homeButton.setMaximumSize(menubuttonDimension);
+		homeButton.setPreferredSize(menubuttonDimension);
+		browseButton.setMaximumSize(menubuttonDimension);
+		browseButton.setPreferredSize(menubuttonDimension);
+		myBetsButton.setMaximumSize(menubuttonDimension);
+		myBetsButton.setPreferredSize(menubuttonDimension);
+		feedbackButton.setMaximumSize(menubuttonDimension);
+		feedbackButton.setPreferredSize(menubuttonDimension);
+		profileButton.setMaximumSize(menubuttonDimension);
+		profileButton.setPreferredSize(menubuttonDimension);
+		createQuestionButton.setMaximumSize(menubuttonDimension);
+		createQuestionButton.setPreferredSize(menubuttonDimension);
+		userManagementButton.setMaximumSize(menubuttonDimension);
+		userManagementButton.setPreferredSize(menubuttonDimension);
+
 
 		//menubuttons.put(homeButton,new HomePanel());
 		resetPanels();		
 
-		bottomImgLabel = new JLabel(randomSilouette());
-		bottomImgLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_bottomImgLabel = new GridBagConstraints();
-		gbc_bottomImgLabel.gridwidth = 2;
-		gbc_bottomImgLabel.gridx = 0;
-		gbc_bottomImgLabel.gridy = 9;
-		menuPanel.add(bottomImgLabel, gbc_bottomImgLabel);
-
 		//initialise on visitor view
 		visitorView();
+		currentPanel.repaint(); 
+		currentPanel.revalidate();
 	}
 
 	/*
@@ -453,17 +613,18 @@ public class MainGUI extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Displays the elements on screen that a regular user should be able to see/interact with.
 	 */
 	public void userView() {
-		profileButton.setEnabled(true);
-		profileButton.setVisible(true);
-		userManagementButton.setEnabled(false);
-		userManagementButton.setVisible(false);
-		createQuestionButton.setEnabled(false);
-		createQuestionButton.setVisible(false);
+		menubuttonsPanel.removeAll();
+		menubuttonsPanel.add(dashboardButton);
+		menubuttonsPanel.add(homeButton);
+		menubuttonsPanel.add(browseButton);
+		menubuttonsPanel.add(myBetsButton);
+		menubuttonsPanel.add(profileButton);
+		menubuttonsPanel.add(feedbackButton);
 
 
 		unloggedPanel.setEnabled(false);
@@ -487,12 +648,15 @@ public class MainGUI extends JFrame {
 	 * Displays the elements on screen that an admin should be able to see/interact with.
 	 */
 	public void adminView() {
-		profileButton.setEnabled(true);
-		profileButton.setVisible(true);
-		userManagementButton.setEnabled(true);
-		userManagementButton.setVisible(true);
-		createQuestionButton.setEnabled(true);
-		createQuestionButton.setVisible(true);
+		menubuttonsPanel.removeAll();
+		menubuttonsPanel.add(dashboardButton);
+		menubuttonsPanel.add(homeButton);
+		menubuttonsPanel.add(browseButton);
+		menubuttonsPanel.add(myBetsButton);
+		menubuttonsPanel.add(profileButton);
+		menubuttonsPanel.add(createQuestionButton);
+		menubuttonsPanel.add(userManagementButton);
+		menubuttonsPanel.add(feedbackButton);
 
 		unloggedPanel.setEnabled(false);
 		unloggedPanel.setVisible(false);
@@ -500,12 +664,10 @@ public class MainGUI extends JFrame {
 		loggedPanel.setVisible(true);
 
 		menubuttons.put(feedbackButton, new FeedbackResponsePanel());
-		Profile p = appFacadeInterface.getProfile();
 		usernameLabel.setText(appFacadeInterface.getUsername());
 		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
-		
+
 		refreshProfilePic();
-		//profilepicLabel.setIcon(new ImageIcon(p.getProfilepic()));
 
 		currentPanel.removeAll();
 		currentPanel.add(menubuttons.get(homeButton));	
@@ -518,12 +680,11 @@ public class MainGUI extends JFrame {
 	 * Displays the elements on screen that a logged out visitor should be able to see/interact with.
 	 */
 	public void visitorView() {
-		profileButton.setEnabled(false);
-		profileButton.setVisible(false);
-		userManagementButton.setEnabled(false);
-		userManagementButton.setVisible(false);
-		createQuestionButton.setEnabled(false);
-		createQuestionButton.setVisible(false);
+		menubuttonsPanel.removeAll();
+		menubuttonsPanel.add(dashboardButton);
+		menubuttonsPanel.add(homeButton);
+		menubuttonsPanel.add(browseButton);
+		menubuttonsPanel.add(feedbackButton);		
 
 		loggedPanel.setEnabled(false);
 		loggedPanel.setVisible(false);
@@ -569,11 +730,17 @@ public class MainGUI extends JFrame {
 			if(e.getSource().equals(browseButton) ) {
 				menubuttons.put(browseButton, new BrowsePanel());
 			}
-			
+
 			Object panel = menubuttons.get(e.getSource());
-			if(panel instanceof ProfilePanel2) {
+			if(panel instanceof ProfilePanel) {
 				currentPanel.removeAll();
-				ProfilePanel2 p = new ProfilePanel2();
+				ProfilePanel p = new ProfilePanel();
+				menubuttons.put((JButton)e.getSource(),(JPanel)p);
+				currentPanel.add(p);
+			}
+			else if(panel instanceof MyBetsPanel) {
+				currentPanel.removeAll();
+				MyBetsPanel p = new MyBetsPanel();
 				menubuttons.put((JButton)e.getSource(),(JPanel)p);
 				currentPanel.add(p);
 			}
@@ -587,17 +754,18 @@ public class MainGUI extends JFrame {
 			select((JButton)e.getSource());		
 		}
 	};
+	private JPanel menubuttonsPanel;
 
 	public void resetPanels() {
 		menubuttons.put(homeButton,new HomePanel());
 		menubuttons.put(browseButton, new BrowsePanel());
 		if(appFacadeInterface.isLoggedIn()) {
-			menubuttons.put(profileButton,new ProfilePanel2());
+			menubuttons.put(profileButton,new ProfilePanel());
+			menubuttons.put(myBetsButton,new MyBetsPanel());
 		}
-		menubuttons.put(settingsButton,new SettingsPanel());
 		menubuttons.put(feedbackButton, new FeedbackPanel());
 		menubuttons.put(createQuestionButton,new CreateQuestionPanel());
-		menubuttons.put(userManagementButton,new userManagementPanel());
+		menubuttons.put(userManagementButton,new UserManagementPanel());
 	}
 
 	public Timer getTimer() {
@@ -608,7 +776,7 @@ public class MainGUI extends JFrame {
 		}
 		return timer;
 	}
-	
+
 	public void configureTimer() {
 		//configure timer user application wide
 		if(timer == null) {
@@ -623,6 +791,9 @@ public class MainGUI extends JFrame {
 				calendar.setTime(new Date());
 				if(calendar.get(Calendar.SECOND) == 0) {
 					((HomePanel)menubuttons.get(homeButton)).refreshPage();
+					if(appFacadeInterface.isLoggedIn()) {
+						((MyBetsPanel)menubuttons.get(myBetsButton)).refreshPage();
+					}
 				}			
 			}
 		});
@@ -637,6 +808,7 @@ public class MainGUI extends JFrame {
 					appFacadeInterface.resolveBets();
 					if(appFacadeInterface.isLoggedIn()) {
 						refreshCash();
+						appFacadeInterface.retrieveBets(appFacadeInterface.getLoggeduser());
 					}
 				}	
 			}

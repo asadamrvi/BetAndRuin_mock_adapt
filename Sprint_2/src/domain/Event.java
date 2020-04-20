@@ -35,7 +35,6 @@ public class Event implements Serializable {
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private List<Question> questions;
 
-
 	public Event() {
 		super();
 	}
@@ -91,14 +90,6 @@ public class Event implements Serializable {
 
 	public void setCompetition(Competition competition) {
 		this.competition = competition;
-	}
-	
-	public Date getEventdate() {
-		return eventdate;
-	}
-
-	public void setEventdate(Date eventdate) {
-		this.eventdate = eventdate;
 	}
 
 	public Date getEndingdate() {

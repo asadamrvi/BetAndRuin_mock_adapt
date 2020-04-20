@@ -5,10 +5,12 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -29,8 +31,9 @@ public class Profile {
 	private Date birthdate;
 	private String profilepic;
 	
-	@OneToOne(cascade = CascadeType.ALL,  orphanRemoval = true)
-	private User u;
+	@XmlIDREF
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private User user;
 
 	
 	public Profile(String name, String surname, String email) {
@@ -161,6 +164,8 @@ public class Profile {
 			this.birthdate = birthdate;
 		}
 
-		
+		public void setUser(User u) {
+			this.user = u;
+		}
 		
 }

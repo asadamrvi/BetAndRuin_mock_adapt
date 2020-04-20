@@ -102,16 +102,16 @@ public class DataAccessImplementation implements DataAccess {
 
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 
-			Event ev1=new Event(1, "Atlético-Athletic", df.parse("12:00 17/4/2020"),df.parse("13:45 17/4/2020"),Sport.FOOTBALL);
-			Event ev2=new Event(2, "Eibar-Barcelona", df.parse("15:00 03/4/2020"),df.parse("16:45 3/4/2020"),Sport.FOOTBALL);
+			Event ev1=new Event(1, "Atlético-Athletic", df.parse("12:00 27/4/2020"),df.parse("13:45 27/4/2020"),Sport.FOOTBALL);
+			Event ev2=new Event(2, "Eibar-Barcelona", df.parse("15:00 27/4/2020"),df.parse("16:45 27/4/2020"),Sport.FOOTBALL);
 			Event ev3=new Event(3, "Getafe-Celta", df.parse("18:00 11/5/2020"),df.parse("19:45 11/5/2020"),Sport.FOOTBALL);
 			Event ev4=new Event(4, "Alavés-Deportivo", df.parse("20:00 25/4/2020"),df.parse("21:45 25/4/2020"),Sport.FOOTBALL);
 			Event ev5=new Event(5, "Español-Villareal",df.parse("22:00 25/4/2020"),df.parse("23:45 25/4/2020"),Sport.FOOTBALL);
-			Event ev6=new Event(6, "Las Palmas-Sevilla",df.parse("16:00 17/4/2020"),df.parse("17:45 17/4/2020"),Sport.FOOTBALL);
-			Event ev7=new Event(7, "Malaga-Valencia", df.parse("18:00 18/4/2020"),df.parse("19:45 18/4/2020"),Sport.FOOTBALL);
-			Event ev8=new Event(8, "Girona-Leganés",df.parse("15:00 10/4/2020"),df.parse("16:45 10/4/2020"),Sport.FOOTBALL);
-			Event ev9=new Event(9, "Real Sociedad-Levante", df.parse("22:00 10/4/2020"),df.parse("23:45 10/4/2020"),Sport.FOOTBALL);
-			Event ev10=new Event(10, "Betis-Real Madrid", df.parse("14:00 11/4/2020"),df.parse("15:45 11/4/2020"),Sport.FOOTBALL);
+			Event ev6=new Event(6, "Las Palmas-Sevilla",df.parse("16:00 21/4/2020"),df.parse("17:45 21/4/2020"),Sport.FOOTBALL);
+			Event ev7=new Event(7, "Malaga-Valencia", df.parse("18:00 21/4/2020"),df.parse("19:45 21/4/2020"),Sport.FOOTBALL);
+			Event ev8=new Event(8, "Girona-Leganés",df.parse("15:00 21/4/2020"),df.parse("16:45 21/4/2020"),Sport.FOOTBALL);
+			Event ev9=new Event(9, "Real Sociedad-Levante", df.parse("22:00 30/4/2020"),df.parse("23:45 30/4/2020"),Sport.FOOTBALL);
+			Event ev10=new Event(10, "Betis-Real Madrid", df.parse("14:00 30/4/2020"),df.parse("15:45 30/4/2020"),Sport.FOOTBALL);
 
 			Event ev11=new Event(11, "Atlético-Athletic", df.parse("17:00 2/5/2020"),df.parse("18:45 2/5/2020"),Sport.FOOTBALL);
 			Event ev12=new Event(12, "Eibar-Barcelona",  df.parse("19:00 2/5/2020"),df.parse("20:45 2/5/2020"),Sport.FOOTBALL);
@@ -132,12 +132,12 @@ public class DataAccessImplementation implements DataAccess {
 			Event ev25=new Event(25, "Liverpool-Tottenham Hotspur",  df.parse("15:00 25/5/2020"),df.parse("16:45 25/5/2020"),Sport.FOOTBALL);
 			Event ev26=new Event(26, "Arsenal-Chelsea", df.parse("18:00 25/5/2020"),df.parse("19:45 25/5/2020"),Sport.FOOTBALL);
 
-			Event ev27=new Event(27, "Miami Heat-Lakers",df.parse("18:30 12/4/2020"),df.parse("20:00 12/4/2020"),Sport.BASKETBALL);
+			Event ev27=new Event(27, "Miami Heat-Lakers",df.parse("18:30 20/4/2020"),df.parse("20:00 20/4/2020"),Sport.BASKETBALL);
 			Event ev28=new Event(28, "Boston Celtics-Toronto Raptors",  df.parse("15:30 16/5/2020"),df.parse("17:15 16/5/2020"),Sport.BASKETBALL);
 			Event ev29=new Event(29, "San Antonio Spurs-Houston Rockets", df.parse("18:00 17/5/2020"),df.parse("19:45 17/5/2020"),Sport.BASKETBALL);
 			Event ev30=new Event(30, "Golden State Warrions-Chicago Bulls", df.parse("15:00 25/5/2020"),df.parse("16:45 25/5/2020"),Sport.BASKETBALL);
 			Event ev31=new Event(31, "New York Knicks-Milwakee Bucks", df.parse("18:00 25/5/2020"),df.parse("19:45 25/5/2020"),Sport.BASKETBALL);
-			Event ev32=new Event(32, "Cleveland Cavaliers-Dallas Mavericks", df.parse("14:00 17/4/2020"),df.parse("15:45 17/4/2020"),Sport.BASKETBALL);
+			Event ev32=new Event(32, "Cleveland Cavaliers-Dallas Mavericks", df.parse("14:00 20/4/2020"),df.parse("15:45 20/4/2020"),Sport.BASKETBALL);
 			
 			Event ev33=new Event(33, "Saski Baskonia-Unicaja Baloncesto",df.parse("12:00 25/4/2020"),df.parse("13:45 25/4/2020"),Sport.BASKETBALL);
 			Event ev34=new Event(34, "Real Madrid Baloncesto-Basket Zaragoza",  df.parse("15:30 26/4/2020"),df.parse("17:15 26/4/2020"),Sport.BASKETBALL);
@@ -162,7 +162,7 @@ public class DataAccessImplementation implements DataAccess {
 			
 ///////////////////// TEST ////////////////////////
 			
-			Event test = new Event(50, "test1-test2",  df.parse("16:00 24/4/2020"),df.parse("18:11 24/4/2020"),Sport.FOOTBALL);
+			Event test = new Event(50, "test1-test2",  df.parse("00:01 19/4/2020"),df.parse("17:10 20/4/2020"),Sport.FOOTBALL);
  
 			Question testq = test.addQuestion("???", 4);
 			testq.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -173,7 +173,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test);
 			liga.addEvent(test);
 			
-			Event test1 = new Event(51, "test3-test4",  df.parse("16:00 24/4/2020"),df.parse("18:11  24/4/2020"),Sport.FOOTBALL);
+			Event test1 = new Event(51, "test3-test4",  df.parse("11:00 18/4/2020"),df.parse("13:23 19/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq1 = test1.addQuestion("???", 4);
 			testq1.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -184,7 +184,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test1);
 			liga.addEvent(test1);
 			
-			Event test2 = new Event(52, "test5-test6",  df.parse("16:00 24/4/2020"),df.parse("18:11 24/4/2020"),Sport.FOOTBALL);
+			Event test2 = new Event(52, "test5-test6",  df.parse("11:00 2/4/2020"),df.parse("16:46 18/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq2 = test2.addQuestion("???", 4);
 			testq2.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -192,7 +192,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test2);
 			liga.addEvent(test2);
 			
-			Event test3 = new Event(53, "test7-test8",  df.parse("16:00 24/4/2020"),df.parse("18:11 24/4/2020"),Sport.FOOTBALL);
+			Event test3 = new Event(53, "test7-test8",  df.parse("11:00 18/4/2020"),df.parse("15:52 18/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq3 = test3.addQuestion("???", 4);
 			testq3.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -200,7 +200,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test3);
 			liga.addEvent(test3);
 			
-			Event test4 = new Event(54, "test1-test2",  df.parse("16:00 24/4/2020"),df.parse("18:11 24/4/2020"),Sport.FOOTBALL);
+			Event test4 = new Event(54, "test1-test2",  df.parse("11:00 18/4/2020"),df.parse("15:41 18/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq4 = test4.addQuestion("???", 4);
 			testq4.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -208,7 +208,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test4);
 			liga.addEvent(test4);
 			
-			Event test5 = new Event(55, "test3-test4",  df.parse("16:00 24/4/2020"),df.parse("18:11 24/4/2020"),Sport.FOOTBALL);
+			Event test5 = new Event(55, "test3-test4",  df.parse("11:00 18/4/2020"),df.parse("15:35 18/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq5 = test5.addQuestion("???", 4);
 			testq5.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -216,7 +216,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test5);
 			liga.addEvent(test5);
 			
-			Event test6 = new Event(56, "test5-test6",  df.parse("16:00 24/4/2020"),df.parse("18:11 24/4/2020"),Sport.FOOTBALL);
+			Event test6 = new Event(56, "test5-test6",  df.parse("11:00 18/4/2020"),df.parse("15:35 18/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq6 = test6.addQuestion("???", 4);
 			testq6.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -224,7 +224,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.persist(test6);
 			liga.addEvent(test6);
 			
-			Event test7 = new Event(57, "test7-test8",  df.parse("16:00 24/4/2020"),df.parse("18:11  24/4/2020"),Sport.FOOTBALL);
+			Event test7 = new Event(57, "test7-test8",  df.parse("11:00 18/4/2020"),df.parse("15:35  18/4/2020"),Sport.FOOTBALL);
 			 
 			Question testq7 = test7.addQuestion("???", 4);
 			testq7.addPrediction("yes", Float.valueOf((float) 1.7));
@@ -417,7 +417,6 @@ public class DataAccessImplementation implements DataAccess {
 					
 			CreditCard card1 = new CreditCard("5412753456789010", cal.getTime());
 			CreditCard card2 = new CreditCard("5412753456789011", cal.getTime());
-			
 			
 			u1.addCreditCard(card1);
 			u1.addCreditCard(card2);
@@ -621,12 +620,35 @@ public class DataAccessImplementation implements DataAccess {
 		EntityManager db = createEntityManager();
 		System.out.println(">> DataAccess: getEventsMonth");
 		Vector<Date> res = new Vector<Date>();	
+		
+		Date firstDayMonthDate= null;
+		Date lastDayMonthDate=  null;
+		
+		Date today = new Date();
+		Calendar cld = Calendar.getInstance();
+		cld.setTime(today);
+		int thisyear =cld.get(Calendar.YEAR);
+		int thismonth = cld.get(Calendar.MONTH);
+		cld.setTime(date);
+		int dateyear = cld.get(Calendar.YEAR);
+		int datemonth = cld.get(Calendar.MONTH);
+		
+		System.out.println("getEventsMonth month: " + 1);
+		
+		if(today.compareTo(date) > 0) { 
+			return res;
+		}
+		else if(thismonth == datemonth){
+			firstDayMonthDate= today;
+			lastDayMonthDate= UtilDate.lastDayMonth(date);
+		}
+		else {
+			firstDayMonthDate= UtilDate.firstDayMonth(date);
+			lastDayMonthDate= UtilDate.lastDayMonth(date);
+		}
 
-		Date firstDayMonthDate= UtilDate.firstDayMonth(date);
-		Date lastDayMonthDate= UtilDate.lastDayMonth(date);
 
-
-		TypedQuery<Date> query = db.createQuery("SELECT DISTINCT ev.eventDate FROM Event ev WHERE ev.eventDate BETWEEN ?1 and ?2",Date.class);   
+		TypedQuery<Date> query = db.createQuery("SELECT DISTINCT ev.eventDate FROM Event ev WHERE ev.endingdate BETWEEN ?1 and ?2",Date.class);   
 		query.setParameter(1, firstDayMonthDate);
 		query.setParameter(2, lastDayMonthDate);
 		List<Date> dates = query.getResultList();
@@ -648,11 +670,37 @@ public class DataAccessImplementation implements DataAccess {
 		System.out.println(">> DataAccess: getEventsMonth");
 		Vector<Date> res = new Vector<Date>();	
 
-		Date firstDayMonthDate= UtilDate.firstDayMonth(date);
-		Date lastDayMonthDate= UtilDate.lastDayMonth(date);
+		Date firstDayMonthDate= null;
+		Date lastDayMonthDate=  null;
+		
+		Date today = new Date();
+		Calendar cld = Calendar.getInstance();
+		cld.setTime(today);
+		int thisyear =cld.get(Calendar.YEAR);
+		int thismonth = cld.get(Calendar.MONTH);
+		cld.setTime(date);
+		int dateyear = cld.get(Calendar.YEAR);
+		int datemonth = cld.get(Calendar.MONTH);
+		
+		if(today.compareTo(date) > 0) { 
+			if(thismonth == datemonth && thisyear == dateyear) {
+				firstDayMonthDate= today;
+				lastDayMonthDate= UtilDate.lastDayMonth(date);
+			}
+			else {
+				return res;
+			}
+		}
+		else if(thismonth == datemonth && thisyear == dateyear){
+			firstDayMonthDate= today;
+			lastDayMonthDate= UtilDate.lastDayMonth(date);
+		}
+		else {
+			firstDayMonthDate= UtilDate.firstDayMonth(date);
+			lastDayMonthDate= UtilDate.lastDayMonth(date);
+		}
 
-
-		TypedQuery<Date> query = db.createQuery("SELECT DISTINCT ev.eventdate FROM Event ev WHERE ev.eventdate BETWEEN ?1 and ?2 AND ev.competition=?3",Date.class);   
+		TypedQuery<Date> query = db.createQuery("SELECT DISTINCT ev.eventdate FROM Event ev WHERE ev.endingdate BETWEEN ?1 and ?2 AND ev.competition=?3",Date.class);   
 		query.setParameter(1, firstDayMonthDate);
 		query.setParameter(2, lastDayMonthDate);
 		query.setParameter(3, competition);
@@ -850,15 +898,14 @@ public class DataAccessImplementation implements DataAccess {
 	 * @param iD
 	 * @return
 	 */
-	public void removeUser(String iD) {
+	public void removeUser(String username) {
 		EntityManager db = createEntityManager();
-		User u = db.find(User.class, iD);
+		User u = db.find(User.class, username);
 		db.getTransaction().begin();
-		TypedQuery<User> query = db.createQuery("DELETE FROM User user where id ="+"'"+ u.getUsername()+"'",User.class);
-		query.executeUpdate();
+		db.remove(u);
 		db.getTransaction().commit();
 		db.close();
-		System.out.println(iD + " has been deleted");
+		System.out.println(username + " has been deleted");
 	}
 
 	
@@ -928,8 +975,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.getTransaction().commit();
 			db.close();
 			user.setDefaultCreditCard(defaultcc);
-		}
-		
+		}	
 	}
 	
 	/**
@@ -977,7 +1023,6 @@ public class DataAccessImplementation implements DataAccess {
 		db.close();
 		System.out.println(username + " has been updated");
 		return u;
-
 	}
 	
 	/**
@@ -998,7 +1043,7 @@ public class DataAccessImplementation implements DataAccess {
 	}
 	
 
-	public void recordBets(User bettor, float stake, float price, BetType type, List<Prediction> predictions){
+	public Bet recordBet(User bettor, float stake, float price, BetType type, List<Prediction> predictions){
 		EntityManager db = createEntityManager();
 		User u = db.find(User.class, bettor.getUsername());
 		
@@ -1021,6 +1066,29 @@ public class DataAccessImplementation implements DataAccess {
 		db.getTransaction().commit();
 		db.close();
 		System.out.println("Bet placed sucessfully");
+		return b;
+
+	}
+	
+	/**
+	 * This method sets the given bet's status to cancelled
+	 * and returns the amount of cash that corresponds to the
+	 * stake placed on the bet.
+	 * 
+	 * @param bet	Bet to cancel
+	 * @return		Bet object that has been cancelled
+	 */
+	public Bet cancelBet(Bet bet) {
+		EntityManager db = createEntityManager();
+		Bet b = db.find(Bet.class, bet.getBetNumber());
+		if(b != null) {
+			db.getTransaction().begin();
+			b.getBettor().setCash(b.getBettor().getCash()+b.getStake());
+			b.setStatus(Bet.Status.CANCELLED);
+			db.getTransaction().commit();
+			db.close();
+		}
+		return b;
 	}
 /*
 	public void close(){
@@ -1116,12 +1184,13 @@ public class DataAccessImplementation implements DataAccess {
 		db.getTransaction().commit();
 		db.close();
 	}
+	
 
 
 	public ArrayList<Bet> getBets(User bettor){
 		EntityManager db = createEntityManager();
 		User u = db.find(User.class, bettor.getUsername());
-		TypedQuery<User> q1 = db.createQuery("select user FROM User user where id ="+"'"+ u.getUsername()+"'",User.class);
+		TypedQuery<User> q1 = db.createQuery("select user FROM User user where username ="+"'"+ u.getUsername()+"'",User.class);
 		List<User> results = q1.getResultList();
 		ArrayList<Bet> bets =  results.get(0).getBets();
 		db.close();
@@ -1154,27 +1223,41 @@ public class DataAccessImplementation implements DataAccess {
 		return results;
 	}
 
-	@Override
-	public void removeBet(User bettor, Bet bet) {
-		EntityManager db = createEntityManager();
-		User u = db.find(User.class, bettor.getUsername());
-		db.getTransaction().begin();	
-		u.removeBet(bet);
-		db.getTransaction().commit();
-		db.close();
-		System.out.println("Bet removed sucessfully");
-
-	}
-
-	@Override
-	public void updatebet(User bettor, Bet bet, float amount) {
+	/**
+	 * This method updates the given bets type, stake value and set of predictions to the 
+	 * values given as inputs. The users cash is increased/decreased by the difference between the
+	 * new and old stake values.
+	 * 
+	 * @param bet			Bet to update
+	 * @param type			New BetType set on the bet
+	 * @param stake			New stake value to be placed
+	 * @param predictions	New set of predictions that form the bet
+	 * @return				The edited bet
+	 */
+	public Bet updateBet(Bet bet, BetType type, float stake, List<Prediction> predictions) {
 		EntityManager db = createEntityManager();
 		Bet b = db.find(Bet.class, bet.getBetNumber());
+		User u = db.find(User.class, bet.getBettor());
+		List<Prediction> predictionInstances = new ArrayList<Prediction>();
+		for(Prediction pred : predictions){
+			TypedQuery<Prediction> query = db.createQuery("SELECT p FROM Prediction p WHERE p.question =?1 AND p.answer =?2" , Prediction.class);
+			query.setParameter(1, pred.getQuestion());
+			query.setParameter(2, pred.getAnswer());
+			List<Prediction> temp = query.getResultList();
+			for(Prediction t : temp) {
+				predictionInstances.add(t);
+			}	
+		}
+		
 		db.getTransaction().begin();
-		b.setAmount(amount);
+		u.setCash(b.getBettor().getCash()+(b.getStake()-stake));
+		b.setStake(stake);
+		b.setType(type);
+		b.setPredictions(predictionInstances);
 		db.getTransaction().commit();
 		db.close();
 		System.out.println("Bet updated sucessfully");
+		return b;
 
 	}
 

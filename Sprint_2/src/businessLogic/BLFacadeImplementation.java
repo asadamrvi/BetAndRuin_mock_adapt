@@ -44,9 +44,7 @@ import exceptions.QuestionAlreadyExist;
 import exceptions.QuestionNotFound;
 import exceptions.invalidID;
 import exceptions.invalidPW;
-import gui.Panels.HomePanel;
 import gui.MainGUI;
-import gui.Panels.BrowsePanel.Pair;
 
 /**
  * It implements the business logic as a web service.
@@ -67,7 +65,6 @@ public class BLFacadeImplementation  implements BLFacade {
 		}		
 	} 
 
-	
 	public User getLoggeduser() {
 		return loggeduser;
 	}
@@ -233,8 +230,6 @@ public class BLFacadeImplementation  implements BLFacade {
 			throw new invalidPW(e.getMessage());
 		}
 	}
-
-
 	
 	/**
 	 * 
@@ -336,8 +331,6 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 	}
 
-
-
 	/**
 	 * This method invokes the data access to initialize the database with some events and questions.
 	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
@@ -348,17 +341,30 @@ public class BLFacadeImplementation  implements BLFacade {
 	}
 
 
-	public void placeBets(float stake, float totalprice, BetType type, List<Prediction> predictions) throws InsufficientCash{
+	public void placeBet(float stake, float totalprice, BetType type, List<Prediction> predictions) throws InsufficientCash{
 		if(totalprice > loggeduser.getCash()) {
 			throw new InsufficientCash();
 		}
 		else {
-			dbManager.recordBets(loggeduser, stake, totalprice,type, predictions);
+			Bet bet = dbManager.recordBet(loggeduser, stake, totalprice,type, predictions);
+			loggeduser.addBet(bet);
 			loggeduser.setCash(loggeduser.getCash() - totalprice);
 		}
 
 	}
 
+	/**
+	 * Set given bet as cancelled (Cancelled bets are kept in the database for a fixed amount of time)
+	 * @param bet	Bet to cancel
+	 */
+	public void cancelBet(Bet bet) {
+		dbManager.cancelBet(bet);
+		if(isLoggedIn()) {
+			bet.setStatus(Bet.Status.CANCELLED);
+			loggeduser.setCash(getCash() + bet.getStake());
+		}
+	}
+	
 	/**
 	 * This method checks if a user is currently logged in
 	 * @return    boolean(true: if a user is logged in, false: else)
@@ -376,12 +382,42 @@ public class BLFacadeImplementation  implements BLFacade {
 	}
 
 	/**
-	 * Retrieves the bets the currently logged user has in place
+	 * Retrieves the bets the given user has in place
 	 * @return		List<Bet> user's bets
 	 */
-	public List<Bet> retrieveBets(){
+	public ArrayList<Bet> retrieveBets(User u){
+		ArrayList<Bet> bets = dbManager.getBets(u);
+		if(u.equals(loggeduser)) {
+			loggeduser.setBets(bets);
+		}
+		return bets;
+		
+		/*
 		if(isLoggedIn()) {
 			return loggeduser.getBets();
+		}
+		else {
+			return null;
+		}
+		*/
+	}
+	
+	/**
+	 * Retrieves the bets the currently logged has placed between the indicated dates
+	 * 
+	 * @param		fromdate lower bound date
+	 * @param		fromdate upper bound date
+	 * @return		List<Bet> user's bets
+	 */
+	public List<Bet> retrieveBetsByDate(Date fromdate, Date todate){
+		if(isLoggedIn()) {
+			List<Bet> bets = new ArrayList<Bet>(); 
+			for(Bet b : loggeduser.getBets()) {
+				if(b.getPlacementdate().compareTo(fromdate)>=0 && b.getPlacementdate().compareTo(todate)<=0) {
+					bets.add(b);
+				}
+			}
+			return bets;
 		}
 		else {
 			return null;
@@ -472,7 +508,7 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 	}
 
-
+/////////////////////////////////////////////////////////////////
 	@Override
 	public boolean Enable_or_not(Bet b, int Hours) {
 		Date placement_date=b.getPlacementdate();
@@ -525,17 +561,27 @@ public class BLFacadeImplementation  implements BLFacade {
 	}
 
 
-	@Override
-	public void remove_bet(User bettor, Bet bet) {
-		dbManager.removeBet(bettor, bet);
+	/**
+	 * This method updates a bet of the given user with the new stake value and set of predictions
+	 * 
+	 * @param bet			Bet to update
+	 * @param stake			new stake amount to be set on the bet
+	 * @param predictions	new set of predictions
+	 */
+	public void editBet(Bet bet, BetType type, float stake, List<Prediction> predictions) throws InsufficientCash{
+		if(stake-bet.getStake() <= loggeduser.getCash()) {
+			Bet b = dbManager.updateBet(bet,type, stake, predictions);
+			loggeduser.removeBet(bet);
+			loggeduser.addBet(b);
+			loggeduser.setCash(loggeduser.getCash()+(bet.getStake()-stake));
+		}
+		else {
+			throw new InsufficientCash("Insufficient cash");
+		}
+
 	}
-
-
-	@Override
-	public void updatebets(User bettor, Bet bet, float amount) {
-		dbManager.updatebet(bettor, bet,amount);
-	}
-
+/////////////////////////////////////////////////////////////////
+	
 	/**
 	 * This method resolves the outcomes of the questions the event of finished at the given date. The outcomes of the possible 
 	 * predictions a question has are decided by a generated random number. The odds affect the likelihood of the number to be in the
@@ -550,7 +596,7 @@ public class BLFacadeImplementation  implements BLFacade {
 	
 	/**
 	 * This method invokes the data access to retrieve the bets scheduled to be resolved in the exact date that the method is called,
-	 * computes the winnings earner on each bet and updates the bettor's cash according to them.
+	 * computes the winnings earned on each bet and updates the bettor's cash according to them.
 	 */
 	public void resolveBets() {
 		List<Bet> bets = dbManager.getBetsByResolutionDate(new Date()); 
@@ -583,6 +629,78 @@ public class BLFacadeImplementation  implements BLFacade {
 		 System.out.println("Execution in miliseconds: " + dif/1000000);
 	}
 	
+	 /**
+	  * This method computes the number of possible multiple bets that can be made with the given selection of predictions,
+	  * taking into account the restrictions on same event multi betting
+	  * 
+	  * @param map	Map storing mapping between Events and the list of predictions selected for each event
+	  * @return		array with the number of possible multiple bets for each size(Double,Treble...)
+	  */
+		public int[] computeMultiBets(Map<Event, List<Prediction>> map) {
+			int current = 1;
+			int i;
+			int combinationsum = 0;
+			int[] result = new int[map.size()];
+			List<Pair> comblist = new ArrayList<Pair>();
+			Object[] keyset = map.keySet().toArray();
+			for(i=1 ; i <= map.size(); i++) {
+				comblist.add(new Pair(i, map.get(keyset[i-1]).size()));
+			}
+			while(current <= map.size()) {
+				List<Pair> temp = new ArrayList<Pair>();
+				combinationsum=0;
+				for(Pair p: comblist) {	
+					int last = p.getList().get(p.getList().size()-1);
+					for(i=last+1; i<=map.size(); i++) {
+						Pair nextpair = new Pair(p,i,map.get(keyset[i-1]).size());
+						temp.add(nextpair);	
+						combinationsum += nextpair.getCombinations();
+					}	
+				}
+				comblist = new ArrayList<Pair>(temp);
+				result[current-1]=combinationsum;
+
+				current++;
+			}
+			return result;
+		}
+
+		/**
+		 * Auxiliary class for computeMultiBets
+		 */
+		public class Pair{
+			private ArrayList<Integer> list;
+			private int combinations;
+
+			public Pair( int i, int size) {
+				list = new ArrayList<Integer>();
+				list.add(i);
+				combinations = size;
+			}
+
+			public Pair(Pair p, int i, int size) {
+				list = new ArrayList<Integer>(p.getList());
+				list.add(i);
+				combinations = p.getCombinations()*size;
+			}
+
+			public ArrayList<Integer> getList(){
+				return list;
+			}
+
+			public int getCombinations() {
+				return combinations;
+			}
+
+			public String toString() {
+				String s = "";
+				for(Integer i : list) {
+					s = s + String.valueOf(i);
+				}
+				return s;
+			}
+		}
+		
 	/**
 	 * This method calculates the winnings earned on the given bet, according to the outcomes of the selected predictions and the corresponding odds.
 	 * 
@@ -636,6 +754,7 @@ public class BLFacadeImplementation  implements BLFacade {
 			*/
 		}
 		System.out.println("winnings: " + winnings);
+		bet.setWinnings(winnings);
 		return winnings;
 	}
 	
@@ -705,7 +824,6 @@ public class BLFacadeImplementation  implements BLFacade {
 					winnings = calculateCombinedWinningsWorker(i+1,pos+1,solution,odds*predictions.get(i-1).getOdds(),winnings,stake,predictions,events);
 					events.remove(ev);
 				}
-				
 			}	
 		}
 		return winnings;
@@ -720,7 +838,7 @@ public class BLFacadeImplementation  implements BLFacade {
 				map.get(ev).add(p);
 			}
 			else {
-				List<Prediction> list = new ArrayList<Prediction>();
+				List<Prediction> list = new ArrayList<Prediction>(); 
 				list.add(p);
 				map.put(ev, list);
 			}
@@ -785,77 +903,6 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 		return winnings;
 	}
-	
-	/**
-	 * Calculates the number of possible combinations that can be made of each size
-	 * @param map	HashMap storing the predictions made for each event
-	 * @return		array of int, position i stores the number of combinations that can be made of size i+1
-	 */
-	public int[] computeMultiBets(Map<Event, List<Prediction>> map) {
-		int current = 1;
-		int i;
-		int combinationsum = 0;
-		int[] result = new int[map.size()];
-		List<Pair> comblist = new ArrayList<Pair>();
-		Object[] keyset = map.keySet().toArray();
-		for(i=1 ; i <= map.size(); i++) {
-			comblist.add(new Pair(i, map.get(keyset[i-1]).size()));
-		}
-		while(current <= map.size()) {
-			List<Pair> temp = new ArrayList<Pair>();
-			combinationsum=0;
-			for(Pair p: comblist) {	
-				int last = p.getList().get(p.getList().size()-1);
-				for(i=last+1; i<=map.size(); i++) {
-					Pair nextpair = new Pair(p,i,map.get(keyset[i-1]).size());
-					temp.add(nextpair);	
-					combinationsum += nextpair.getCombinations();
-				}	
-			}
-			comblist = new ArrayList<Pair>(temp);
-			result[current-1]=combinationsum;
-
-			current++;
-		}
-		return result;
-	}
-	
-	/**
-	 * Auxiliary class for computeMultiBets
-	 */
-	public class Pair{
-		private ArrayList<Integer> list;
-		private int combinations;
-
-		public Pair( int i, int size) {
-			list = new ArrayList<Integer>();
-			list.add(i);
-			combinations = size;
-		}
-
-		public Pair(Pair p, int i, int size) {
-			list = new ArrayList<Integer>(p.getList());
-			list.add(i);
-			combinations = p.getCombinations()*size;
-		}
-
-		public ArrayList<Integer> getList(){
-			return list;
-		}
-
-		public int getCombinations() {
-			return combinations;
-		}
-
-		public String toString() {
-			String s = "";
-			for(Integer i : list) {
-				s = s + String.valueOf(i);
-			}
-			return s;
-		}
-	}
-	
 	
 }
 

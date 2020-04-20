@@ -32,6 +32,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JSeparator;
 
 public class FeedbackPanel extends JPanel {
 
@@ -75,6 +76,7 @@ public class FeedbackPanel extends JPanel {
 	private JLabel sumErrorLabel;
 	
 	BLFacade facade = MainGUI.getBusinessLogic();
+	private JSeparator separator;
 	
 	
 	/**
@@ -83,8 +85,11 @@ public class FeedbackPanel extends JPanel {
 	public FeedbackPanel() {
 		
 		setBackground(Color.WHITE);
-		setLayout(new MigLayout("", "[30px:n][67.00][39.00][34.00][18.00][][77.00,trailing][100px,grow][230.00][57.00][30px:50.00]", 
-				"[-23.00][20px:5.00][1.00][20px:n:20px][24.00,grow][53.00][20px:9.00][55.00][1.00][25px:40.00,fill][][10px:n][][400px,grow][-154.00][10px:n][7.00][10px:26.00:26.00][30px:n]"));
+		setLayout(new MigLayout("", "[30px:n][67.00][39.00][34.00][18.00][][77.00,trailing][100px,grow][230.00][57.00][30px:50.00]", "[-23.00][20px:5.00][1.00][20px:n:20px][24.00,grow][53.00][20px:9.00][55.00][1.00][25px:40.00,fill][][10px:n][][400px,grow][-154.00][10px:n][7.00][10px:26.00:26.00][30px:n]"));
+		
+		separator = new JSeparator();
+		separator.setForeground(new Color(0, 0, 0));
+		add(separator, "cell 1 3 6 1,growx,aligny top");
 		
 		//PANEL INITIALIZATION
 

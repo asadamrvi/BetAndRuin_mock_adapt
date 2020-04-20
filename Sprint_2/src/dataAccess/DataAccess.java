@@ -214,8 +214,16 @@ public interface DataAccess {
 	 * @param u
 	 * @param amount
 	 */
-	public void recordBets(User bettor, float stake, float price, BetType type, List<Prediction> predictions);
+	public Bet recordBet(User bettor, float stake, float price, BetType type, List<Prediction> predictions);
 
+
+	/**
+	 * This method sets the given bet's status to cancelled
+	 * @param bet	Bet to cancel
+	 * @return		Bet object that has been cancelled, null if no bet matching the input has been found in the db.
+	 */
+	public Bet cancelBet(Bet bet);
+	
 	/**
 	 * Adds introduced amount the cash stored on the user's account
 	 * @param ID		ID of the user to add the cash
@@ -230,9 +238,19 @@ public interface DataAccess {
 	 */
 	public void storeFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file);
 
-	//public void close();
-	public void removeBet (User bettor,Bet bet);
-	public void updatebet (User bettor,Bet bet,float amount);
+	
+	/**
+	 * This method updates the given bets type, stake value and set of predictions to the 
+	 * values given as inputs. The users cash is increased/decreased by the difference between the
+	 * new and old stake values.
+	 * 
+	 * @param bet			Bet to update
+	 * @param type			New BetType set on the bet
+	 * @param stake			New stake value to be placed
+	 * @param predictions	New set of predictions that form the bet
+	 * @return				The edited bet
+	 */
+	public Bet updateBet(Bet bet, BetType type, float stake, List<Prediction> predictions);
 	
 	
 	/**

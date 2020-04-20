@@ -14,15 +14,21 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
+
+import com.toedter.calendar.JDateChooser;
+
 import businessLogic.BLFacade;
 import domain.Feedback;
 import gui.MainGUI;
+import gui.components.FancyButton;
 import gui.components.NonEditableTableModel;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.Color;
+import javax.swing.JSeparator;
+import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
 public class FeedbackResponsePanel extends JPanel {
@@ -35,7 +41,8 @@ public class FeedbackResponsePanel extends JPanel {
 	private JLabel issuedescriptionLabel;
 	private JTextPane detailsTextPane;
 	
-	private 
+	private String[] type = {"All","Suggestion", "Problem", "Question"};
+	private String[] read = {"All", "Read", "Not read"};
 	
 	BLFacade facade = MainGUI.getBusinessLogic();
 	
@@ -44,33 +51,64 @@ public class FeedbackResponsePanel extends JPanel {
 	 */
 	public FeedbackResponsePanel() {
 		setBackground(Color.WHITE);
-		setLayout(new MigLayout("", "[20:69.00][146.00][227.00][10px:74.00][35px:n][][298.00,grow][55.00]", "[30:38.00][][20:48.00][][344.00,grow][39.00][40:39.00]"));
+		setLayout(new MigLayout("", "[30:30][100:100:100][5:5:5][80:80:80][10:10,grow][30:30][][150][10:10:10][15:15][35px:n][][298.00,grow][30:30:30]", "[30:30:30][][3:3][30:30:30][][][][300,grow][5:5:5][35:35:35][30:30:30]"));
 		
 		JLabel titleLabel = new JLabel("Feedback");
 		titleLabel.setFont(new Font("Source Code Pro ExtraLight", Font.BOLD, 28));
-		add(titleLabel, "cell 1 1 6 1,alignx left");
+		add(titleLabel, "cell 1 1 8 1,alignx left");
 		
 		String[] columnnames =new String[] {"Type", "Issue", "Sender", "Date"};
-	
 		
+		JSeparator separator = new JSeparator();
+		add(separator, "cell 1 2 8 1,growx,aligny top");
+		separator.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
 		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox typeComboBox = new JComboBox(Feedback.FeedbackType.values());
+		add(typeComboBox, "cell 1 4,growx");
 		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		JComboBox readComboBox = new JComboBox(read);
+		add(readComboBox, "cell 3 4,grow");
+		
+		JLabel dateLabel = new JLabel("Date:");
+		dateLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 15));
+		add(dateLabel, "cell 5 4 2 1,alignx right");
+		
+		JDateChooser datechooser = new JDateChooser();
+		add(datechooser, "cell 7 4,grow");
 		//feedbackTableModel.setDataVector(null, columnnames);
 		
 
 		
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "cell 1 3 2 3,grow");
+		add(scrollPane, "cell 1 6 8 2,grow");
 		
-		feedbackTable = new JTable();
+		feedbackTable = new JTable() {
+			@Override
+			 public Class getColumnClass(int column) {
+				if(column == 4) {
+					return Boolean.class;
+				}
+				else {
+				    return (getValueAt(0, column).getClass());
+				}
+			  }
+			@Override
+			  public boolean isCellEditable(int row, int column) {
+			    return (column == 4);
+			  }
+			
+		};
 		feedbackTable.setFont(new Font("Source Sans Pro", Font.ITALIC, 16));
 		feedbackTable.setRowHeight(40);
+		feedbackTable.setFocusable(false);
 		feedbackTable.getTableHeader().setReorderingAllowed(false);
-		feedbackTable.getTableHeader().setResizingAllowed(false);
+		feedbackTable.getTableHeader().setResizingAllowed(false);	
 		feedbackTable.getTableHeader().setFont(new Font("Source sans Pro", Font.BOLD, 16));
 		feedbackTable.getTableHeader().setBackground(new Color(255,255,255));
 		feedbackTableModel = new NonEditableTableModel(null, columnnames);
-		feedbackTableModel.setColumnCount(5); // another column added to allocate fb objects
+		feedbackTableModel.setColumnCount(6); // another column added to allocate fb objects
 		feedbackTable.setModel(feedbackTableModel);
 		feedbackTable.getColumnModel().getColumn(0).setPreferredWidth(90);
 		feedbackTable.getColumnModel().getColumn(0).setMinWidth(90);
@@ -83,27 +121,20 @@ public class FeedbackResponsePanel extends JPanel {
 		feedbackTable.getColumnModel().getColumn(3).setPreferredWidth(110);
 		feedbackTable.getColumnModel().getColumn(3).setMinWidth(110);
 		feedbackTable.getColumnModel().getColumn(3).setMaxWidth(110);
-		feedbackTable.getColumnModel().removeColumn(feedbackTable.getColumnModel().getColumn(4));
+		feedbackTable.getColumnModel().getColumn(4).setPreferredWidth(40);
+		feedbackTable.getColumnModel().getColumn(4).setMinWidth(40);
+		feedbackTable.getColumnModel().getColumn(4).setMaxWidth(40);
+		feedbackTable.getColumnModel().removeColumn(feedbackTable.getColumnModel().getColumn(5));
 
-		Vector<Feedback> feedback = facade.getFeedback();
+
 		
-		for( Feedback fb: feedback) {
-			System.out.println(fb.toString());
-			Vector<Object> row = new Vector<Object>();
 
-			row.add(fb.getFbtype());
-			row.add(fb.getSummary());
-			row.add(fb.getName());
-			row.add(fb.getSubmissiondate());
-			row.add(fb);
-			feedbackTableModel.addRow(row);				
-		}
 
 		feedbackTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {		
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				int i = feedbackTable.getSelectedRow();
-				Feedback selectedfb = (Feedback)feedbackTableModel.getValueAt(i, 4);
+				Feedback selectedfb = (Feedback)feedbackTableModel.getValueAt(i, 5);
 				
 				senderLabel.setText(selectedfb.getName());
 				emailLabel.setText(selectedfb.getEmail());
@@ -119,7 +150,7 @@ public class FeedbackResponsePanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 		panel.setBackground(new Color(240, 248, 255));
-		add(panel, "cell 4 3 3 3,grow");
+		add(panel, "cell 10 1 3 9,grow");
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{35, 0, 70, 43, 0, 24, 156, 29, 30, 0};
 		gbl_panel.rowHeights = new int[]{30, 0, 25, 0, 27, 0, 261, 0, 49, 30, 0};
@@ -128,7 +159,7 @@ public class FeedbackResponsePanel extends JPanel {
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblSender = new JLabel("Sender:");
-		lblSender.setFont(new Font("Source Sans Pro ExtraLight", Font.BOLD, 16));
+		lblSender.setFont(new Font("Source Code Pro Medium", Font.BOLD, 16));
 		GridBagConstraints gbc_lblSender = new GridBagConstraints();
 		gbc_lblSender.anchor = GridBagConstraints.WEST;
 		gbc_lblSender.gridwidth = 3;
@@ -138,7 +169,7 @@ public class FeedbackResponsePanel extends JPanel {
 		panel.add(lblSender, gbc_lblSender);
 		
 		JLabel lblEmail = new JLabel("Email:");
-		lblEmail.setFont(new Font("Source Sans Pro ExtraLight", Font.BOLD, 16));
+		lblEmail.setFont(new Font("Source Code Pro Medium", Font.BOLD, 16));
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.anchor = GridBagConstraints.WEST;
 		gbc_lblEmail.gridwidth = 4;
@@ -166,7 +197,7 @@ public class FeedbackResponsePanel extends JPanel {
 		panel.add(emailLabel, gbc_emailLabel);
 		
 		JLabel issueLabel = new JLabel("Issue:");
-		issueLabel.setFont(new Font("Source Sans Pro ExtraLight", Font.BOLD, 17));
+		issueLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD, 17));
 		GridBagConstraints gbc_issueLabel = new GridBagConstraints();
 		gbc_issueLabel.anchor = GridBagConstraints.WEST;
 		gbc_issueLabel.gridwidth = 7;
@@ -185,7 +216,7 @@ public class FeedbackResponsePanel extends JPanel {
 		panel.add(issuedescriptionLabel, gbc_issuedescriptionLabel);
 		
 		JLabel detailsLabel = new JLabel("Details:");
-		detailsLabel.setFont(new Font("Source Sans Pro ExtraLight", Font.BOLD, 16));
+		detailsLabel.setFont(new Font("Source Code Pro Medium", Font.BOLD, 16));
 		GridBagConstraints gbc_detailsLabel = new GridBagConstraints();
 		gbc_detailsLabel.anchor = GridBagConstraints.WEST;
 		gbc_detailsLabel.gridwidth = 7;
@@ -224,6 +255,27 @@ public class FeedbackResponsePanel extends JPanel {
 		gbc_responseButton.gridx = 6;
 		gbc_responseButton.gridy = 8;
 		panel.add(responseButton, gbc_responseButton);
+		
+		FancyButton markAsReadButton = new FancyButton("Mark selected as read",new Color(51,51,51),new Color(170,170,170),new Color(150,150,150));
+		markAsReadButton.setForeground(Color.WHITE);
+		add(markAsReadButton, "cell 7 9,grow");
 	}
 
+	
+	public void loadFeedback() {
+		
+		Vector<Feedback> feedback = facade.getFeedback();
+		for( Feedback fb: feedback) {
+			System.out.println(fb.toString());
+			Vector<Object> row = new Vector<Object>();
+			
+			row.add(fb.getFbtype());
+			row.add(fb.getSummary());
+			row.add(fb.getName());
+			row.add(fb.getSubmissiondate());
+			row.add(false);
+			row.add(fb);
+			feedbackTableModel.addRow(row);				
+		}
+	}
 }

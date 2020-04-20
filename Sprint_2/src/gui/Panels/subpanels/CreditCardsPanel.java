@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -242,7 +243,7 @@ public class CreditCardsPanel extends JPanel {
 			String cardnumber = (String)creditCardTable.getValueAt(creditCardTable.getSelectedRow(), 1);
 
 			int option;
-			option = JOptionPane.showConfirmDialog(getParent(), "Delete the credit card: " + cardnumber + "?" , "Confirm deletion", JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+			option = JOptionPane.showConfirmDialog(getParent(), "Remove the credit card: " + cardnumber + "from this account?" , "Confirm deletion", JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 			if (option==0){
 				CreditCard cc = (CreditCard)creditCardTableModel.getValueAt(creditCardTable.getSelectedRow(), 7);
 				creditcardmap.remove(cc.getCardNumber());

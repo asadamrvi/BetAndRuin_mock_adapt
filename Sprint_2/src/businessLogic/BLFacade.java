@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import domain.Question;
 import domain.Sport;
 import domain.User;
@@ -30,13 +32,15 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.swing.Timer;
 
+import businessLogic.BLFacadeImplementation.Pair;
+
 /**
  * Interface that specifies the business logic.
  */
 @WebService
 public interface BLFacade  {
-	
-	
+
+
 	/**
 	 * This method creates a question for an event, with a question text and the minimum bet
 	 * 
@@ -45,11 +49,11 @@ public interface BLFacade  {
 	 * @param betMinimum minimum quantity of the bet
 	 * @return the created question, or null, or an exception
 	 * @throws EventFinished if current data is after data of the event
- 	 * @throws QuestionAlreadyExist if the same question already exists for the event
+	 * @throws QuestionAlreadyExist if the same question already exists for the event
 	 */
 	@WebMethod Question createQuestion(Event event, String question, float betMinimum,  List<Prediction> prediction) throws EventFinished, QuestionAlreadyExist;
-	
-	
+
+
 	/**
 	 * This method retrieves the events of a given date 
 	 * 
@@ -57,7 +61,7 @@ public interface BLFacade  {
 	 * @return collection of events
 	 */
 	@WebMethod public Vector<Event> getEvents(Date date);
-	
+
 	/**
 	 * This method retrieves the events of a given date and sport 
 	 * 
@@ -65,8 +69,8 @@ public interface BLFacade  {
 	 * @return collection of events
 	 */
 	@WebMethod public Vector<Event> getEvents(Date date, Sport sport);
-	
-	
+
+
 	/**
 	 * This method invokes the data access to retrieve events scheduled for dates between the
 	 * two input dates.
@@ -76,7 +80,7 @@ public interface BLFacade  {
 	 * @return  collection of events
 	 */
 	public Vector<Event> getEventsBetweenDates(Date date1,Date date2);
-	
+
 	/**
 	 * This method invokes the data access manager to retrieve the events that are currently live, that is, that the current time
 	 * is between the starting and ending date of said events.
@@ -84,7 +88,7 @@ public interface BLFacade  {
 	 * @return collection of events
 	 */
 	@WebMethod public Vector<Event> getLiveEvents();
-	
+
 	/**
 	 * This method retrieves from the database the dates a month for which there are events
 	 * 
@@ -92,8 +96,8 @@ public interface BLFacade  {
 	 * @return collection of dates
 	 */
 	@WebMethod public Vector<Date> getEventsMonth(Date date);
-	
-	
+
+
 	/**
 	 * This method retrieves from the database the dates a month for which there are events for the given competition
 	 * 
@@ -101,7 +105,7 @@ public interface BLFacade  {
 	 * @return collection of dates
 	 */
 	@WebMethod public Vector<Date> getEventsMonth(Date date, Competition competition);
-	
+
 	/**
 	 * 
 	 * @param sport
@@ -134,7 +138,7 @@ public interface BLFacade  {
 	 * @throws invalidID	exception thrown when no user entity with the input ID exists in the database.
 	 */
 	@WebMethod public boolean checkCredentials(String ID, String password) throws invalidID, invalidPW;
-		
+
 	/**
 	 * 
 	 * @param iD
@@ -144,7 +148,16 @@ public interface BLFacade  {
 	 * @return
 	 */ 
 	@WebMethod public List<User> searchByCriteria(String searchtext, String filter, boolean casesensitive, int match);
-	
+
+	/**
+	 * Retrieves the bets the currently logged has placed between the indicated dates
+	 * 
+	 * @param		fromdate lower bound date
+	 * @param		fromdate upper bound date
+	 * @return		List<Bet> user's bets
+	 */
+	public List<Bet> retrieveBetsByDate(Date fromdate, Date todate);
+
 	/**
 	 * 
 	 * @param searchtext
@@ -152,7 +165,7 @@ public interface BLFacade  {
 	 * @return
 	 */
 	@WebMethod public void removeUser(String ID);
-	
+
 	/**
 	 * This method creates a new CreditCard object, invokes the adata access to store it and assigns it to the logged user
 	 * 
@@ -160,14 +173,14 @@ public interface BLFacade  {
 	 * @param number	Credit card expiration date
 	 */
 	public CreditCard addCreditCard(String number, Date dueDate);
-	
+
 	/**
 	 * This method invokes the data access manager to delete the given credit card
 	 * 
 	 * @param cc	CreditCard to delete
 	 */
 	public void removeCreditCard(CreditCard cc); 
-	
+
 
 	/**
 	 * This method sets the default credit card to the given credit card and invokes the data access to store the new default card
@@ -175,7 +188,7 @@ public interface BLFacade  {
 	 * @param defaultcc		CreditCard to set as default
 	 */
 	public void setDefaultCreditCard(CreditCard defaultcc);
-	
+
 	/**
 	 * 
 	 * @param searchtext
@@ -190,8 +203,8 @@ public interface BLFacade  {
 	 * @param q
 	 * @param amount
 	 */
-	@WebMethod public void placeBets(float stake, float totalprice, BetType type, List<Prediction> predictions) throws InsufficientCash;
-	
+	@WebMethod public void placeBet(float stake, float totalprice, BetType type, List<Prediction> predictions) throws InsufficientCash;
+
 	/**
 	 * This method calls the data access to initialize the database with some events and questions.
 	 * It is invoked only when the option "initialize" is declared in the tag dataBaseOpenMode of resources/config.xml file
@@ -203,24 +216,39 @@ public interface BLFacade  {
 	 * @return    boolean(true: if a user is logged in, false: else)
 	 */
 	public boolean isLoggedIn();
-	
+
 	/**
 	 * Logs the current user out by setting the attributes related to the current session to null
 	 */
 	public void logOut();
+
+	/**
+	 * Retrieves the bets the given user has in place
+	 * @return		List<Bet> user's bets
+	 */
+	public ArrayList<Bet> retrieveBets(User u);
+
+	/**
+	 * This method updates a bet of the given user with the new stake value and set of predictions
+	 * 
+	 * @param bet			Bet to update
+	 * @param stake			new stake amount to be set on the bet
+	 * @param predictions	new set of predictions
+	 */
+	public void editBet(Bet bet, BetType type, float stake, List<Prediction> predictions) throws InsufficientCash;
 	
 	/**
-	 * Retrieves the coupons the currently logged user has in place
-	 * @return		List<Coupon> user's bets
+	 * Set given bet as cancelled (Cancelled bets are kept in the database for a fixed amount of time)
+	 * @param bet	Bet to cancel
 	 */
-	public List<Bet> retrieveBets();
+	public void cancelBet(Bet bet);
 	
 	/**
 	 * Retrieves the profile of the currently logged user
 	 * @return	Profile object containing information about the user
 	 */
 	public Profile getProfile();
-	
+
 	/**
 	 * This method replaces the existing profile picture of the given user with the new picture.
 	 * Only the pathname of the pictures are stored
@@ -229,7 +257,7 @@ public interface BLFacade  {
 	 * @param path  Pathname of the file with the picture(must be .jpg or .png)
 	 */
 	public void updateProfilePic(Profile p, String path);
-	
+
 	/**
 	 * This method invokes the data access manager to replace the current password of the given user to the new value.
 	 * Fails the inputed current password doesn't match the user's(exception is thrown) or when the confirmation password
@@ -243,34 +271,34 @@ public interface BLFacade  {
 	 * @throws invalidPW		exception thrown when currentpass doesn't match the actual current password of the user
 	 */
 	public boolean updatePassword(User u, String currentpass, String newpass, String confirmpass) throws invalidPW;
-	
+
 	/**
 	 * Indicates if the logged user has an admin status.
 	 * @return	boolean(true: if loggeduser is an admin, false:else)
 	 */
 	public boolean isAdmin();
-	
+
 	/**
 	 * Returns cash currently stored on the user account.
 	 * @return  current cash amount.
 	 */
 	public float getCash();
-	
+
 	/**
 	 * Retrieves the currently logged users username
 	 * @return username field value of the logged user
 	 */
 	public String getUsername();
-		
+
 	public void setLoggeduser(User loggeduser);
-	
+
 	/**
 	 * Adds introduced amount the cash stored on the user's account
 	 * @param amount	amount of money to add(float)
 	 * @return	cash on the account after the addition
 	 */
 	public float addCash(float amount);
-	
+
 	/**
 	 * 
 	 * @param fbtype
@@ -282,55 +310,45 @@ public interface BLFacade  {
 	 */
 	public void submitFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file);
 
-	
+
 	public List<Prediction> getQuestionPredictions(int questionId) throws QuestionNotFound, NoAnswers;
-	
+
+	///////////////////////////////////////////////////////////////////////////////////////
 	/** Add Hours in Placment Date of bet, and compare new date with Resolving Date.
 	 * 
 	 * @param A Bet Variable, Hours
 	 * @return	return True if adding hours in Bet Placement date is less then Resolving Date
 	 */
 	public boolean Enable_or_not(Bet b,int Hours);
-	
+
 	/** Function To Get TAbles Data.
 	 * 
 	 * @param Bet Variable and Arraylist of Predictions.
 	 * @return	return Matrix DAta later to Use in tables.
 	 */
 	public Object[][] getDAta(Bet b,ArrayList<Bet> bets) ;
+	
 	/** Function To Get BEts of User .
 	 * 
 	 * @param User U.
 	 * @return	return ArrayList of User bets.
 	 */
+
 	public ArrayList<Bet> getBets(User u);
-	
-	/** Function To remove Bet of USer.
-	 * 
-	 * @param User U, and Bet B.
-	 * @return	Remove Bet from USer bet List.
-	 */
-	public void remove_bet (User bettor, Bet bet);
-	/** Function to update Bet Amount of given Bet..
-	 * 
-	 * @param A user , Bet and New Amount.
-	 * @return	Set amount as new BEt amount.
-	 */
-	public void updatebets (User bettor, Bet bet, float amount);
-	
-	
+	///////////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * This method invokes the data access manager to retrieve the feedback stored in the database.
 	 * @return	Feedback that has been sent and stored previously.
 	 */
 	public Vector<Feedback> getFeedback();
-	
+
 	/**
 	 * This method returns the User object that holds information about the user logged in currently.
 	 * @return 	User object.
 	 */
 	public User getLoggeduser();
-	
+
 	/**
 	 * This method resolves the outcomes of the questions the event of finished at the given date. The outcomes of the possible 
 	 * predictions a question has are decided by a generated random number. The odds affect the likelihood of the number to be in the
@@ -339,12 +357,21 @@ public interface BLFacade  {
 	 * @param date
 	 */
 	public void resolveQuestions();
-	
+
 	/**
 	 * This method invokes the data access to retrieve the bets scheduled to be resolved in the exact date that the method is called,
 	 * computes the winnings earner on each bet and updates the bettor's cash according to them.
 	 */
 	public void resolveBets();
+
+	/**
+	 * This method computes the number of possible multiple bets that can be made with the given selection of predictions,
+	 * taking into account the restrictions on same event multi betting
+	 * 
+	 * @param map	Map storing mapping between Events and the list of predictions selected for each event
+	 * @return		array with the number of possible multiple bets for each size(Double,Treble...)
+	 */
+	public int[] computeMultiBets(Map<Event, List<Prediction>> map);
 
 	/**
 	 * This method calculates the winnings for a combined bet
@@ -355,7 +382,7 @@ public interface BLFacade  {
 	 * @return				winnings earned from the bet(float)
 	 */
 	public float calculateCombinedWinnings(int size, float stake, List<Prediction> predictions);
-	
+
 	/**
 	 * This method calculates the winnings for a full cover bet
 	 * 
@@ -365,5 +392,5 @@ public interface BLFacade  {
 	 * @return				winnings earned from the bet(float)
 	 */
 	public float calculateFullCoverWinnings(int size, float stake, List<Prediction> predictions);
-	
+
 }
