@@ -162,7 +162,6 @@ public class BrowsePanel extends JPanel {
 	 */
 	public BrowsePanel() {
 
-
 		setBackground(UIManager.getColor("Button.highlight"));
 
 		GridBagLayout gridBagLayout = new GridBagLayout();

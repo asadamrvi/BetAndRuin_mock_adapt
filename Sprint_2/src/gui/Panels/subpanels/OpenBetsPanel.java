@@ -20,7 +20,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -289,6 +288,7 @@ public class OpenBetsPanel extends JPanel {
 							JOptionPane.showMessageDialog(null, "Introduce stake");
 						}
 						else if( stakeField.getFloat() >= Float.parseFloat(minbet)) {
+							updatePredictions();
 							facade.editBet(selectedbet, selectedBetType, stakeField.getFloat(), predictions);
 							JOptionPane.showMessageDialog(null, "Bet updated sucessfully");
 							MainGUI.getInstance().refreshCash();
@@ -489,10 +489,13 @@ public class OpenBetsPanel extends JPanel {
 		cancelButton.setEnabled(false);
 		saveChangesButton.setEnabled(false);
 
-		loadBets(true);
+		loadBets();
 	}
 
-	public void loadBets(boolean open) {
+	/**
+	 * Loads Bets that the user has currently unresolved(Open) in the upper table
+	 */
+	public void loadBets() {
 		betTableModel.setDataVector(null, columnNamesOpen);
 		betTableModel.setColumnCount(6); 
 		betTable.setRowHeight(40);
@@ -515,6 +518,10 @@ public class OpenBetsPanel extends JPanel {
 		betTable.setRowSorter(sorter);
 	}
 
+	/**
+	 * Builds the hashmap that stores the mapping between the Events(Keys) and the predictions that has been placed on the event(List<Prediction>, the value)
+	 * @param predictions	List of all predictions placed on the selected bet.
+	 */
 	public void computePredictionMap(List<Prediction> predictions) {
 		//create map with Event-predictions mapping
 		predictionmap.clear();
@@ -531,6 +538,10 @@ public class OpenBetsPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Computes the maximum possible winnings that the selected bet may attain (taking into consideration the predictions that have already won/failed,
+	 * and sets this value on the poswinnings JLabel (the label below the prediction table)
+	 */
 	public void computePossibleWInnings() {
 		boolean fullcover = false;
 		float stake = 0;
@@ -570,6 +581,10 @@ public class OpenBetsPanel extends JPanel {
 		poswinLabel.setText(String.valueOf(poswinnings)+"€");
 	}
 
+	/**
+	 * Loads the predictions placed on the selected bet on the prediction table (the bottom table)
+	 * @param predictions	List of predictions on the selected bet.
+	 */
 	public void loadPredictions(List<Prediction> predictions) {
 		int objectcol = editmode? 8 : 7;
 
@@ -628,6 +643,19 @@ public class OpenBetsPanel extends JPanel {
 		predictionTable.setRowSorter(sorter);
 	}
 
+	public List<Prediction> updatePredictions(){
+		predictions.clear();
+		for(int i = 0; i<predictionTable.getRowCount();i++) {
+			Prediction p = (Prediction)predictionTableModel.getValueAt(i, 8);
+			String answer = (String)predictionTableModel.getValueAt(i, 3);
+			String[] s = answer.split(";");
+			p.setAnswer(s[0]);
+			p.setOdds((float)predictionTableModel.getValueAt(i, 4));
+			predictions.add(p);
+		}
+		return predictions;
+	}
+	
 	public void enableEditMode() {
 		editmode = true;
 		editModeLabel.setVisible(true);
@@ -682,7 +710,7 @@ public class OpenBetsPanel extends JPanel {
 			int row = predictionTable.getSelectedRow();
 			String answer = (String)predictionTableModel.getValueAt(row, 3);
 			String[] s = answer.split(";");
-			predictionTableModel.setValueAt(s[1], row, 4);
+			predictionTableModel.setValueAt(Float.parseFloat(s[1]), row, 4);
 		}
 
 	};
@@ -769,7 +797,7 @@ public class OpenBetsPanel extends JPanel {
 
 	public void refreshPage() {
 		int selectedrow = betTable.getSelectedRow();
-		loadBets(true);
+		loadBets();
 
 		int maxrow = betTable.getRowCount()-1;
 		if(selectedrow != -1) {

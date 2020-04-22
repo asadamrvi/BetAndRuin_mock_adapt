@@ -19,13 +19,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
-
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -34,16 +32,11 @@ import businessLogic.BLFacade;
 import domain.Event;
 import gui.MainGUI;
 import gui.components.NonEditableTableModel;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import java.awt.CardLayout;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import javax.swing.JSeparator;
 import net.miginfocom.swing.MigLayout;
-import java.awt.SystemColor;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")

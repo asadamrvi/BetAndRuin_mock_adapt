@@ -34,9 +34,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JSeparator;
 
+@SuppressWarnings("serial")
 public class FeedbackPanel extends JPanel {
-
-	private static final long serialVersionUID = 1L;
 
 	private final int MAXSUMMARY = 100;
 	private final int MAXDETAILS = 500;
