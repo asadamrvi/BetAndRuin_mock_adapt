@@ -60,7 +60,7 @@ public class AddCreditCardGUI extends JDialog {
 	public AddCreditCardGUI() {
 
 		BLFacade facade = MainGUI.getBusinessLogic();
-		
+		 
 		setTitle("Login");
 		
 		setModal(true);
