@@ -59,7 +59,7 @@ public class DataAccessImplementation implements DataAccess {
 		System.out.println("Creating DataAccess instance => isDatabaseLocal: "+c.isDatabaseLocal()+" getDatabBaseOpenMode: "+c.getDataBaseOpenMode());
 
 		fileName=c.getDbFilename();
-		if (initializeMode) 
+		if (initializeMode)  
 			fileName=fileName+";drop";
 
 		if (c.isDatabaseLocal()) {
