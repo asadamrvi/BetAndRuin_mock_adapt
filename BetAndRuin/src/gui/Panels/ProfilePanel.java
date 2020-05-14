@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import businessLogic.BLFacade;
 import domain.Profile;
+import domain.User;
 import gui.ChangePassGUI;
 import gui.MainGUI;
 import gui.Panels.subpanels.CreditCardsPanel;
@@ -66,7 +67,9 @@ public class ProfilePanel extends JPanel {
 	public ProfilePanel() {
 		setBackground(Color.WHITE);
 		BLFacade facade = MainGUI.getBusinessLogic();
-		Profile p = facade.getProfile();
+		User loggeduser = MainGUI.getInstance().getLoggeduser();
+
+		Profile p = loggeduser.getProfile();
 
 		setFont(new Font("Source Sans Pro", Font.BOLD, 15));
 
@@ -103,7 +106,7 @@ public class ProfilePanel extends JPanel {
 		imageFeedbackLabel.setForeground(Color.red);
 		add(imageFeedbackLabel, "cell 1 12 4 1,alignx center,aligny top");	
 
-		JLabel usernameTitleLabel = new JLabel(facade.getUsername());
+		JLabel usernameTitleLabel = new JLabel(loggeduser.getUsername());
 		usernameTitleLabel.setFont(new Font("Source Code Pro", Font.BOLD, 18));
 		add(usernameTitleLabel, "cell 2 5 3 1,alignx center");
 
@@ -181,8 +184,8 @@ public class ProfilePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					facade.updateProfilePic(facade.getProfile(), "images/profilepic/" + selectedfile.getName());
-					facade.getProfile().setProfilepic("images/profilepic/" + selectedfile.getName());
+					facade.updateProfilePic(loggeduser.getProfile(), "images/profilepic/" + selectedfile.getName());
+					loggeduser.getProfile().setProfilepic("images/profilepic/" + selectedfile.getName());
 
 					Path source = Paths.get(selectedfile.getAbsolutePath());
 					Path dest = Paths.get("images/profilepic/" + selectedfile.getName());
@@ -226,8 +229,8 @@ public class ProfilePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			int option = JOptionPane.showConfirmDialog(getParent(),"Deleting your account is not reversible and will result in a log out, are you sure you want to continue?","Confirm deletion",JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 				if(option==0) {
-					facade.removeUser(facade.getUsername());
-					facade.logOut();
+					facade.removeUser(loggeduser.getUsername());
+					MainGUI.getInstance().logOut();
 					for (Window window : Window.getWindows()) {
 						window.dispose();
 					}

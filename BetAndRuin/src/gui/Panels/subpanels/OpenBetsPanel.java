@@ -33,10 +33,13 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import businessLogic.BLFacade;
 import domain.Bet;
+import domain.BetContainer;
 import domain.BetType;
 import domain.Event;
 import domain.Prediction;
+import domain.PredictionContainer;
 import domain.Question;
+import domain.User;
 import exceptions.InsufficientCash;
 import gui.MainGUI;
 import gui.components.ButtonColumn;
@@ -46,6 +49,7 @@ import gui.components.JTableX;
 import gui.components.CellEditorModel;
 import net.miginfocom.swing.MigLayout;
 import javax.imageio.ImageIO;
+import javax.jws.WebMethod;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
@@ -60,7 +64,7 @@ public class OpenBetsPanel extends JPanel {
 
 	private boolean editmode = false;
 
-	private Bet selectedbet;
+	private BetContainer selectedbet;
 	private BetType selectedBetType;
 	private float poswinnings;
 
@@ -95,9 +99,9 @@ public class OpenBetsPanel extends JPanel {
 	private FancyButton addPredictionsButton;
 	private FancyButton cancelButton;
 
-	private List<Bet> bets;
-	private List<Prediction> predictions;;
-	private Map<Event,List<Prediction>> predictionmap  = new HashMap<Event, List<Prediction>>();
+	private List<BetContainer> bets;
+	private List<PredictionContainer> predictions;
+	private Map<Event,List<PredictionContainer>> predictionmap  = new HashMap<Event, List<PredictionContainer>>();
 
 	private String[] columnNamesOpen = new String[] {
 			ResourceBundle.getBundle("Etiquetas").getString("BetType"), 
@@ -164,7 +168,7 @@ public class OpenBetsPanel extends JPanel {
 				if(editmode && betTableModel.getValueAt(row, 5).equals(selectedbet)) {
 					return selectedBetRenderer;
 				}
-				else if(((Bet)betTableModel.getValueAt(row, 5)).getStartingDate().compareTo(new Date()) < 0){
+				else if(((BetContainer)betTableModel.getValueAt(row, 5)).getBet().getStartingDate().compareTo(new Date()) < 0){
 					return nonEditableBetRenderer;
 				}
 				else {
@@ -196,7 +200,7 @@ public class OpenBetsPanel extends JPanel {
 				if (!e.getValueIsAdjusting()) {//This line prevents double events
 					int row = betTable.getSelectedRow();
 					if(row != -1 && !editmode) {		
-						if(((Bet)betTableModel.getValueAt(betTable.getSelectedRow(), 5)).getStartingDate().compareTo(new Date()) > 0) {
+						if(((BetContainer)betTableModel.getValueAt(betTable.getSelectedRow(), 5)).getBet().getStartingDate().compareTo(new Date()) > 0) {
 							editBetButton.setEnabled(true);
 							addPredictionsButton.setEnabled(true);
 							cancelBetButton.setEnabled(true);
@@ -206,9 +210,10 @@ public class OpenBetsPanel extends JPanel {
 							addPredictionsButton.setEnabled(false);
 							cancelBetButton.setEnabled(false);
 						}
-						selectedbet = (Bet)betTableModel.getValueAt(row, 5);
-						selectedBetType = selectedbet.getType();
-						predictions =selectedbet.getPredictions();
+						selectedbet = (BetContainer)betTableModel.getValueAt(row, 5);
+
+						predictions = selectedbet.getPredictions();
+						selectedBetType = selectedbet.getBet().getType();
 						computePredictionMap(predictions);
 						loadPredictions(predictions);
 					}
@@ -219,7 +224,7 @@ public class OpenBetsPanel extends JPanel {
 
 		betsLabel = new JLabel("Bets:");
 		betsLabel.setFont(new Font("Source Code Pro", Font.BOLD, 16));
-		add(betsLabel, "cell 1 1");
+		add(betsLabel, "cell 1 1 3 1");
 
 		editModeLabel = new JLabel("Edit mode enabled");
 		editModeLabel.setForeground(Color.RED);
@@ -254,7 +259,10 @@ public class OpenBetsPanel extends JPanel {
 				if(confirm == 0) {
 					int row = betTable.getSelectedRow();
 					if(row != -1) {
-						facade.cancelBet((((Bet)betTableModel.getValueAt(row, 5))));
+						BetContainer b = ((BetContainer)betTableModel.getValueAt(row, 5));
+						facade.cancelBet(b);
+						User loggeduser = MainGUI.getInstance().getLoggeduser();
+						loggeduser.setCash(loggeduser.getCash()+b.getBet().getStake());
 						MainGUI.getInstance().refreshCash();
 						refreshPage();
 					}
@@ -276,6 +284,8 @@ public class OpenBetsPanel extends JPanel {
 					if(confirm==0) {
 						facade.cancelBet(selectedbet);
 						MainGUI.getInstance().refreshCash();
+						disableEditMode();
+						refreshPage();
 					}
 				}
 				else if(predictions.size() > 1 && poswinnings==0) {
@@ -288,8 +298,29 @@ public class OpenBetsPanel extends JPanel {
 							JOptionPane.showMessageDialog(null, "Introduce stake");
 						}
 						else if( stakeField.getFloat() >= Float.parseFloat(minbet)) {
-							updatePredictions();
-							facade.editBet(selectedbet, selectedBetType, stakeField.getFloat(), predictions);
+							predictions = updatePredictions();
+							float stake = stakeField.getFloat();
+							Bet bet = facade.editBet(selectedbet, selectedBetType, stake, predictions);
+
+							User loggeduser = MainGUI.getInstance().getLoggeduser();
+							boolean found = false;
+							int k = 0;
+
+							for(int i = 0; i<loggeduser.getBets().size();i++ ) {
+								Bet b = loggeduser.getBets().get(i);
+								if(b.getBetNumber() == bet.getBetNumber()) {
+									bet = b;
+									found = true;
+									k = i;
+									break;
+								}
+							}
+							if(found) {
+								loggeduser.getBets().set(k, bet);
+								loggeduser.setCash(loggeduser.getCash()+(bet.getStake()-stake));
+							}
+
+
 							JOptionPane.showMessageDialog(null, "Bet updated sucessfully");
 							MainGUI.getInstance().refreshCash();
 							disableEditMode();
@@ -401,10 +432,10 @@ public class OpenBetsPanel extends JPanel {
 				}
 
 				int lastcol = predictionTableModel.getColumnCount()-1;
-				Prediction p =(Prediction)predictionTableModel.getValueAt(row, lastcol);
+				PredictionContainer pc =(PredictionContainer)predictionTableModel.getValueAt(row, lastcol);
 
 				if(editmode && column == 3) {
-					List<Prediction> predictions = p.getQuestion().getPredictions();
+					List<Prediction> predictions = pc.getQuestion().getPredictions();
 					String[] answers = new String[predictions.size()];
 					for(int i = 0;i<predictions.size(); i++) {
 						answers[i] = predictions.get(i).getAnswer() + ";" + predictions.get(i).getOdds();
@@ -415,16 +446,16 @@ public class OpenBetsPanel extends JPanel {
 					return  new ButtonColumn(predictionTable, delete, column, new Color(255,0,51));
 				}
 				else if(column == 0) {
-					if(predictionmap.get(p.getQuestion().getEvent()).size() > 1) {
+					if(predictionmap.get(pc.getEvent()).size() > 1) {
 						return redRenderer;
 					}
 					else {
 						return whiteRenderer;
 					}
 				}
-				else if (p.getOutcome() == null)
+				else if (pc.getPrediction().getOutcome() == null)
 					return whiteRenderer;
-				else if(p.getOutcome() == true){
+				else if(pc.getPrediction().getOutcome() == true){
 					return wonPredictionRendered;
 				}
 				else {
@@ -499,10 +530,11 @@ public class OpenBetsPanel extends JPanel {
 		betTableModel.setDataVector(null, columnNamesOpen);
 		betTableModel.setColumnCount(6); 
 		betTable.setRowHeight(40);
-		bets = facade.getLoggeduser().getBets();
-		for(Bet bet: bets) {
-			if(bet.getStatus().equals(Bet.Status.ONGOING)) {
-				addBetToTable(bet);
+		bets = facade.retrieveBets(MainGUI.getInstance().getLoggeduser().getUsername());
+		for(BetContainer cBet: bets) {
+			Bet b = cBet.getBet();
+			if(b.getStatus().equals(Bet.BetStatus.ONGOING)) {
+				addBetToTable(cBet);
 			}
 		}	
 
@@ -522,16 +554,16 @@ public class OpenBetsPanel extends JPanel {
 	 * Builds the hashmap that stores the mapping between the Events(Keys) and the predictions that has been placed on the event(List<Prediction>, the value)
 	 * @param predictions	List of all predictions placed on the selected bet.
 	 */
-	public void computePredictionMap(List<Prediction> predictions) {
+	public void computePredictionMap(List<PredictionContainer> predictions) {
 		//create map with Event-predictions mapping
 		predictionmap.clear();
-		for(Prediction p : predictions) {
-			Event ev = p.getQuestion().getEvent();
+		for(PredictionContainer p : predictions) {
+			Event ev = p.getEvent();
 			if(predictionmap.containsKey(ev)) {
 				predictionmap.get(ev).add(p);
 			}
 			else {
-				ArrayList<Prediction> list = new ArrayList<Prediction>();
+				ArrayList<PredictionContainer> list = new ArrayList<PredictionContainer>();
 				list.add(p);
 				predictionmap.put(ev, list);
 			}
@@ -545,13 +577,13 @@ public class OpenBetsPanel extends JPanel {
 	public void computePossibleWInnings() {
 		boolean fullcover = false;
 		float stake = 0;
-		ArrayList<Prediction> aux = new ArrayList<Prediction>();
+		//ArrayList<Prediction> aux = new ArrayList<Prediction>();
 		if(!stakeField.getText().isEmpty()) {
 			if(editmode) {
 				stake= stakeField.getFloat();
 			}
 			else {
-				stake=selectedbet.getStake();
+				stake=selectedbet.getBet().getStake();
 			}
 		}
 
@@ -560,23 +592,18 @@ public class OpenBetsPanel extends JPanel {
 			fullcover = true;
 		}
 
-		for(Prediction p : predictions) {
-			if(p.getOutcome() == null || p.getOutcome() == true) {
-				aux.add(p);
-			}
-		}
 
 		if(predictions.isEmpty() || selectedBetType == null) {
 			poswinnings = 0;
 		}
 		else if(predictions.size() == 1){
-			poswinnings = stake*predictions.get(0).getOdds();
+			poswinnings = stake*predictions.get(0).getPrediction().getOdds();
 		}
 		else if(fullcover) {
-			poswinnings = facade.calculateFullCoverWinnings(selectedBetType.predictionCount(),stake,aux);
+			poswinnings = Bet.calculateFullCoverWinnings(selectedBetType.predictionCount(),stake,predictions);
 		}
 		else {
-			poswinnings = facade.calculateCombinedWinnings(selectedBetType.predictionCount(),stake,aux);
+			poswinnings = Bet.calculateCombinedWinnings(selectedBetType.predictionCount(),stake,predictions);
 		}
 		poswinLabel.setText(String.valueOf(poswinnings)+"€");
 	}
@@ -585,7 +612,7 @@ public class OpenBetsPanel extends JPanel {
 	 * Loads the predictions placed on the selected bet on the prediction table (the bottom table)
 	 * @param predictions	List of predictions on the selected bet.
 	 */
-	public void loadPredictions(List<Prediction> predictions) {
+	public void loadPredictions(List<PredictionContainer> predictions) {
 		int objectcol = editmode? 8 : 7;
 
 		predictionTableModel.setDataVector(null, columnNamesPrediction);
@@ -597,7 +624,7 @@ public class OpenBetsPanel extends JPanel {
 		int unresolved = 0;
 		int k = 0;
 		float betmin = 0;
-		for(Prediction p: predictions) {
+		for(PredictionContainer p: predictions) {
 			List<Prediction> questionpredictions = p.getQuestion().getPredictions();
 			String[] answers = new String[questionpredictions.size()];
 			for(int i = 0;i<questionpredictions.size(); i++) {
@@ -609,7 +636,7 @@ public class OpenBetsPanel extends JPanel {
 
 			addPredictionToTable(p);		
 
-			if(p.getOutcome() != null) {
+			if(p.getPrediction().getOutcome() != null) {
 				unresolved++;
 			}
 
@@ -643,19 +670,21 @@ public class OpenBetsPanel extends JPanel {
 		predictionTable.setRowSorter(sorter);
 	}
 
-	public List<Prediction> updatePredictions(){
+	public List<PredictionContainer> updatePredictions(){
 		predictions.clear();
 		for(int i = 0; i<predictionTable.getRowCount();i++) {
-			Prediction p = (Prediction)predictionTableModel.getValueAt(i, 8);
+			PredictionContainer pc = (PredictionContainer)predictionTableModel.getValueAt(i, 8);
 			String answer = (String)predictionTableModel.getValueAt(i, 3);
 			String[] s = answer.split(";");
+
+			Prediction p = pc.getPrediction();
 			p.setAnswer(s[0]);
 			p.setOdds((float)predictionTableModel.getValueAt(i, 4));
-			predictions.add(p);
+			predictions.add(pc);
 		}
 		return predictions;
 	}
-	
+
 	public void enableEditMode() {
 		editmode = true;
 		editModeLabel.setVisible(true);
@@ -667,7 +696,7 @@ public class OpenBetsPanel extends JPanel {
 		saveChangesButton.setEnabled(true);
 
 		//create a copy of the prediction list that will be used in the editing process(in case the user wants to cancel)
-		predictions = new ArrayList<Prediction>(selectedbet.getPredictions());
+		//predictions = new ArrayList<Prediction>(selectedbet.getPredictions());
 		loadPredictions(predictions);
 
 		minBetLabel.setVisible(true);
@@ -676,7 +705,7 @@ public class OpenBetsPanel extends JPanel {
 		betTypeLabel.setVisible(true);
 		stakeField.setVisible(true);
 		betTypeComboBox.setVisible(true);
-		stakeField.setFloat(selectedbet.getStake());
+		stakeField.setFloat(selectedbet.getBet().getStake());
 		updateBetTypeCombobox();
 
 	}
@@ -699,7 +728,7 @@ public class OpenBetsPanel extends JPanel {
 		betTypeComboBox.setVisible(false);
 
 		predictions = selectedbet.getPredictions();
-		selectedBetType = selectedbet.getType();
+		selectedBetType = selectedbet.getBet().getType();
 		//betTable.setRowSelectionAllowed(false);
 		computePredictionMap(predictions);
 		loadPredictions(predictions);
@@ -719,12 +748,12 @@ public class OpenBetsPanel extends JPanel {
 	{
 		public void actionPerformed(ActionEvent e)
 		{	
-			Prediction p = (Prediction)predictionTableModel.getValueAt(predictionTable.getSelectedRow(),8);
-			predictions.remove(p);
-			List<Prediction> predictionsforevent = predictionmap.get(p.getQuestion().getEvent());
-			predictionsforevent.remove(p);
+			PredictionContainer pc = (PredictionContainer)predictionTableModel.getValueAt(predictionTable.getSelectedRow(),8);
+			predictions.remove(pc);
+			List<PredictionContainer> predictionsforevent = predictionmap.get(pc.getQuestion().getEvent());
+			predictionsforevent.remove(pc);
 			if(predictionsforevent.size() == 0) {
-				predictionmap.remove(p.getQuestion().getEvent());
+				predictionmap.remove(pc.getEvent());
 			}
 
 			updateBetTypeCombobox();
@@ -736,16 +765,17 @@ public class OpenBetsPanel extends JPanel {
 	};
 
 
-	public void addBetToTable(Bet bet) {
+	public void addBetToTable(BetContainer cBet) {
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 		Vector<Object> row = new Vector<Object>();
+		Bet bet = cBet.getBet();
 
 		row.add(bet.getType().name());
 		row.add(bet.getStake());
 		row.add(df.format(bet.getPlacementdate()));
 		row.add(df.format(bet.getResolvingdate()));
 		row.add(bet.getStatus());
-		row.add(bet);
+		row.add(cBet);
 		betTableModel.addRow(row);		
 
 	}
@@ -789,7 +819,7 @@ public class OpenBetsPanel extends JPanel {
 			//betTypeComboBox.setSelectedIndex(0);
 		}
 		else {
-			selectedBetType = selectedbet.getType();
+			selectedBetType = selectedbet.getBet().getType();
 		}
 		betTypeComboBox.repaint();	
 	}
@@ -804,14 +834,14 @@ public class OpenBetsPanel extends JPanel {
 			if(maxrow >= 0) {
 				if(maxrow >= selectedrow) {
 					betTable.setRowSelectionInterval(selectedrow, selectedrow);
-					selectedbet = (Bet)betTableModel.getValueAt(selectedrow, 5);	
+					selectedbet = (BetContainer)betTableModel.getValueAt(selectedrow, 5);	
 				}
 				else {
 					betTable.setRowSelectionInterval(maxrow, maxrow);
-					selectedbet = (Bet)betTableModel.getValueAt(maxrow, 5);
+					selectedbet = (BetContainer)betTableModel.getValueAt(maxrow, 5);
 				}
 				if(!editmode) {
-					predictions = new ArrayList<Prediction>(selectedbet.getPredictions());
+					predictions = selectedbet.getPredictions();
 					predictionTableModel.setDataVector(null, columnNamesPrediction);
 					computePredictionMap(predictions);
 					loadPredictions(predictions);
@@ -822,17 +852,19 @@ public class OpenBetsPanel extends JPanel {
 		revalidate();
 	}
 
-	public void addPredictionToTable(Prediction p) {
+	public void addPredictionToTable(PredictionContainer pc) {
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 		Vector<Object> row = new Vector<Object>();
 
-		Question q = p.getQuestion();
+
+		Prediction p = pc.getPrediction();
+		Question q = pc.getQuestion();
 		row.add("");
-		row.add(q.getEvent().getDescription());
+		row.add(pc.getEvent().getDescription());
 		row.add(q.getQuestion());
 		row.add(p.getAnswer());
 		row.add(p.getOdds());
-		row.add(df.format(p.getQuestion().getEvent().getEndingdate()));
+		row.add(df.format(pc.getEvent().getEndingdate()));
 		if(p.getOutcome() == null) {
 			row.add("Unknown");
 		}
@@ -849,23 +881,23 @@ public class OpenBetsPanel extends JPanel {
 				e.printStackTrace();
 			}
 		}
-		row.add(p);
+		row.add(pc);
 		predictionTableModel.addRow(row);		
 	}
 
-	
+
 	/**
 	 * Action for the combobox that allows selection of bet type in bet editing mode
 	 */
 	Action betTypeComboBoxAction = new AbstractAction() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			selectedBetType = (BetType)betTypeComboBox.getSelectedItem();
 			computePossibleWInnings();
 		}
 	};
-	
+
 
 	public class TableHeaderRenderer implements TableCellRenderer {
 

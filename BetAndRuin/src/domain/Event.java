@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Event implements Serializable {
+public class Event implements Serializable{
 	
 	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
@@ -37,6 +37,7 @@ public class Event implements Serializable {
 
 	public Event() {
 		super();
+		this.questions = new ArrayList<Question>();
 	}
 
 	public Event(Integer eventNumber, String description,Date eventdate, Date endingdate , Sport sport) {

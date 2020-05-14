@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -15,9 +16,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @Entity
 public class Prediction implements Serializable{
 
-	@Id 
+	
+	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
-	@GeneratedValue
+	@Id @GeneratedValue
 	private Integer predictionNumber;
 	@XmlIDREF
 	private Question question;
@@ -25,6 +27,10 @@ public class Prediction implements Serializable{
 	private float odds;
 	private Boolean outcome;
 
+	public Prediction() {
+		
+	}
+	
 	public Prediction(String answer, float odds) { 
 		this.answer = answer;
 		this.odds = odds;

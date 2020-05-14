@@ -308,9 +308,10 @@ public class UserManagementPanel extends JPanel {
 		{	
 			int option;
 			String username = (String)userTable.getValueAt(userTable.getSelectedRow(), 0);
-
+			User loggeduser = MainGUI.getInstance().getLoggeduser();
+			
 			//if we try do delete our own admin account
-			if(username.equals(facade.getProfile().getID())) {
+			if(username.equals(loggeduser.getProfile().getID())) {
 				option = JOptionPane.showConfirmDialog(getParent(),"Deleting your account is not reversible and will result in a log out, are you sure you want to continue?","Confirm deletion",
 						JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
 				if(option==0) {
@@ -319,7 +320,7 @@ public class UserManagementPanel extends JPanel {
 					for (Window window : Window.getWindows()) {
 						window.dispose();
 					}
-					facade.logOut();;
+					MainGUI.getInstance().logOut();
 				}
 			}
 			else {

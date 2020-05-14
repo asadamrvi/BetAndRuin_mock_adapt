@@ -3,21 +3,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Feedback {
+public class Feedback  implements Serializable{
 
-	@Id 
+	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
-	@GeneratedValue
+	@Id @GeneratedValue
 	private Integer fbNumber;
 	private FeedbackType fbtype;
 	private String email;
@@ -36,6 +39,10 @@ public class Feedback {
 		SUGGESTION,
 		PROBLEM,
 		QUESTION;
+	}
+	
+	public Feedback() {
+		
 	}
 	
 	public Feedback(FeedbackType fbtype, String email, String name, String summary, String details, File file) {

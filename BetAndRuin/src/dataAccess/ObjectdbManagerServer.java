@@ -20,10 +20,9 @@ import java.awt.event.ActionEvent;
 /**
  * It runs the database server as a separate process.
  */
+@SuppressWarnings("serial")
 public class ObjectdbManagerServer extends JDialog {
 
-
-	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	JTextArea textArea;
 	ConfigXML c;

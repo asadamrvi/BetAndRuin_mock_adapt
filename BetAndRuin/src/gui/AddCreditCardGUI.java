@@ -5,11 +5,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -19,20 +16,16 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import businessLogic.BLFacade;
 import domain.CardType;
-import domain.Prediction;
-import exceptions.invalidID;
-import exceptions.invalidPW;
+import domain.CreditCard;
+import domain.User;
 import gui.components.FancyButton;
-import gui.components.HintPassField;
-import gui.components.HintTextField;
 import gui.components.JNumericField;
 import gui.components.cancelLabel;
-import gui.components.passVisibleLabel;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class AddCreditCardGUI extends JDialog {
 
 	private JPanel contentPane = new JPanel();
@@ -58,8 +51,6 @@ public class AddCreditCardGUI extends JDialog {
 	 * Create the dialog.
 	 */
 	public AddCreditCardGUI() {
-
-		BLFacade facade = MainGUI.getBusinessLogic();
 		 
 		setTitle("Login");
 		
@@ -191,6 +182,7 @@ public class AddCreditCardGUI extends JDialog {
 				System.out.println(valid);
 				if(valid) {
 					BLFacade facade = MainGUI.getBusinessLogic();
+					User loggeduser = MainGUI.getInstance().getLoggeduser();
 					
 					Integer month = monthTextField.getInt();
 					Integer year = yearTextField.getInt();
@@ -200,7 +192,8 @@ public class AddCreditCardGUI extends JDialog {
 					calendar.set(Calendar.MONTH, month-1);
 					calendar.set(Calendar.YEAR, year+2000);
 					Date dueDate = calendar.getTime();
-					facade.addCreditCard(cardnumber, dueDate);
+					CreditCard cc = facade.addCreditCard(loggeduser.getUsername(),cardnumber, dueDate);
+					loggeduser.addCreditCard(cc);
 					JOptionPane.showMessageDialog(null, "Card added sucessfully");
 					dispose();
 				}	

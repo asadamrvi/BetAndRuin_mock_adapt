@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
 @SuppressWarnings("serial")
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 public class CreditCard implements Serializable{
 
 	@Id
+	@XmlID
 	private String cardNumber;
 	private Date dueDate;
 	private double balance;
@@ -33,6 +35,10 @@ public class CreditCard implements Serializable{
 	private static final double DEFAULT_LIMIT = 24000;
 	
 	public enum Status{ACTIVE,EXPIRED}
+	
+	public CreditCard() {
+		
+	}
 	
 	public CreditCard(String number, Date dueDate, double balance, double limit) {
 		this.cardNumber = number;

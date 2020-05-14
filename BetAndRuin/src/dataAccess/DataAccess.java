@@ -6,12 +6,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import javax.jws.WebMethod;
 import javax.persistence.EntityManager;
 
 import domain.Event;
 import domain.Feedback;
 import domain.Feedback.FeedbackType;
+import domain.FeedbackRecord;
 import domain.Prediction;
+import domain.PredictionContainer;
 import domain.Profile;
 import domain.Bet;
 import domain.BetType;
@@ -153,14 +156,14 @@ public interface DataAccess {
 	 * @param number	Credit card number
 	 * @param number	Credit card expiration date
 	 */
-	public void storeCreditCard(User user, CreditCard cc);
+	public CreditCard storeCreditCard(String username, String number, Date dueDate);
 	
 	/**
 	 * This method deletes the given credit card from the database
 	 * 
-	 * @param cc	CreditCard to delete
+	 * @param cardnumber	Credit car number of the CreditCard to delete
 	 */
-	public void removeCreditCard(CreditCard cc);
+	public void removeCreditCard(String cardnumber);
 
 	/**
 	 * This method updates the default credit card value of the given user to the given credit card
@@ -214,7 +217,7 @@ public interface DataAccess {
 	 * @param u
 	 * @param amount
 	 */
-	public Bet recordBet(User bettor, float stake, float price, BetType type, List<Prediction> predictions);
+	public Bet recordBet(User bettor, float stake, float price, BetType type, List<PredictionContainer> predictions);
 
 
 	/**
@@ -231,13 +234,6 @@ public interface DataAccess {
 	 * @return			cash on the account after the addition
 	 */
 	public float addCash(String ID, float cash);
-	public ArrayList<Bet> getBets(User bettor);
-
-	/**
-	 * 
-	 */
-	public void storeFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file);
-
 	
 	/**
 	 * This method updates the given bets type, stake value and set of predictions to the 
@@ -250,15 +246,38 @@ public interface DataAccess {
 	 * @param predictions	New set of predictions that form the bet
 	 * @return				The edited bet
 	 */
-	public Bet updateBet(Bet bet, BetType type, float stake, List<Prediction> predictions);
+	public Bet updateBet(Bet bet, BetType type, float stake, List<PredictionContainer> predictions);
 	
-	
+	public List<Bet> getBets(String username);
+
+	/**
+	 * 
+	 */
+	public void storeFeedback(FeedbackType fbtype, String email, String name, String summary, String details, File file);
+
 	/**
 	 * This method retrieves all Feedback objects from the database.
 	 * @return	Feedback that has been sent and stored previously.
 	 */
 	public Vector<Feedback> retrieveFeedback();
 
+	/**
+	 * This method updates the read value of the given feedback records to be marked as read.
+	 * 
+	 * @param updatedrecords records to be updated as read.
+	 */
+	@WebMethod
+	public void updateFeedBackRecords(List<FeedbackRecord> updatedrecords);
+	
+	/**
+	 * This method retrieves FeedbackRecord objects from the database that correspond the given user.
+	 * 
+	 * @param u  user(administrator) to search FeedbackRecords for
+	 * @return	FeedbackRecords tied to the given user that has been sent and stored previously.
+	 */
+	public Vector<FeedbackRecord> retrieveFeedbackRecords(User u);
+	
+	
 	/**
 	 * Updates the cash of a user by the amount indicates.
 	 * 
@@ -285,4 +304,5 @@ public interface DataAccess {
 	public void resolveQuestions(Date date);
 	
 	public List<Prediction> getQuestionPredictions(int questionId) throws QuestionNotFound,NoAnswers;
+	
 }

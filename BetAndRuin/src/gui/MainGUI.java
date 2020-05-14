@@ -2,6 +2,7 @@ package gui;
 
 
 import javax.imageio.ImageIO;
+import javax.jws.WebMethod;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -19,6 +20,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import businessLogic.BLFacade;
 import domain.Profile;
+import domain.User;
 import gui.Panels.BrowsePanel;
 import gui.Panels.CreateQuestionPanel;
 import gui.Panels.FeedbackPanel;
@@ -33,6 +35,10 @@ import java.awt.Graphics;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,6 +59,7 @@ import javax.swing.BoxLayout;
 public class MainGUI extends JFrame {
 
 	boolean admin;
+	private User loggeduser;
 
 	private static BLFacade appFacadeInterface;
 
@@ -125,7 +132,7 @@ public class MainGUI extends JFrame {
 	 */
 	public MainGUI(BLFacade blogic) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		setTitle("BET & RUIN");
 
 		//will need to be removed for remote
@@ -243,7 +250,7 @@ public class MainGUI extends JFrame {
 							s = JOptionPane.showInputDialog(null, "Enter a valid amount (amount has to be > 0):");
 						}
 						else {
-							float newcash = appFacadeInterface.addCash(addition);
+							float newcash = loggeduser.addCash(addition);
 							valid=true;	
 							cashLabel.setText(Float.toString(newcash));
 						}	
@@ -284,10 +291,11 @@ public class MainGUI extends JFrame {
 		loggedPanel.add(logoutButton);
 		logoutButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				appFacadeInterface.logOut();
+				menuAction.actionPerformed(new ActionEvent(homeButton, ActionEvent.ACTION_PERFORMED, null));
+				logOut();
 				resetPanels();
-				admin=false;
 				visitorView();
+				admin=false;
 			}
 		});		
 
@@ -340,7 +348,7 @@ public class MainGUI extends JFrame {
 		gbc_containerPanel.gridx = 0;
 		gbc_containerPanel.gridy = 1;
 		contentPane.add(containerPanel, gbc_containerPanel);
-		
+
 		menubuttonsPanel = new JPanel();
 		menubuttonsPanel.setLayout(new BoxLayout(menubuttonsPanel, BoxLayout.Y_AXIS));
 		menubuttonsPanel.setBackground(new Color(51,51,51));
@@ -367,7 +375,7 @@ public class MainGUI extends JFrame {
 		currentPanel.setLayout(new CardLayout(0, 0));
 		currentPanel.setPreferredSize(new Dimension(600,400));
 		currentPanel.setMinimumSize(new Dimension(600,400));
-		
+
 		dashboardButton = new MenuButton("Dashboard", new ImageIcon("images/menu.png"));
 		GridBagConstraints gbc_menuButton = new GridBagConstraints();
 		gbc_menuButton.insets = new Insets(0, 0, 0, 0);
@@ -377,7 +385,9 @@ public class MainGUI extends JFrame {
 		gbc_menuButton.gridy = 0;
 
 		dashboardButton.addActionListener(new ActionListener() {
-				@Override
+
+			/*
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				Timer t = new Timer(1, new ActionListener() {
@@ -424,7 +434,7 @@ public class MainGUI extends JFrame {
 							menuPanel.revalidate();
 							currentPanel.repaint();
 							currentPanel.revalidate();
-							
+
 							if(width>=180) {
 
 								menuhidden = false;
@@ -437,9 +447,9 @@ public class MainGUI extends JFrame {
 				t.start();
 			}
 		});
+			 */
 
-/*
-			 public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(ActionEvent evt) {
 				Thread t = new Thread(new Runnable() {
 
 					@Override
@@ -499,7 +509,7 @@ public class MainGUI extends JFrame {
 			}
 
 		});	
-*/
+
 
 		homeButton = new MenuButton("Home", new ImageIcon("images/home1.png"));
 		GridBagConstraints gbc_homeButton = new GridBagConstraints();
@@ -586,7 +596,14 @@ public class MainGUI extends JFrame {
 		userManagementButton.setMaximumSize(menubuttonDimension);
 		userManagementButton.setPreferredSize(menubuttonDimension);
 
-
+		//methods to execute when closing the app
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we)
+			{			
+				logOut();
+			}
+		});
+		
 		//menubuttons.put(homeButton,new HomePanel());
 		resetPanels();		
 
@@ -596,15 +613,38 @@ public class MainGUI extends JFrame {
 		currentPanel.revalidate();
 	}
 
+	
+	public User getLoggeduser() {
+		return loggeduser;
+	}
+
+	public void setLoggeduser(User loggeduser) {
+		this.loggeduser = loggeduser;
+	}
+	
+	/**
+	 * Logs the current user out by setting the attributes related to the current session to null
+	 */ 
+	public boolean isLoggedIn() {
+		return (loggeduser != null);
+	}
+	
+	/**
+	 * Logs the current user out by setting the attributes related to the current session to null
+	 */ 
+	public void logOut() {
+		loggeduser = null;
+	}
+	
 	/*
 	 * 
 	 */
 	public void refreshCash() {
-		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
+		cashLabel.setText(Float.toString(loggeduser.getCash()));
 	}
 
 	public void refreshProfilePic() {
-		Profile p = appFacadeInterface.getProfile();
+		Profile p = loggeduser.getProfile();
 		try {
 			Image img = ImageIO.read(new File(p.getProfilepic()));
 			profilepicLabel.setIcon(new ImageIcon(img.getScaledInstance(
@@ -633,9 +673,9 @@ public class MainGUI extends JFrame {
 		loggedPanel.setVisible(true);
 
 		menubuttons.put(feedbackButton, new FeedbackPanel());
-		Profile p = appFacadeInterface.getProfile();
+		Profile p = loggeduser.getProfile();
 		usernameLabel.setText(p.getID());
-		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
+		cashLabel.setText(Float.toString(loggeduser.getCash()));
 		refreshProfilePic();
 
 		currentPanel.removeAll();
@@ -664,8 +704,8 @@ public class MainGUI extends JFrame {
 		loggedPanel.setVisible(true);
 
 		menubuttons.put(feedbackButton, new FeedbackResponsePanel());
-		usernameLabel.setText(appFacadeInterface.getUsername());
-		cashLabel.setText(Float.toString(appFacadeInterface.getCash()));
+		usernameLabel.setText(loggeduser.getUsername());
+		cashLabel.setText(Float.toString(loggeduser.getCash()));
 
 		refreshProfilePic();
 
@@ -695,6 +735,7 @@ public class MainGUI extends JFrame {
 		currentPanel.removeAll();
 		currentPanel.add(menubuttons.get(homeButton));	
 		select(homeButton);
+		menuAction.actionPerformed(new ActionEvent(homeButton, ActionEvent.ACTION_PERFORMED, null));
 		currentPanel.updateUI();
 	}
 
@@ -759,7 +800,7 @@ public class MainGUI extends JFrame {
 	public void resetPanels() {
 		menubuttons.put(homeButton,new HomePanel());
 		menubuttons.put(browseButton, new BrowsePanel());
-		if(appFacadeInterface.isLoggedIn()) {
+		if(isLoggedIn()) {
 			menubuttons.put(profileButton,new ProfilePanel());
 			menubuttons.put(myBetsButton,new MyBetsPanel());
 		}
@@ -791,7 +832,7 @@ public class MainGUI extends JFrame {
 				calendar.setTime(new Date());
 				if(calendar.get(Calendar.SECOND) == 0) {
 					((HomePanel)menubuttons.get(homeButton)).refreshPage();
-					if(appFacadeInterface.isLoggedIn()) {
+					if(isLoggedIn()) {
 						((MyBetsPanel)menubuttons.get(myBetsButton)).refreshPage();
 					}
 				}			
@@ -806,9 +847,10 @@ public class MainGUI extends JFrame {
 				if(calendar.get(Calendar.SECOND) == 0) {
 					appFacadeInterface.resolveQuestions();
 					appFacadeInterface.resolveBets();
-					if(appFacadeInterface.isLoggedIn()) {
+					if(isLoggedIn()) {
 						refreshCash();
-						appFacadeInterface.retrieveBets(appFacadeInterface.getLoggeduser());
+						appFacadeInterface.retrieveBets(loggeduser.getUsername());
+						((MyBetsPanel)menubuttons.get(myBetsButton)).refreshPage();
 					}
 				}	
 			}

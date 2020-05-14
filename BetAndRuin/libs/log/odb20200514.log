@@ -1,0 +1,541 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 15:49:36 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 15:49:36 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 15:49:36 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 15:49:36 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 15:49:36 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 15:49:36 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 15:49:36 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 15:49:36 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 15:49:47 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 15:49:47 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:47:38 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 16:47:38 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 16:47:38 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 16:47:38 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 16:47:38 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 16:47:38 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 16:47:38 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 16:47:38 #8 type] 
+Type domain.Profile is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:53:33 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 16:53:33 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 16:53:33 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 16:53:33 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 16:53:33 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 16:53:33 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 16:53:33 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 16:53:33 #8 type] 
+Type domain.Profile is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 17:37:40 #1 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\bets.temp' is opened by 7032@DESKTOP-00OS7EM
+
+[2020-05-14 17:37:40 #2 store] 
+Configuration path: ?
+
+[2020-05-14 17:37:40 #3 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 17:37:40 #4 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 17:37:40 #5 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 17:37:40 #6 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 17:37:40 #7 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 17:37:40 #8 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 17:37:40 #9 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 17:37:40 #10 type] 
+Type domain.Profile is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 17:41:33 #1 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\bets.temp' has been recovered (tr. 1-11)
+
+[2020-05-14 17:41:33 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\bets.temp' is opened by 14232@DESKTOP-00OS7EM
+
+[2020-05-14 17:41:33 #3 store] 
+Configuration path: ?
+
+[2020-05-14 17:41:33 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 17:41:33 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 17:41:33 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 17:41:33 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 17:41:33 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 17:41:33 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 17:41:33 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 17:41:33 #11 type] 
+Type domain.Profile is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 17:42:01 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 17:42:01 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 17:42:01 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 17:42:01 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 17:42:01 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 17:42:01 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 17:42:01 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 17:42:01 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 17:53:32 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 17:53:32 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 19:59:37 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 19:59:37 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 19:59:37 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 19:59:37 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 19:59:37 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 19:59:37 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 19:59:37 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 19:59:37 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 19:59:37 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 19:59:37 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:01:17 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:01:17 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:01:17 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:01:17 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:01:17 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:01:17 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:01:17 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:01:17 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:01:17 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:01:17 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:27:58 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:27:58 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:27:58 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:27:58 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:27:58 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:27:58 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:27:58 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:27:58 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:27:59 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:27:59 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:29:44 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:29:44 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:29:44 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:29:44 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:29:44 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:29:44 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:29:44 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:29:44 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:29:44 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:29:44 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:41:26 #1 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\bets.temp' is opened by 3832@DESKTOP-00OS7EM
+
+[2020-05-14 20:41:26 #2 store] 
+Configuration path: ?
+
+[2020-05-14 20:41:26 #3 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:41:26 #4 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:41:26 #5 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:41:26 #6 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:41:26 #7 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:41:26 #8 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:41:26 #9 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:41:26 #10 type] 
+Type domain.Profile is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:42:41 #1 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\bets.temp' is opened by 9372@DESKTOP-00OS7EM
+
+[2020-05-14 20:42:41 #2 store] 
+Configuration path: ?
+
+[2020-05-14 20:42:41 #3 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:42:41 #4 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:42:41 #5 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:42:41 #6 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:42:41 #7 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:42:41 #8 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:42:41 #9 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:42:41 #10 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:42:44 #11 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:42:44 #12 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:46:55 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:46:55 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:46:55 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:46:55 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:46:55 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:46:55 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:46:55 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:46:55 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:47:06 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:47:06 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:51:15 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:51:15 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:51:15 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:51:15 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:51:15 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:51:15 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:51:15 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:51:15 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:51:22 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:51:22 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:54:34 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:54:34 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:54:34 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:54:34 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:54:34 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:54:34 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:54:34 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:54:34 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:54:42 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:54:42 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 21:08:29 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 21:08:29 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 21:08:29 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 21:08:29 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 21:08:29 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 21:08:29 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 21:08:29 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 21:08:29 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 21:08:37 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 21:08:37 #10 type] 
+Type domain.Feedback is not enhanced.
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 21:49:59 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 21:49:59 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 21:49:59 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 21:49:59 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 21:49:59 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 21:49:59 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 21:49:59 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 21:50:00 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 21:50:05 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 21:50:05 #10 type] 
+Type domain.Feedback is not enhanced.
+

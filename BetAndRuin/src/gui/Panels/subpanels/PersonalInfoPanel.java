@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import businessLogic.BLFacade;
 import domain.Country;
 import domain.Profile;
+import domain.User;
 import exceptions.invalidID;
 import gui.MainGUI;
 import gui.components.FancyButton;
@@ -46,7 +47,8 @@ public class PersonalInfoPanel extends JPanel{
 	public PersonalInfoPanel() {
 		
 		BLFacade facade = MainGUI.getBusinessLogic();
-		Profile p = facade.getProfile();
+		User loggeduser = MainGUI.getInstance().getLoggeduser();
+		Profile p = loggeduser.getProfile();
 		
 		setBackground(new Color(240, 248, 255));
 		setLayout(new MigLayout("", "[25:25:25][grow][][117.00,grow][32.00][67.00,grow][49.00][45.00][51.00,grow][25:25:25]", "[6:6:6][][grow][:20:50,grow][13.00][:20:50,grow][15:15:15,grow][grow][15:31.00:15,grow][45:45:45][16:16:16][][24.00,grow][15:15:15,grow][grow][15:15:15,grow][grow][15:15:15,grow][grow][15:15:15,grow][grow][84.00:84.00:84.00,growprio 10][20:20:20][9:9:9]"));
@@ -127,7 +129,7 @@ public class PersonalInfoPanel extends JPanel{
 		contactBillingPanel.add(lblUsername, "cell 1 1");
 		lblUsername.setFont(new Font("Source Code Pro", Font.BOLD, 18));
 
-		usernameTextField = new JTextField(facade.getUsername());
+		usernameTextField = new JTextField(loggeduser.getUsername());
 		contactBillingPanel.add(usernameTextField, "cell 2 1 7 1,grow");
 		usernameTextField.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		usernameTextField.setColumns(10);
@@ -244,7 +246,7 @@ public class PersonalInfoPanel extends JPanel{
 				}
 				else {
 					try {
-						facade.setLoggeduser(facade.updateUserInfo(facade.getUsername(), newUsername, newName, newSurname, newEmail,newnat, city,address,newphn,newbirthdate,facade.isAdmin()));	
+						User u = facade.updateUserInfo(loggeduser.getUsername(), newUsername, newName, newSurname, newEmail,newnat, city,address,newphn,newbirthdate,loggeduser.isAdmin());
 						JOptionPane.showMessageDialog(null, "Changes saved sucessfully");
 					} catch (invalidID e1) {
 						saveChangesErrorLabel.setText("Username already in use");

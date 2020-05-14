@@ -32,8 +32,11 @@ import javax.swing.table.TableRowSorter;
 import com.toedter.calendar.JDateChooser;
 import businessLogic.BLFacade;
 import domain.Bet;
+import domain.BetContainer;
 import domain.Prediction;
+import domain.PredictionContainer;
 import domain.Question;
+import domain.User;
 import gui.MainGUI;
 import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
@@ -59,7 +62,7 @@ public class BettingHistoryPanel extends JPanel {
 	private List<Bet> searchResult;
 
 	private List<Bet> bets;
-	private List<Prediction> predictions;
+	private List<PredictionContainer> predictions;
 	
 	private JButton btnNextPage;
 	private JButton btnPrevPage;
@@ -100,15 +103,23 @@ public class BettingHistoryPanel extends JPanel {
 
 		setBackground(SystemColor.inactiveCaption);
 
-		setLayout(new MigLayout("gap 0px 0px", "[20:20:20][113.00][96.00,grow][100:100:100][8:8:8][100:100:100][5:5:5][20:20:20][20:20:20][-135.00]", "[20:14.00:20][][:40.00:40.00][35][40:40:40][40:40:40][40:40:40][10:10:10][40:40:40][][grow][25:25:25][19.00:19.00,grow][90:100,grow][10:10:10][30:30:30][40:40:40][15:15:15][25:25:25][20:20:20]"));
+		setLayout(new MigLayout("gap 0px 0px", "[20:20:20][113.00][285.00,grow][][100:100:100][8:8:8][][100:100:100][5:5:5][20:20:20][20:20:20][-135.00]", "[10:10:10][20:14.00:20][5px:5px:5px][20:20:20][7:7:7][40:61.00:40][200px:n:800,grow][10:10:10][30:30:30][20:20:20][15:15:15][60:n,grow][40:40:40][40:40:40][20:20:20]"));
 		
 		
 		Calendar cld = Calendar.getInstance();
 		cld.set(Calendar.DAY_OF_YEAR, 5);
 		cld.set(Calendar.MONTH, 3);
 		cld.set(Calendar.YEAR, 2019);
+		
+		datePeriodLabel = new JLabel("Date period");
+		datePeriodLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 15));
+		add(datePeriodLabel, "cell 3 1 5 1,alignx left");
+		
+		fromLabel = new JLabel("from:");
+		fromLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+		add(fromLabel, "cell 3 3");
 		fromdatechooser = new JDateChooser(cld.getTime());
-		add(fromdatechooser, "cell 3 2,grow");
+		add(fromdatechooser, "cell 4 3,grow");
 		fromdatechooser.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -119,9 +130,13 @@ public class BettingHistoryPanel extends JPanel {
 		cld.set(Calendar.DAY_OF_YEAR, 5);
 		cld.set(Calendar.MONTH, 6);
 		cld.set(Calendar.YEAR, 2020);
+		
+		toLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("BettingHistoryPanel.toLabel.text")); //$NON-NLS-1$ //$NON-NLS-2$
+		toLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
+		add(toLabel, "cell 6 3");
 
 		todatechooser = new JDateChooser(cld.getTime());
-		add(todatechooser, "cell 5 2,grow");
+		add(todatechooser, "cell 7 3,grow");
 		todatechooser.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -131,10 +146,10 @@ public class BettingHistoryPanel extends JPanel {
 
 		
 		showingCountLabel = new JLabel(""); 
-		add(showingCountLabel, "cell 1 15");
+		add(showingCountLabel, "cell 1 7 1 2,aligny top");
 
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "cell 1 4 7 10,grow");
+		add(scrollPane, "cell 1 5 9 2,grow");
 
 		betTable = new JTable() {
 			public TableCellRenderer getCellRenderer(int row, int column)
@@ -176,7 +191,7 @@ public class BettingHistoryPanel extends JPanel {
 				if (!e.getValueIsAdjusting()) {//This line prevents double events
 					int row = betTable.getSelectedRow();
 					if(row != -1) {
-						loadPredictions(((Bet)betTableModel.getValueAt(row, 5)));
+						loadPredictions(((BetContainer)betTableModel.getValueAt(row, 5)));
 					}
 				}
 			}
@@ -184,19 +199,19 @@ public class BettingHistoryPanel extends JPanel {
 		scrollPane.setViewportView(betTable);
 
 		betsLabel = new JLabel("Bets:");
-		betsLabel.setFont(new Font("Source Code Pro", Font.BOLD, 16));
-		add(betsLabel, "cell 1 1 1 2");
+		betsLabel.setFont(new Font("Source Code Pro", Font.BOLD, 18));
+		add(betsLabel, "cell 1 1 1 4,aligny bottom");
 
-		add(getBtnPrevPage(), "cell 3 15,growy");
+		add(getBtnPrevPage(), "cell 4 8,growy");
 		
-		add(getBtnNextPage(), "cell 5 15 2 1,grow");
+		add(getBtnNextPage(), "cell 7 8 2 1,grow");
 
 		predictionsLabel = new JLabel("Predictions on this bet:\r\n");
 		predictionsLabel.setFont(new Font("Source Code Pro", Font.BOLD, 16));
-		add(predictionsLabel, "flowx,cell 1 17");
+		add(predictionsLabel, "flowx,cell 1 10 9 1");
 
 		predictionsScrollPane = new JScrollPane();
-		add(predictionsScrollPane, "cell 1 18 7 1,grow");
+		add(predictionsScrollPane, "cell 1 11 9 3,grow");
 
 
 		predictionTable = new JTable(){
@@ -251,13 +266,14 @@ public class BettingHistoryPanel extends JPanel {
 	}
 
 
-	public void loadPredictions(Bet bet) {
+	public void loadPredictions(BetContainer cbet) {
 		predictionTableModel.setDataVector(null, columnNamesPrediction);
 		predictionTableModel.setColumnCount(7); 
 		predictionTable.setRowHeight(40);
-		predictions = bet.getPredictions();
-		for(Prediction p: predictions) {
-			addPredictionToTable(p);
+		
+		predictions = cbet.getPredictions();
+		for(PredictionContainer pc: predictions) {
+			addPredictionToTable(pc.getPrediction());
 		}	
 
 
@@ -281,7 +297,7 @@ public class BettingHistoryPanel extends JPanel {
 		row.add(bet.getType().name());
 		row.add(bet.getStake());
 		row.add(df.format(bet.getPlacementdate()));
-		if(bet.getStatus().equals(Bet.Status.RESOLVED)) {
+		if(bet.getStatus().equals(Bet.BetStatus.RESOLVED)) {
 			List<Prediction> pred = bet.getPredictions();
 			int won = 0;
 			for(Prediction p : pred) {
@@ -372,6 +388,7 @@ public class BettingHistoryPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			btnNextPage.setEnabled(false);
+			User loggeduser = MainGUI.getInstance().getLoggeduser();
 			
 			Date fromdate = fromdatechooser.getDate();
 			Date todate = todatechooser.getDate();
@@ -381,7 +398,7 @@ public class BettingHistoryPanel extends JPanel {
 			betTableModel.setColumnCount(6); 
 
 			//perform search and create the table model with the results
-			searchResult=facade.retrieveBetsByDate(fromdate, todate);	
+			searchResult=loggeduser.retrieveBetsByDate(fromdate, todate);	
 			System.out.println("BettingHistory searchresult size: " + searchResult.size());
 			System.out.println("search: " + searchResult.size());
 			loadPage(1);
@@ -391,6 +408,9 @@ public class BettingHistoryPanel extends JPanel {
 			currentpage = 1;
 		}
 	};
+	private JLabel fromLabel;
+	private JLabel toLabel;
+	private JLabel datePeriodLabel;
 	
 
 	/**

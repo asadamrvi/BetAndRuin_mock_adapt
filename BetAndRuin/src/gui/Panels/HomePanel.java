@@ -29,7 +29,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import businessLogic.BLFacade;
+import domain.Competition;
 import domain.Event;
+import domain.EventContainer;
 import gui.MainGUI;
 import gui.components.NonEditableTableModel;
 import javax.imageio.ImageIO;
@@ -319,6 +321,7 @@ public class HomePanel extends JPanel {
 
 	public void refreshPage() {
 		//refresh content of live event table
+		
 		Vector<Event> liveevents = facade.getLiveEvents();
 		liveTableModel.setDataVector(null, livecolnames);
 		liveTableModel.setColumnCount(4);
@@ -333,6 +336,7 @@ public class HomePanel extends JPanel {
 			row.add(ev); // Event object added in order to obtain it with tableModelQueries.getValueAt(i,3)
 			liveTableModel.addRow(row);	
 		}
+
 		liveTable.getColumnModel().getColumn(0).setPreferredWidth(268);
 		liveTable.getColumnModel().getColumn(0).setMinWidth(268);
 		liveTable.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -353,19 +357,24 @@ public class HomePanel extends JPanel {
 		calendar.setTime(now);
 		calendar.add(Calendar.DAY_OF_YEAR, 14);
 		Date twoweekslater = calendar.getTime();
-		Vector<Event> upcomingevents = facade.getEventsBetweenDates(now, twoweekslater);
+		Vector<EventContainer> upcomingevents = facade.getEventsBetweenDates(now, twoweekslater);
 		upcomingTableModel.setDataVector(null, upcomingcolnames);
 		upcomingTableModel.setColumnCount(4);
 
-		for(Event ev:upcomingevents) {
+		
+		for(EventContainer evc:upcomingevents) {
+			Event ev =  evc.getEvent();
+			Competition comp = evc.getCompetition();
+			
 			Vector<Object> row = new Vector<Object>();
 
-			row.add(ev.getCompetition().getName());
+			row.add(comp.getName());
 			row.add(ev.getDescription());
 			row.add(ev.getEventDate());
 			row.add(ev);
 			upcomingTableModel.addRow(row);
 		}
+		
 		upcomingTable.getColumnModel().getColumn(0).setPreferredWidth(200);
 		upcomingTable.getColumnModel().getColumn(0).setMinWidth(200);
 		upcomingTable.getColumnModel().getColumn(1).setPreferredWidth(200);

@@ -5,16 +5,14 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import businessLogic.BLFacade;
-import exceptions.invalidID;
+import domain.User;
 import exceptions.invalidPW;
 import gui.components.HintPassField;
-import gui.components.HintTextField;
 import gui.components.passVisibleLabel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,7 +25,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import gui.components.cancelLabel;
-import java.awt.FlowLayout;
 
 public class ChangePassGUI extends JDialog {
 
@@ -131,7 +128,10 @@ public class ChangePassGUI extends JDialog {
 				String newpass =  newPassField.getText();
 				String confirmpass = confirmPassField.getText();
 				try {		
-					if(facade.updatePassword(facade.getLoggeduser(), currentpass, newpass, confirmpass)) {
+					User loggeduser = MainGUI.getInstance().getLoggeduser();
+					
+					if(facade.updatePassword(loggeduser, currentpass, newpass, confirmpass)) {
+						loggeduser.setPassword(newpass);
 						JOptionPane.showMessageDialog(null, "Password updated sucessfully");
 						dispose();
 					}

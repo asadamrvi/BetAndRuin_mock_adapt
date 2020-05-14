@@ -36,12 +36,15 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import com.toedter.calendar.JCalendar;
 import businessLogic.BLFacade;
+import domain.Bet;
 import domain.BetType;
 import domain.Competition;
 import domain.Event;
 import domain.Prediction;
+import domain.PredictionContainer;
 import domain.Question;
 import domain.Sport;
+import domain.User;
 import exceptions.InsufficientCash;
 import gui.LoginGUI;
 import gui.MainGUI;
@@ -64,6 +67,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
 import java.awt.Graphics;
+
+import javax.jws.WebMethod;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -147,7 +152,7 @@ public class BrowsePanel extends JPanel {
 	private JPanel multibetPanel = new JPanel();
 
 	private Set<Question> selectedquestions = new HashSet<Question>();
-	private Map<Event, List<Prediction>> selectedevents = new HashMap<Event, List<Prediction>>();
+	private Map<Event, ArrayList<Prediction>> selectedevents = new HashMap<Event, ArrayList<Prediction>>();
 	private Set<Prediction> selectedpredictions = new HashSet<Prediction>();
 
 	private DefaultTableCellRenderer whiteRenderer = null;
@@ -289,7 +294,7 @@ public class BrowsePanel extends JPanel {
 					//Date firstDay=UtilDate.trim(new Date(calendarMio.getTime().getTime()));
 					refreshPage();
 				}
-				Vector<Date> eventsMonth = facade.getEventsMonth(jCalendar1.getDate(), competitionPanel.getSelectedCompetition());
+				Vector<Date> eventsMonth = facade.getEventsMonthByCompetition(jCalendar1.getDate(), competitionPanel.getSelectedCompetition());
 				paintDaysWithEvents(jCalendar1, eventsMonth);
 			} 
 		});
@@ -447,36 +452,36 @@ public class BrowsePanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting()) {//This line prevents double events
-				int i=tableEvents.getSelectedRow();
-				if(i != -1) {
-					domain.Event ev=(domain.Event)tableModelEvents.getValueAt(i,4); // obtain ev object
-					List<Question> queries=ev.getQuestions();
+					int i=tableEvents.getSelectedRow();
+					if(i != -1) {
+						domain.Event ev=(domain.Event)tableModelEvents.getValueAt(i,4); // obtain ev object
+						List<Question> queries=ev.getQuestions();
 
-					tableModelQueries.setDataVector(null, columnNamesQueries);
-					tableModelQueries.setColumnCount(4); // another column added to allocate ev object
+						tableModelQueries.setDataVector(null, columnNamesQueries);
+						tableModelQueries.setColumnCount(4); // another column added to allocate ev object
 
-					if (queries.isEmpty())
-						jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("NoQueries")+": "+ev.getDescription());
-					else 
-						jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("SelectedEvent")+" "+ev.getDescription());
+						if (queries.isEmpty())
+							jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("NoQueries")+": "+ev.getDescription());
+						else 
+							jLabelQueries.setText(ResourceBundle.getBundle("Etiquetas").getString("SelectedEvent")+" "+ev.getDescription());
 
-					for (domain.Question q:queries){
-						Vector<Object> row = new Vector<Object>();
+						for (domain.Question q:queries){
+							Vector<Object> row = new Vector<Object>();
 
-						row.add(q.getQuestionNumber());
-						row.add(q.getQuestion());
-						row.add(q.getBetMinimum());
-						row.add(q); // Question object added in order to obtain it with tableModelQueries.getValueAt(i,3)
-						tableModelQueries.addRow(row);	
+							row.add(q.getQuestionNumber());
+							row.add(q.getQuestion());
+							row.add(q.getBetMinimum());
+							row.add(q); // Question object added in order to obtain it with tableModelQueries.getValueAt(i,3)
+							tableModelQueries.addRow(row);	
+						}
+						tableQueries.getColumnModel().getColumn(0).setPreferredWidth(60);
+						tableQueries.getColumnModel().getColumn(0).setMinWidth(60);
+						tableQueries.getColumnModel().getColumn(0).setMaxWidth(60);
+						tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);
+						tableQueries.getColumnModel().getColumn(2).setPreferredWidth(25);
+						tableQueries.getColumnModel().removeColumn(tableQueries.getColumnModel().getColumn(3));
 					}
-					tableQueries.getColumnModel().getColumn(0).setPreferredWidth(60);
-					tableQueries.getColumnModel().getColumn(0).setMinWidth(60);
-					tableQueries.getColumnModel().getColumn(0).setMaxWidth(60);
-					tableQueries.getColumnModel().getColumn(1).setPreferredWidth(268);
-					tableQueries.getColumnModel().getColumn(2).setPreferredWidth(25);
-					tableQueries.getColumnModel().removeColumn(tableQueries.getColumnModel().getColumn(3));
-				}
-				
+
 				}
 			}
 		});
@@ -668,25 +673,28 @@ public class BrowsePanel extends JPanel {
 					if(answerComboBox.getSelectedItem() != null) {
 
 						String[] ans = ((String)answerComboBox.getSelectedItem()).split(";");
-						JPanel betpanel = new BetPanel(selectedq.getEvent(), selectedq, (String)answerComboBox.getSelectedItem(),minbet, minbet);
+						Event ev = (Event)tableModelEvents.getValueAt(tableEvents.getSelectedRow(), 4);
+						JPanel betpanel = new BetPanel(ev, selectedq, (String)answerComboBox.getSelectedItem(),minbet, minbet);
 						betPane.add(betpanel);
 						betPane.revalidate();
 
 						//update event-prediction mappings that will be used to compute valid multiple bet combinations.
-						if(selectedevents.containsKey(selectedq.getEvent())) {
-							List<Prediction> currentpredictions = selectedevents.get(selectedq.getEvent());
+						if(selectedevents.containsKey(ev)) {
+							ArrayList<Prediction> currentpredictions = selectedevents.get(ev);
 							if(currentpredictions == null) {
 								currentpredictions = new ArrayList<Prediction>();		
 							}
 							currentpredictions.add(selectedq.getPredictionByAnswer(ans[0]));
 						}
 						else {
-							List<Prediction> currentpredictions = new ArrayList<Prediction>();	
+							ArrayList<Prediction> currentpredictions = new ArrayList<Prediction>();	
 							currentpredictions.add(selectedq.getPredictionByAnswer(ans[0]));
-							selectedevents.put(selectedq.getEvent(),currentpredictions);
+							selectedevents.put(ev,currentpredictions);
 						}	
 
 						selectedquestions.add(selectedq);
+						selectedq.setEvent((Event)tableModelEvents.getValueAt(tableEvents.getSelectedRow(),4));
+						
 						selectedpredictions.add(selectedq.getPredictionByAnswer(ans[0]));
 						for(Prediction p :selectedpredictions) {
 							System.out.println(p.getAnswer());
@@ -879,14 +887,14 @@ public class BrowsePanel extends JPanel {
 
 			SimpleDateFormat df1 = new SimpleDateFormat("HH:mm");
 			SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
-			Vector<Date> dates = facade.getEventsMonth(jCalendar1.getDate(), comp);
+			Vector<Date> dates = facade.getEventsMonthByCompetition(jCalendar1.getDate(), comp);
 
 			tableModelEvents.setDataVector(null, columnNamesEvents);
 			tableModelEvents.setColumnCount(5); // another column added to allocate ev objects
 			if(comp != null) {
 				for(Event e: comp.getEvents()) {
 					System.out.println(e.toString());
-					
+
 					//only display the events for the selected day if this hasn't passed yet
 					if(df2.format(e.getEventDate()).equals(df2.format(jCalendar1.getDate())) && e.getEndingdate().compareTo(new Date())>=0) {
 						Vector<Object> row = new Vector<Object>();
@@ -943,12 +951,84 @@ public class BrowsePanel extends JPanel {
 
 
 	/**
+	 * This method computes the number of possible multiple bets that can be made with the given selection of predictions,
+	 * taking into account the restrictions on same event multi betting
+	 * 
+	 * @param map	Map storing mapping between Events and the list of predictions selected for each event
+	 * @return		array with the number of possible multiple bets for each size(Double,Treble...)
+	 */
+	public int[] computeMultiBets(Map<Event, ArrayList<Prediction>> map) {		
+		int current = 1;
+		int i;
+		int combinationsum = 0;
+		int[] result = new int[map.size()];
+		List<Pair> comblist = new ArrayList<Pair>();
+		Object[] keyset = map.keySet().toArray();
+		for(i=1 ; i <= map.size(); i++) {
+			comblist.add(new Pair(i, map.get(keyset[i-1]).size()));
+		}
+		while(current <= map.size()) {
+			List<Pair> temp = new ArrayList<Pair>();
+			combinationsum=0;
+			for(Pair p: comblist) {	
+				int last = p.getList().get(p.getList().size()-1);
+				for(i=last+1; i<=map.size(); i++) {
+					Pair nextpair = new Pair(p,i,map.get(keyset[i-1]).size());
+					temp.add(nextpair);	
+					combinationsum += nextpair.getCombinations();
+				}	
+			}
+			comblist = new ArrayList<Pair>(temp);
+			result[current-1]=combinationsum;
+
+			current++;
+		}
+		return result;
+	}
+	
+	/**
+	 * Auxiliary class for computeMultiBets
+	 */
+	public class Pair{
+		private ArrayList<Integer> list;
+		private int combinations;
+
+		public Pair( int i, int size) {
+			list = new ArrayList<Integer>();
+			list.add(i);
+			combinations = size;
+		}
+
+		public Pair(Pair p, int i, int size) {
+			list = new ArrayList<Integer>(p.getList());
+			list.add(i);
+			combinations = p.getCombinations()*size;
+		}
+
+		public ArrayList<Integer> getList(){
+			return list;
+		}
+
+		public int getCombinations() {
+			return combinations;
+		}
+
+		public String toString() {
+			String s = "";
+			for(Integer i : list) {
+				s = s + String.valueOf(i);
+			}
+			return s;
+		}
+	}
+	
+	/**
 	 * Generates the possible options for multiple betting taking into account the bets the user has included in the coupon so far.
 	 */
 	public void generateMultiBetOptions() {
 		multibetPanel.removeAll();
 		int multivalidcount = selectedevents.size();
-		int[] combinations = facade.computeMultiBets(selectedevents);
+		int[] combinations = computeMultiBets(selectedevents);
 		if( betPane.getComponents().length > multivalidcount && multivalidcount > 1) {
 			errorlabel.setText("Multi betting options have been restricted");
 			errorlabel.setVisible(true);
@@ -1047,7 +1127,7 @@ public class BrowsePanel extends JPanel {
 			btnBet.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					BLFacade facade = MainGUI.getBusinessLogic();
-					if(!facade.isLoggedIn()) {
+					if(!MainGUI.getInstance().isLoggedIn()) {
 						String[] options = {"Log in","Register","Cancel"};
 						int selectedoption = JOptionPane.showOptionDialog(null, "This action requires the user to be logged in", "Login required", JOptionPane.DEFAULT_OPTION,
 								JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
@@ -1076,23 +1156,28 @@ public class BrowsePanel extends JPanel {
 	AbstractAction bet = new AbstractAction() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<Prediction> pred =  new ArrayList<Prediction>();
+			List<PredictionContainer> pred =  new ArrayList<PredictionContainer>();
 			errorlabel.setVisible(false);
 			//SINGLES
 			try {
+				User loggeduser = MainGUI.getInstance().getLoggeduser();
+				
 				for(Component c : betPane.getComponents()) {
-					List<Prediction> temp =  new ArrayList<Prediction>();
+					List<PredictionContainer> temp =  new ArrayList<PredictionContainer>();
 					Prediction nextprediction = new Prediction(((BetPanel)c).getQuestion(),((BetPanel)c).getAnswer(), ((BetPanel)c).getOdds());
-					temp.add(nextprediction);
-					pred.add(nextprediction);
-					if(((BetPanel)c).getStake().intValue() > 0) {								
-						facade.placeBet(((BetPanel)c).getStake().floatValue(),((BetPanel)c).getStake().floatValue(), BetType.SINGLE, temp);
+					PredictionContainer container = new PredictionContainer(nextprediction);
+					temp.add(container);
+					pred.add(container);
+					if(((BetPanel)c).getStake().intValue() > 0) {	
+						Bet b = facade.placeBet(loggeduser,((BetPanel)c).getStake().floatValue(),((BetPanel)c).getStake().floatValue(), BetType.SINGLE, temp);
+						loggeduser.addBet(b);
 					}
 				}
 				//MULTIPLE
 				for(Component c: multibetPanel.getComponents()) {
 					if(((multibetOption)c).getStake() > 0) {						
-						facade.placeBet(((multibetOption)c).getStake(),((multibetOption)c).getPrice(), ((multibetOption)c).getType(), pred);
+						Bet b = facade.placeBet(loggeduser,((multibetOption)c).getStake(),((multibetOption)c).getPrice(), ((multibetOption)c).getType(), pred);
+						loggeduser.addBet(b);
 					}
 				}
 				JOptionPane.showMessageDialog(null, "Bets placed sucesfully");
@@ -1105,11 +1190,7 @@ public class BrowsePanel extends JPanel {
 		}
 	};
 
-	/**
-	 * 
-	
-
-
+	/*
 	public class multiBetListener implements DocumentListener {
 		@Override
 		public void removeUpdate(DocumentEvent e) {
@@ -1141,7 +1222,7 @@ public class BrowsePanel extends JPanel {
 			}	
 		}
 	}
-
+	 */ 
 
 
 	/**
@@ -1563,19 +1644,19 @@ public class BrowsePanel extends JPanel {
 	 * Panel that holds information about a combined bet
 	 */
 	public class multibetOption extends JPanel {
-		
+
 		private float stake;
 		private float price;
 		private int combinations;
 		private BetType type;	
 		private  float winnings;
 		private boolean fullcover;
-		
+
 		private JNumericField stakeField;
 		private JLabel priceLabel;
 		private JLabel posWinLabel;
 		private DecimalFormat df;
-		
+
 		/**
 		 * Create the panel.
 		 */
@@ -1591,7 +1672,7 @@ public class BrowsePanel extends JPanel {
 			JLabel typeLabel = new JLabel(type.name());
 			typeLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 14));
 			add(typeLabel, "cell 0 0 2 1,grow");
-			
+
 			stakeField = new JNumericField(7, JNumericField.DECIMAL);
 			stakeField.setPrecision(2);
 			stakeField.setAllowNegative(false);
@@ -1599,29 +1680,29 @@ public class BrowsePanel extends JPanel {
 			stakeField.setColumns(10);
 			setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 			stakeField.getDocument().addDocumentListener(new stakeListener());
-			
+
 			JLabel combinationsLabel = new JLabel("x" + combinations);
 			combinationsLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 15));
 			combinationsLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			add(combinationsLabel, "cell 2 0,grow");
-			
+
 			JLabel priceTitleLabel = new JLabel("price:");
 			priceTitleLabel.setVerticalAlignment(SwingConstants.TOP);
 			priceTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
 			add(priceTitleLabel, "cell 0 1,aligny top");
-			
+
 			priceLabel = new JLabel("0€");
 			priceLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
 			add(priceLabel, "cell 1 1,alignx left,aligny top");
-			
+
 			JLabel posWinTitleLabel = new JLabel("pos. winnings:\r\n");
 			posWinTitleLabel.setFont(new Font("Source Sans Pro", Font.PLAIN, 12));
 			add(posWinTitleLabel, "cell 2 1,aligny top");
-			
+
 			posWinLabel = new JLabel("0€");
 			posWinLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 13));
 			add(posWinLabel, "cell 3 1,alignx right,aligny top");
-			
+
 			df = new DecimalFormat("#");
 			df.setMaximumFractionDigits(2);
 
@@ -1639,7 +1720,7 @@ public class BrowsePanel extends JPanel {
 		public float getPrice() {
 			return price;
 		}
-		
+
 		public JTextField getBetField() {
 			return stakeField;
 		}
@@ -1658,15 +1739,15 @@ public class BrowsePanel extends JPanel {
 		public void setCombinations(int combinations) {
 			this.combinations = combinations;
 		}
-		
+
 		public float getWinnings() {
 			return winnings;
 		}
-		
+
 		public void setWinnings(float winnings) {
 			this.winnings = winnings;
 		}
-		
+
 		public BetType getType() {
 			return type;
 		}
@@ -1675,39 +1756,50 @@ public class BrowsePanel extends JPanel {
 		public void setType(BetType type) {
 			this.type = type;
 		}
-		
+
 		@Override
 		public Dimension getPreferredSize()
 		{		
 			Dimension d = new Dimension(getParent().getWidth(), 50); 
 			return d;
 		}
-		
+
 		@Override
 		public Dimension getMaximumSize()
 		{		
 			Dimension d = new Dimension(getParent().getWidth(), 50);
 			return d;
 		}
+
+		public List<PredictionContainer> buildPredictionContainers(){
+			ArrayList<PredictionContainer> pred = new ArrayList<PredictionContainer>();
+			for(Component c : betPane.getComponents()) {
+				Prediction nextprediction = new Prediction(((BetPanel)c).getQuestion(),((BetPanel)c).getAnswer(), ((BetPanel)c).getOdds());
+				PredictionContainer container = new PredictionContainer(nextprediction);
+				pred.add(container);
+			}
+			return pred;
+		}
+		
 		
 		public class stakeListener implements DocumentListener{
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				try {
-					List<Prediction> temp = new ArrayList<Prediction>(selectedpredictions); 
+					List<PredictionContainer> temp = buildPredictionContainers();
 					stake = stakeField.getFloat();
 					if(fullcover) {
-						winnings = facade.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
+						winnings = Bet.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
 					}
 					else {
-						winnings = facade.calculateCombinedWinnings(type.predictionCount(),stake,temp);
+						winnings = Bet.calculateCombinedWinnings(type.predictionCount(),stake,temp);
 					}
-					
+
 					price = stake*combinations;
 					posWinLabel.setText(df.format(winnings)+"€");
 					priceLabel.setText(df.format(price)+"€");
-					
+
 				}
 				catch (NumberFormatException n) {
 					stake = 0;
@@ -1722,13 +1814,13 @@ public class BrowsePanel extends JPanel {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				try {
-					List<Prediction> temp = new ArrayList<Prediction>(selectedpredictions); 
+					List<PredictionContainer> temp = buildPredictionContainers();
 					stake = stakeField.getFloat();
 					if(fullcover) {
-						winnings = facade.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
+						winnings = Bet.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
 					}
 					else {
-						winnings = facade.calculateCombinedWinnings(type.predictionCount(),stake,temp);
+						winnings = Bet.calculateCombinedWinnings(type.predictionCount(),stake,temp);
 					}
 					price = stake*combinations;
 					posWinLabel.setText(df.format(winnings)+"€");
@@ -1747,13 +1839,13 @@ public class BrowsePanel extends JPanel {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				try {
-					List<Prediction> temp = new ArrayList<Prediction>(selectedpredictions); 
+					List<PredictionContainer> temp = buildPredictionContainers();
 					stake = stakeField.getFloat();
 					if(fullcover) {
-						winnings = facade.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
+						winnings = Bet.calculateFullCoverWinnings(type.predictionCount(),stake,temp);
 					}
 					else {
-						winnings = facade.calculateCombinedWinnings(type.predictionCount(),stake,temp);
+						winnings = Bet.calculateCombinedWinnings(type.predictionCount(),stake,temp);
 					}
 					price = stake*combinations;
 					posWinLabel.setText(df.format(winnings)+"€");
@@ -1768,8 +1860,8 @@ public class BrowsePanel extends JPanel {
 				}
 				calcTotalBetValues();
 			}
-			
-			
+
+
 		}
 	}
 }

@@ -619,7 +619,7 @@ public class CreateQuestionPanel extends JPanel {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		BrowsePanel.paintDaysWithEvents(jCalendar, facade.getEventsMonth(jCalendar.getDate(), selectedcompetition));
+		BrowsePanel.paintDaysWithEvents(jCalendar, facade.getEventsMonthByCompetition(jCalendar.getDate(), selectedcompetition));
 	}
 
 	private void jButtonCreate_actionPerformed(ActionEvent e) {

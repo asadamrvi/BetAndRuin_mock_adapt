@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -16,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class Question implements Serializable {
 	
 	@Id 
+	@XmlID
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
 	@GeneratedValue
 	private Integer questionNumber;
@@ -28,11 +30,10 @@ public class Question implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Event event;
 	
-	
-	
-	
+		
 	public Question(){
 		super();
+		this.predictions = new ArrayList<Prediction>();
 	}
 	
 	public Question( String query, float betMinimum, Event event) {
@@ -40,6 +41,7 @@ public class Question implements Serializable {
 		this.question = query;
 		this.betMinimum=betMinimum;
 		this.event = event;
+		this.predictions = new ArrayList<Prediction>();
 	}
 	
 	public Question(Integer queryNumber, String query, float betMinimum, Event event) {
@@ -48,6 +50,7 @@ public class Question implements Serializable {
 		this.question = query;
 		this.betMinimum=betMinimum;
 		this.event = event;
+		this.predictions = new ArrayList<Prediction>();
 	}
 	
 

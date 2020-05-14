@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import businessLogic.BLFacade;
+import domain.User;
 import exceptions.invalidID;
 import exceptions.invalidPW;
 import gui.components.HintPassField;
@@ -29,10 +30,10 @@ import javax.swing.BorderFactory;
 import gui.components.cancelLabel;
 import java.awt.FlowLayout;
 
+@SuppressWarnings("serial")
 public class LoginGUI extends JDialog {
-	private static final long serialVersionUID = 1L;
 
-	private Boolean status; //status of the logged user
+	private User loggeduser; //status of the logged user
 
 	private JPanel contentPane;
 	private HintTextField usernameTextField;
@@ -131,11 +132,13 @@ public class LoginGUI extends JDialog {
 				String username = usernameTextField.getText();
 				String pass =  new String (passwordField.getPassword());
 				try {
-					status = facade.checkCredentials(username, pass);
+					loggeduser = facade.checkCredentials(username, pass);
+					MainGUI.getInstance().setLoggeduser(loggeduser);
+					
 					JOptionPane.showMessageDialog(null, "Login successful");
-					if(status != null) {
+					if(loggeduser != null) {
 						MainGUI.getInstance().resetPanels();
-						if(status) {
+						if(loggeduser.isAdmin()) {
 							MainGUI.getInstance().adminView();
 						}
 						else {
@@ -237,8 +240,5 @@ public class LoginGUI extends JDialog {
 	}
 	
 	
-	public Boolean getResult() {
-		this.setVisible(true);
-		return status;
-	}
+	
 }

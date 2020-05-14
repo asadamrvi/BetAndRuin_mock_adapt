@@ -1,0 +1,746 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 15:49:36 #1 server] 
+Server on port 6136 has started by 8892@DESKTOP-00OS7EM
+
+[2020-05-14 15:49:36 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 8892@DESKTOP-00OS7EM
+
+[2020-05-14 15:49:36 #3 store] 
+Configuration path: ?
+
+[2020-05-14 15:49:36 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 15:49:36 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 15:49:36 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 15:49:36 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 15:49:36 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 15:49:36 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 15:49:36 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 15:49:36 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 15:49:47 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 15:49:47 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 16:03:04 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 8892@DESKTOP-00OS7EM
+
+[2020-05-14 16:03:26 #15 server] 
+Server on port 6136 has stopped by 8892@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:03:31 #1 server] 
+Server on port 6136 has started by 14052@DESKTOP-00OS7EM
+
+[2020-05-14 16:22:58 #2 server] 
+Server on port 6136 has stopped by 14052@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:23:41 #1 server] 
+Server on port 6136 has started by 13840@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:41:37 #1 server] 
+Server on port 6136 has started by 2236@DESKTOP-00OS7EM
+
+[2020-05-14 16:42:15 #2 server] 
+Server on port 6136 has stopped by 2236@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:42:50 #1 server] 
+Server on port 6136 has started by 9764@DESKTOP-00OS7EM
+
+[2020-05-14 16:44:45 #2 server] 
+Server on port 6136 has stopped by 9764@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:45:32 #1 server] 
+Server on port 6136 has started by 8992@DESKTOP-00OS7EM
+
+[2020-05-14 16:45:52 #2 server] 
+Server on port 6136 has stopped by 8992@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:46:02 #1 server] 
+Server on port 6136 has started by 11600@DESKTOP-00OS7EM
+
+[2020-05-14 16:46:08 #2 server] 
+Server on port 6136 has stopped by 11600@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:46:08 #1 server] 
+Server on port 6136 has started by 11780@DESKTOP-00OS7EM
+
+[2020-05-14 16:46:23 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 11780@DESKTOP-00OS7EM
+
+[2020-05-14 16:46:23 #3 store] 
+Configuration path: ?
+
+[2020-05-14 16:46:23 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 16:46:23 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 16:46:23 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 16:46:23 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 16:46:23 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 16:46:23 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 16:46:23 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 16:46:23 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 16:46:23 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 16:46:23 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 16:46:39 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 11780@DESKTOP-00OS7EM
+
+[2020-05-14 16:47:17 #15 server] 
+Server on port 6136 has stopped by 11780@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:47:36 #1 server] 
+Server on port 6136 has started by 7076@DESKTOP-00OS7EM
+
+[2020-05-14 16:47:38 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 7076@DESKTOP-00OS7EM
+
+[2020-05-14 16:47:38 #3 store] 
+Configuration path: ?
+
+[2020-05-14 16:47:38 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 16:47:38 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 16:47:38 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 16:47:38 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 16:47:38 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 16:47:38 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 16:47:38 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 16:47:38 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 16:47:57 #12 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 7076@DESKTOP-00OS7EM
+
+[2020-05-14 16:47:57 #13 server] 
+Server on port 6136 has stopped by 7076@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:53:31 #1 server] 
+Server on port 6136 has started by 8080@DESKTOP-00OS7EM
+
+[2020-05-14 16:53:33 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 8080@DESKTOP-00OS7EM
+
+[2020-05-14 16:53:33 #3 store] 
+Configuration path: ?
+
+[2020-05-14 16:53:33 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 16:53:33 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 16:53:33 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 16:53:33 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 16:53:33 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 16:53:33 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 16:53:33 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 16:53:33 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 16:53:48 #12 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 8080@DESKTOP-00OS7EM
+
+[2020-05-14 16:53:48 #13 server] 
+Server on port 6136 has stopped by 8080@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 16:56:16 #1 server] 
+Server on port 6136 has started by 7596@DESKTOP-00OS7EM
+
+[2020-05-14 17:20:37 #2 server] 
+Server on port 6136 has stopped by 7596@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 17:28:05 #1 server] 
+Server on port 6136 has started by 13452@DESKTOP-00OS7EM
+
+[2020-05-14 17:34:45 #2 server] 
+Server on port 6136 has stopped by 13452@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 17:41:54 #1 server] 
+Server on port 6136 has started by 14268@DESKTOP-00OS7EM
+
+[2020-05-14 17:42:01 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 14268@DESKTOP-00OS7EM
+
+[2020-05-14 17:42:01 #3 store] 
+Configuration path: ?
+
+[2020-05-14 17:42:01 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 17:42:01 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 17:42:01 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 17:42:01 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 17:42:01 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 17:42:01 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 17:42:01 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 17:42:01 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 17:53:32 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 17:53:32 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 19:58:55 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 14268@DESKTOP-00OS7EM
+
+[2020-05-14 19:59:05 #15 server] 
+Server on port 6136 has stopped by 14268@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 19:59:20 #1 server] 
+Server on port 6136 has started by 13888@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 19:59:28 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:181)
+	at com.objectdb.o.SMR.o(SMR.java:260)
+	at com.objectdb.o.SMR.f(SMR.java:160)
+	at com.objectdb.o.TOL.run(TOL.java:117)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2020-05-14 19:59:37 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 13888@DESKTOP-00OS7EM
+
+[2020-05-14 19:59:37 #3 store] 
+Configuration path: ?
+
+[2020-05-14 19:59:37 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 19:59:37 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 19:59:37 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 19:59:37 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 19:59:37 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 19:59:37 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 19:59:37 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 19:59:37 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 19:59:37 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 19:59:37 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 20:00:17 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 13888@DESKTOP-00OS7EM
+
+[2020-05-14 20:00:17 #15 server] 
+Server on port 6136 has stopped by 13888@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:01:11 #1 server] 
+Server on port 6136 has started by 14188@DESKTOP-00OS7EM
+
+[2020-05-14 20:01:17 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 14188@DESKTOP-00OS7EM
+
+[2020-05-14 20:01:17 #3 store] 
+Configuration path: ?
+
+[2020-05-14 20:01:17 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:01:17 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:01:17 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:01:17 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:01:17 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:01:17 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:01:17 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:01:17 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:01:17 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:01:17 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 20:02:28 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 14188@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:02:36 #1 server] 
+Server on port 6136 has started by 14100@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:03:10 #1 server] 
+Server on port 6136 has started by 11808@DESKTOP-00OS7EM
+
+[2020-05-14 20:03:54 #2 server] 
+Server on port 6136 has stopped by 11808@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:12:59 #1 server] 
+Server on port 6136 has started by 1992@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:21:32 #1 server] 
+Server on port 6136 has started by 4168@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:22:05 #1 server] 
+Server on port 6136 has started by 5572@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:24:55 #1 server] 
+Server on port 6136 has started by 2656@DESKTOP-00OS7EM
+
+[2020-05-14 20:27:35 #2 server] 
+Server on port 6136 has stopped by 2656@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:27:51 #1 server] 
+Server on port 6136 has started by 2300@DESKTOP-00OS7EM
+
+[2020-05-14 20:27:58 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 2300@DESKTOP-00OS7EM
+
+[2020-05-14 20:27:58 #3 store] 
+Configuration path: ?
+
+[2020-05-14 20:27:58 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:27:58 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:27:58 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:27:58 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:27:58 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:27:58 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:27:58 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:27:58 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:27:58 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:27:58 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 20:28:44 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 2300@DESKTOP-00OS7EM
+
+[2020-05-14 20:28:47 #15 server] 
+Server on port 6136 has stopped by 2300@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:29:39 #1 server] 
+Server on port 6136 has started by 3016@DESKTOP-00OS7EM
+
+[2020-05-14 20:29:44 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 3016@DESKTOP-00OS7EM
+
+[2020-05-14 20:29:44 #3 store] 
+Configuration path: ?
+
+[2020-05-14 20:29:44 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:29:44 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:29:44 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:29:44 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:29:44 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:29:44 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:29:44 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:29:44 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:29:44 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:29:44 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 20:34:36 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 3016@DESKTOP-00OS7EM
+
+[2020-05-14 20:44:33 #15 server] 
+Server on port 6136 has stopped by 3016@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:46:52 #1 server] 
+Server on port 6136 has started by 14172@DESKTOP-00OS7EM
+
+[2020-05-14 20:46:55 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 14172@DESKTOP-00OS7EM
+
+[2020-05-14 20:46:55 #3 store] 
+Configuration path: ?
+
+[2020-05-14 20:46:55 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:46:55 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:46:55 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:46:55 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:46:55 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:46:55 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:46:55 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:46:55 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:47:06 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:47:06 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 20:51:03 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 14172@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:51:12 #1 server] 
+Server on port 6136 has started by 7912@DESKTOP-00OS7EM
+
+[2020-05-14 20:51:15 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 7912@DESKTOP-00OS7EM
+
+[2020-05-14 20:51:15 #3 store] 
+Configuration path: ?
+
+[2020-05-14 20:51:15 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:51:15 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:51:15 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:51:15 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:51:15 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:51:15 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:51:15 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:51:15 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:51:22 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:51:22 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 20:53:21 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 7912@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 20:54:30 #1 server] 
+Server on port 6136 has started by 1788@DESKTOP-00OS7EM
+
+[2020-05-14 20:54:33 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 1788@DESKTOP-00OS7EM
+
+[2020-05-14 20:54:33 #3 store] 
+Configuration path: ?
+
+[2020-05-14 20:54:34 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 20:54:34 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 20:54:34 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 20:54:34 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 20:54:34 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 20:54:34 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 20:54:34 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 20:54:34 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 20:54:42 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 20:54:42 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 21:08:16 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 1788@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 21:08:24 #1 server] 
+Server on port 6136 has started by 7460@DESKTOP-00OS7EM
+
+[2020-05-14 21:08:29 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 7460@DESKTOP-00OS7EM
+
+[2020-05-14 21:08:29 #3 store] 
+Configuration path: ?
+
+[2020-05-14 21:08:29 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 21:08:29 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 21:08:29 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 21:08:29 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 21:08:29 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 21:08:29 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 21:08:29 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 21:08:29 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 21:08:37 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 21:08:37 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 21:49:09 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 7460@DESKTOP-00OS7EM
+
+[2020-05-14 21:49:09 #15 server] 
+Server on port 6136 has stopped by 7460@DESKTOP-00OS7EM
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 21:49:57 #1 server] 
+Server on port 6136 has started by 7008@DESKTOP-00OS7EM
+
+[2020-05-14 21:49:59 #2 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 7008@DESKTOP-00OS7EM
+
+[2020-05-14 21:49:59 #3 store] 
+Configuration path: ?
+
+[2020-05-14 21:49:59 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 21:49:59 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 21:49:59 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 21:49:59 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 21:50:00 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 21:50:00 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 21:50:00 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 21:50:00 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 21:50:05 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 21:50:05 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-14 21:58:07 #14 store] 
+Database 'C:\Users\Usuario\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 7008@DESKTOP-00OS7EM
+

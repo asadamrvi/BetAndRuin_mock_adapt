@@ -26,7 +26,6 @@ public class FancyButton extends JButton{
 		setFocusPainted(false);
 		setBorderPainted(false);
 		//setIcon(new ImageIcon("images/competition/" + competition.toString() +  ".png"));
-
 	}
 	
 	@Override

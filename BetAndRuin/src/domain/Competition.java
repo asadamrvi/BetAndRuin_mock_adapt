@@ -23,6 +23,7 @@ public class Competition implements Serializable{
 	@XmlJavaTypeAdapter(IntegerAdapter.class)
 	@Id @GeneratedValue
 	private Integer competitionnumber;
+
 	private String name;
 	private Country country;
 	private Sport sport;
@@ -32,6 +33,9 @@ public class Competition implements Serializable{
 	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private ArrayList<Event> events;
 
+	public Competition() {
+		
+	}
 
 	public Competition(String name, Country country, Sport sport ,Date startingdate, Date endinggdate,
 			ArrayList<Event> events) {

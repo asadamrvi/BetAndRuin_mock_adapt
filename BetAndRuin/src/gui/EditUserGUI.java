@@ -3,12 +3,10 @@ package gui;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import businessLogic.BLFacade;
 import domain.Country;
 import exceptions.invalidID;
 import gui.components.FancyButton;
-
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
@@ -21,7 +19,6 @@ import java.util.ResourceBundle;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import java.awt.Font;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import java.awt.Color;
@@ -30,8 +27,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 
+@SuppressWarnings("serial")
 public class EditUserGUI extends JDialog {
-	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
 	

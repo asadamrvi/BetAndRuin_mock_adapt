@@ -35,6 +35,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import businessLogic.BLFacade;
 import domain.CreditCard;
+import domain.User;
 import gui.AddCreditCardGUI;
 import gui.MainGUI;
 import gui.components.ButtonColumn;
@@ -81,13 +82,13 @@ public class CreditCardsPanel extends JPanel {
 	 */
 	public CreditCardsPanel() {
 
+		User loggeduser = MainGUI.getInstance().getLoggeduser();
 		setBackground(new Color(250, 235, 215));
 
 		setLayout(new MigLayout("", "[20:20:20][55.00][63.00][66.00][30:30:30][10:10:10][25:25,grow][][215.00][20:20:20][20:20:20][-135.00]", "[20:14.00:20][:40.00:40.00][][103.00,grow][48.00][42.00][47.00][10:10:10][18.00:18.00:18.00][][19.00:19.00,grow][30:51.00:30][40:40:40][40:40:40][15:15:15][25:25:25][20:20:20]"));
 
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 1 3 9 4,grow");
-
 		
 		creditCardTable = new JTable() {
 			public TableCellRenderer getCellRenderer(int row, int column)
@@ -104,7 +105,7 @@ public class CreditCardsPanel extends JPanel {
 					defaultCardRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 				}
 
-				if ( creditCardTableModel.getValueAt(row, 7).equals(facade.getLoggeduser().getDefaultCreditCard()) && column!=6)
+				if ( creditCardTableModel.getValueAt(row, 7).equals(loggeduser.getDefaultCreditCard()) && column!=6)
 					return defaultCardRenderer;
 				else if(column!=6) {
 					return whiteRenderer;
@@ -171,7 +172,8 @@ public class CreditCardsPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				CreditCard newdefault = (CreditCard)creditCardTableModel.getValueAt(creditCardTable.getSelectedRow(), 7);
-				facade.setDefaultCreditCard(newdefault);
+				facade.setDefaultCreditCard(loggeduser,newdefault);
+				MainGUI.getInstance().getLoggeduser().setDefaultCreditCard(newdefault);
 				defaultCardPanel.setCard(newdefault);
 				JOptionPane.showMessageDialog(null, "Default card updated sucessfully");
 				loadCreditCards();
@@ -180,7 +182,7 @@ public class CreditCardsPanel extends JPanel {
 		});
 
 		defaultCardPanel = new DefaultCreditCard();
-		defaultCardPanel.setCard(facade.getLoggeduser().getDefaultCreditCard());
+		defaultCardPanel.setCard(loggeduser.getDefaultCreditCard());
 		add(defaultCardPanel, "cell 1 10 5 4,grow");
 
 		defaultPaymentLabel = new JLabel("Default payment:");
@@ -208,7 +210,7 @@ public class CreditCardsPanel extends JPanel {
 		creditCardTableModel.setDataVector(null, columnNamesCards);
 		creditCardTableModel.setColumnCount(8); 
 		creditCardTable.setRowHeight(40);
-		creditcardmap = facade.getLoggeduser().getCreditCards();
+		creditcardmap = MainGUI.getInstance().getLoggeduser().getCreditCards();
 		for(String number: creditcardmap.keySet()) {
 			addCardToTable(creditcardmap.get(number));
 		}	
@@ -247,7 +249,7 @@ public class CreditCardsPanel extends JPanel {
 			if (option==0){
 				CreditCard cc = (CreditCard)creditCardTableModel.getValueAt(creditCardTable.getSelectedRow(), 7);
 				creditcardmap.remove(cc.getCardNumber());
-				facade.removeCreditCard(cc); 
+				facade.removeCreditCard(cc.getCardNumber()); 
 				if(cc.equals(defaultCardPanel.getDefaultCard())) {
 					defaultCardPanel.reset();
 					defaultSwitch.setOnOff(false);

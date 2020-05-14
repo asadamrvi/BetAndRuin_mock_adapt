@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -13,12 +14,12 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class Profile {
+public class Profile  implements Serializable{
 
 	@XmlID
-	@XmlJavaTypeAdapter(IntegerAdapter.class)
 	@Id
 	private String id;
 	private String name;
@@ -35,6 +36,9 @@ public class Profile {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private User user;
 
+	public Profile() {
+		
+	}
 	
 	public Profile(String name, String surname, String email) {
 		this.name = name;

@@ -3,6 +3,7 @@ package gui.Panels;
 import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,6 +26,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import businessLogic.BLFacade;
 import domain.Feedback.FeedbackType;
+import domain.User;
 import gui.MainGUI;
 import gui.components.HintTextField;
 import javax.swing.ButtonGroup;
@@ -167,6 +169,7 @@ public class FeedbackPanel extends JPanel {
 		add(fileerrLabel, "cell 5 17 2 1");
 
 		fileChosenLabel = new JLabel("No file chosen");
+		fileChosenLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add(fileChosenLabel, "cell 5 16");
 		fileChosenLabel.addMouseListener(new java.awt.event.MouseAdapter() {
 			@Override
@@ -302,6 +305,7 @@ public class FeedbackPanel extends JPanel {
 				optionErrorLabel.setVisible(false);
 				identityErrorLabel.setVisible(false);
 				boolean valid = true;
+				User u = MainGUI.getInstance().getLoggeduser();
 
 				FeedbackType fbtype = (FeedbackType)enumBtns.getValue();
 				String name = nameField.getText();
@@ -309,9 +313,9 @@ public class FeedbackPanel extends JPanel {
 				String summary = summaryField.getText();
 				String details = detailArea.getText();
 				
-				if(facade.isLoggedIn()) {
-					name =facade.getProfile().getName();
-					email =facade.getProfile().getEmail();
+				if(MainGUI.getInstance().isLoggedIn()) {
+					name =u.getProfile().getName();
+					email =u.getProfile().getEmail();
 				}
 				else {
 					if(fbtype == null) {
@@ -340,7 +344,7 @@ public class FeedbackPanel extends JPanel {
 				}
 			}
 		});
-		if(MainGUI.getBusinessLogic().isLoggedIn()){
+		if(MainGUI.getInstance().isLoggedIn()){
 			pinfoPanel.setVisible(false);
 		}
 	}

@@ -1,11 +1,14 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.jdo.annotations.Index;
+import javax.jws.WebMethod;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -18,7 +21,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
@@ -27,34 +32,40 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *
  */
 
+@SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-public class User{
+public class User implements Serializable{
 
-	@XmlID
-	@XmlJavaTypeAdapter(IntegerAdapter.class)
+
 	@Id
+	@XmlID
 	private String username;
 	private String password;
 	private boolean isAdmin;
 	private float cash;
-	
+
 	@OneToOne(cascade = CascadeType.ALL,mappedBy = "owner", orphanRemoval = true)
 	private CreditCard defaultcard;
 	private Date registrationdate;
 	private Date lastlogin;
-	
+
 	@OneToOne(cascade = CascadeType.ALL,mappedBy = "user", orphanRemoval = true)
 	private Profile profile;
 
 	@OneToMany(fetch=FetchType.EAGER)
-	private ArrayList<Bet> bets;
+	private List<Bet> bets;
 
 	@ElementCollection
 	@CollectionTable(name="CreditCard")
 	@MapKeyColumn(name="cardNumber")
-	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL ,mappedBy = "owner", orphanRemoval = true)
+	@OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Map<String,CreditCard> creditcards;
+
+	public User() {
+		this.bets = new ArrayList<Bet>();
+		this.creditcards = new HashMap<String, CreditCard>();
+	}
 
 	public User(String username, String password, boolean isAdmin, Profile p) {
 		super();
@@ -62,9 +73,9 @@ public class User{
 		this.password = password;
 		this.profile = p;
 		this.isAdmin = isAdmin;
-		this.bets = new ArrayList<Bet>();
 		this.registrationdate = new Date();
-		this.cash = 9999;  
+		this.cash = 9999; 
+		this.bets = new ArrayList<Bet>();
 		this.creditcards = new HashMap<String, CreditCard>();
 		setProfile(p);
 	}
@@ -88,7 +99,7 @@ public class User{
 	public Profile getProfile() {
 		return profile;
 	}
-	
+
 	public void setProfile(Profile p) {
 		p.setUser(this);
 		this.profile = p;
@@ -97,11 +108,11 @@ public class User{
 	public CreditCard getDefaultCreditCard() {
 		return this.defaultcard;
 	}
-	
+
 	public void setDefaultCreditCard(CreditCard cc) {
 		this.defaultcard = cc;
 	}
-	
+
 	public Date getRegistrationdate() {
 		return registrationdate;
 	}
@@ -123,7 +134,7 @@ public class User{
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	
+
 	public void setLastlogin(Date lastlogin) {
 		this.lastlogin = lastlogin;
 	}
@@ -132,16 +143,20 @@ public class User{
 		return cash;
 	}
 
-
 	public void setCash(float cash) {
 		this.cash = cash;
+	}
+
+	public float addCash(float cash) {
+		this.cash = getCash() + cash;
+		return cash;
 	}
 	
 	public Map<String,CreditCard> getCreditCards() {
 		return creditcards;
 	}
-	
-	public void setCreditCards(HashMap<String,CreditCard> creditcards) {
+
+	public void setCreditCards(Map<String,CreditCard> creditcards) {
 		this.creditcards = creditcards;
 	}
 
@@ -153,15 +168,15 @@ public class User{
 	public void addBet(Bet c) {
 		bets.add(c);
 	}
-	
-	public void setBets(ArrayList<Bet> bets) {
+
+	public void setBets(List<Bet> bets) {
 		this.bets = bets;
 	}
-	
-	public ArrayList<Bet> getBets() {
+
+	public List<Bet> getBets() {
 		return bets;
 	}
-	
+
 	public void removeBet(Bet c) {
 		int j=0;
 		for (int i=0;i<bets.size();i++) {
@@ -172,7 +187,7 @@ public class User{
 		}
 		bets.remove(j);
 	}
-	
+
 	public void addCreditCard(CreditCard cc) {
 		if(creditcards == null) {
 			creditcards = new HashMap<String,CreditCard>();
@@ -180,7 +195,7 @@ public class User{
 		creditcards.put(cc.getCardNumber(),cc);
 		cc.setOwner(this);
 	}
-	
+
 	public String statusToString() {
 		if(this.isAdmin) {
 			return("Admin.");
@@ -189,5 +204,24 @@ public class User{
 			return("User");
 		}
 	}
+
+
+	/**
+	 * Retrieves the bets the currently logged has placed between the indicated dates
+	 * 
+	 * @param		fromdate lower bound date
+	 * @param		fromdate upper bound date
+	 * @return		List<Bet> user's bets
+	 */
+	public List<Bet> retrieveBetsByDate(Date fromdate, Date todate){
+		List<Bet> betsbydate = new ArrayList<Bet>(); 
+		for(Bet b : bets) {
+			if(b.getPlacementdate().compareTo(fromdate)>=0 && b.getPlacementdate().compareTo(todate)<=0) {
+				betsbydate.add(b);
+			}
+		}
+		return betsbydate;
+	}
+
 
 }

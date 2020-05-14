@@ -49,13 +49,15 @@ public class ApplicationLauncher {
 		 
 		        Service service = Service.create(url, qname);
 		 
-		         appFacadeInterface = service.getPort(BLFacade.class);
-			} 
-			/*if (c.getDataBaseOpenMode().equals("initialize")) 
+		        appFacadeInterface = service.getPort(BLFacade.class);
+			}
+			/*
+			if (c.getDataBaseOpenMode().equals("initialize")) 
 				appFacadeInterface.initializeBD();
 				*/
+				
 			
-			MainGUI a=new MainGUI(appFacadeInterface);
+			MainGUI a=new MainGUI(appFacadeInterface);			
 			a.setVisible(true);
 			MainGUI.setBussinessLogic(appFacadeInterface);
 			MainGUI.getInstance().configureTimer();
