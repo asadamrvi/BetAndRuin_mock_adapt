@@ -1,14 +1,10 @@
 package dataAccess;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-
 import javax.jws.WebMethod;
-import javax.persistence.EntityManager;
-
 import domain.Event;
 import domain.Feedback;
 import domain.Feedback.FeedbackType;
@@ -24,6 +20,7 @@ import domain.CreditCard;
 import domain.Question;
 import domain.Sport;
 import domain.User;
+import exceptions.EventAlreadyCreated;
 import exceptions.NoAnswers;
 import exceptions.QuestionAlreadyExist;
 import exceptions.QuestionNotFound;
@@ -305,4 +302,22 @@ public interface DataAccess {
 	
 	public List<Prediction> getQuestionPredictions(int questionId) throws QuestionNotFound,NoAnswers;
 	
+	/**
+	 * 
+	 * @param date
+	 * @param des
+	 * @param sport
+	 * @param cpumb
+	 * @throws EventAlreadyCreated
+	 */
+	public void addEvent(String date, String des, Sport sport,int cpumb)  throws EventAlreadyCreated;
+	
+	/**
+	 * 
+	 * @param count
+	 * @param sport
+	 * @param comp
+	 * @param date
+	 */
+	public void createCompetition(String count, Sport sport, String comp, Date date);
 }

@@ -4,22 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import domain.Event;
-import domain.Prediction;
 import domain.Question;
 import net.miginfocom.swing.MigLayout;
 
@@ -33,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
  * @param amount	Amount of money to bet
  * @return			JPanel with components incorporated that hold the bet information. 
  */
+@SuppressWarnings("serial")
 public class BetPanel extends JPanel{
 
 	private Event event;

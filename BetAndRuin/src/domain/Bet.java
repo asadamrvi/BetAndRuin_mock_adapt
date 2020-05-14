@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-
-import javax.jws.WebMethod;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -187,7 +185,6 @@ public class Bet implements Serializable{
 	 * @return		Total winnings earned from the bet(float).
 	 */
 	public float calculateBetWinnings() {
-		int i;
 		int rightpredictions = 0;
 		float winnings = 0;
 		List<Prediction> predictions = new ArrayList<Prediction>();
@@ -379,7 +376,7 @@ public class Bet implements Serializable{
 	 * @param events
 	 * @return
 	 */
-	private static float calculateFullCoverWinningsWorker(int k,int pos,  Map map  , int[] solution, float odds, float winnings,float stake, List<PredictionContainer> predictions, Set<Event> events) {
+	private static float calculateFullCoverWinningsWorker(int k,int pos,  Map<Event, ArrayList<Prediction>> map  , int[] solution, float odds, float winnings,float stake, List<PredictionContainer> predictions, Set<Event> events) {
 		if(pos == solution.length) {
 			winnings += odds*stake;
 		}

@@ -2,11 +2,8 @@ package businessLogic;
 
 import java.util.Vector;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
 import domain.Question;
 import domain.Sport;
 import domain.User;
@@ -25,6 +22,7 @@ import domain.Feedback;
 import domain.Country;
 import domain.CreditCard;
 import domain.Profile;
+import exceptions.EventAlreadyCreated;
 import exceptions.EventFinished;
 import exceptions.InsufficientCash;
 import exceptions.NoAnswers;
@@ -32,10 +30,9 @@ import exceptions.QuestionAlreadyExist;
 import exceptions.QuestionNotFound;
 import exceptions.invalidID;
 import exceptions.invalidPW;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.swing.Timer;
+
 
 /**
  * Interface that specifies the business logic.
@@ -54,6 +51,25 @@ public interface BLFacade  {
 	 * @throws QuestionAlreadyExist if the same question already exists for the event
 	 */
 	@WebMethod Question createQuestion(Event event, String question, float betMinimum,  List<Prediction> prediction) throws EventFinished, QuestionAlreadyExist;
+	
+	/**
+	 * 
+	 * @param date
+	 * @param des
+	 * @param sport
+	 * @param cpmunb
+	 * @throws EventAlreadyCreated
+	 */
+	@WebMethod void addEvent(String date, String des,Sport sport, int cpmunb)  throws EventAlreadyCreated;
+
+	/**
+	 * 
+	 * @param count
+	 * @param sport
+	 * @param comp
+	 * @param date
+	 */
+	@WebMethod void createCompetition(String count, Sport sport, String comp, Date date);
 
 
 	/**
@@ -326,4 +342,5 @@ public interface BLFacade  {
 	 */
 	@WebMethod public void resolveBets();
 
+	
 }

@@ -1,7 +1,5 @@
 package gui.components;
 
-import java.util.Hashtable;
-
 import javax.swing.table.TableCellEditor;
 
 public class CellEditorModel

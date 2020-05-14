@@ -16,6 +16,7 @@ import java.util.Date;
 
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class DefaultCreditCard extends JPanel {
 	
 	private CreditCard defaultcard;

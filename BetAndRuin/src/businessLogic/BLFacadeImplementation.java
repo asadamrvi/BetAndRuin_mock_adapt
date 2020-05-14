@@ -3,19 +3,12 @@ package businessLogic;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.Vector;
-import java.util.logging.Logger;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import configuration.ConfigXML;
@@ -40,6 +33,7 @@ import domain.Feedback;
 import domain.Country;
 import domain.CreditCard;
 import domain.Profile;
+import exceptions.EventAlreadyCreated;
 import exceptions.EventFinished;
 import exceptions.InsufficientCash;
 import exceptions.NoAnswers;
@@ -94,6 +88,23 @@ public class BLFacadeImplementation  implements BLFacade {
 		}
 
 	};
+	
+
+	@Override
+	public void addEvent(String date, String des,Sport sport, int cpmunb)  throws EventAlreadyCreated {
+		// TODO Auto-generated method stub
+		try {
+			dbManager.addEvent(date, des, sport, cpmunb);
+		} catch (EventAlreadyCreated e) {
+			throw new EventAlreadyCreated("Event already in db");
+		}
+		
+	}
+	@Override
+	public void createCompetition(String count, Sport sport, String comp, Date date) {
+		// TODO Auto-generated method stub
+		dbManager.createCompetition(count,sport,comp,date);
+	}	
 
 	/**
 	 * This method invokes the data access to retrieve the events of a given date 

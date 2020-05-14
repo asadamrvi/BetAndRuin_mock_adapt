@@ -21,10 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import com.toedter.calendar.JDateChooser;
@@ -33,8 +31,6 @@ import domain.Feedback;
 import domain.Feedback.FeedbackType;
 import domain.FeedbackRecord;
 import domain.FeedbackRecordContainer;
-import domain.Prediction;
-import domain.Question;
 import gui.MainGUI;
 import gui.feedbackResponseGUI;
 import gui.components.FancyButton;
@@ -69,23 +65,25 @@ public class FeedbackResponsePanel extends JPanel {
 	private JLabel fileLabel;
 
 	private JComboBox<FeedbackType> typeComboBox; 
+	@SuppressWarnings("rawtypes")
 	private JComboBox readComboBox;
 
 	private JDateChooser datechooser;
 	private Date selecteddate;
 	
-	private String[] type = {"All","Suggestion", "Problem", "Question"};
+	//private String[] type = {"All","Suggestion", "Problem", "Question"};
 	private String[] read = {"All", "Read", "Not read"};
 	private String[] columnnames =new String[] {"Type", "Issue", "Sender", "Date", "Read"};
 
-	private DefaultTableCellRenderer whiteRenderer = null;
-	private DefaultTableCellRenderer readFeedbackRenderer = null;
+	//private DefaultTableCellRenderer whiteRenderer = null;
+	//private DefaultTableCellRenderer readFeedbackRenderer = null;
 
 	BLFacade facade = MainGUI.getBusinessLogic();
 
 	/**
 	 * Create the panel.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public FeedbackResponsePanel() {
 		setBackground(Color.WHITE);
 		setLayout(new MigLayout("", "[30:30][100:100:100][5:5:5][80:80:80][10:10,grow][30:30][][150][10:10:10][15:15][35px:n][][298.00,grow][30:30:30]", "[30:30:30][][3:3][30:30:30][][][][300,grow][5:5:5][35:35:35][30:30:30]"));
@@ -153,7 +151,6 @@ public class FeedbackResponsePanel extends JPanel {
 		add(scrollPane, "cell 1 6 8 2,grow");
 
 		feedbackTable = new JTable() {
-			@SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
 			public Class getColumnClass(int column) {
 				if(column == 4) {

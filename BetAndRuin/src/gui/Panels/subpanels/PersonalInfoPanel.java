@@ -247,6 +247,7 @@ public class PersonalInfoPanel extends JPanel{
 				else {
 					try {
 						User u = facade.updateUserInfo(loggeduser.getUsername(), newUsername, newName, newSurname, newEmail,newnat, city,address,newphn,newbirthdate,loggeduser.isAdmin());
+						MainGUI.getInstance().setLoggeduser(u);
 						JOptionPane.showMessageDialog(null, "Changes saved sucessfully");
 					} catch (invalidID e1) {
 						saveChangesErrorLabel.setText("Username already in use");

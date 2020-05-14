@@ -539,3 +539,35 @@ Type domain.FeedbackRecord is not enhanced.
 [2020-05-14 21:50:05 #10 type] 
 Type domain.Feedback is not enhanced.
 
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-14 22:29:41 #1 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-14 22:29:41 #2 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-14 22:29:41 #3 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-14 22:29:41 #4 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-14 22:29:41 #5 type] 
+Type domain.User is not enhanced.
+
+[2020-05-14 22:29:41 #6 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-14 22:29:41 #7 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-14 22:29:41 #8 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-14 22:29:57 #9 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-14 22:29:57 #10 type] 
+Type domain.Feedback is not enhanced.
+

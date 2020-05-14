@@ -16,7 +16,6 @@ import domain.User;
 import gui.ChangePassGUI;
 import gui.MainGUI;
 import gui.Panels.subpanels.CreditCardsPanel;
-import gui.Panels.subpanels.OpenBetsPanel;
 import gui.Panels.subpanels.PersonalInfoPanel;
 import gui.components.FancyButton;
 import javax.swing.JDialog;
@@ -31,7 +30,6 @@ import java.nio.file.Paths;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Window;
-
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.SwingConstants;
@@ -46,12 +44,9 @@ public class ProfilePanel extends JPanel {
 	private JLabel imageFeedbackLabel;
 	private JLabel profilePicLabel;
 
-
 	private PersonalInfoPanel personalInfoPanel;
-	private JPanel myBetsPanel;
 	private CreditCardsPanel creditCardsPanel;
 	private JPanel myTransactionsPanel;
-
 
 	private FancyButton chooseImageButton;
 	private FancyButton saveImageButton;

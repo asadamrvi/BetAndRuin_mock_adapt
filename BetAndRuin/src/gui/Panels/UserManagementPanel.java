@@ -69,8 +69,10 @@ public class UserManagementPanel extends JPanel {
 	private JButton btnAddAUser;
 
 	String[] filters = { "Username","ID", "Name", "Surname", "Email", "Nationality","City","Phone number"};  //,"Birthdate"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox filterComboBox = new JComboBox(filters);
 	String[] match = { "Full match", "Beginning", "Contains"};
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox matchComboBox = new JComboBox(match);
 
 	private String[] columnNamesUsers = new String[] {

@@ -49,7 +49,6 @@ import gui.components.JTableX;
 import gui.components.CellEditorModel;
 import net.miginfocom.swing.MigLayout;
 import javax.imageio.ImageIO;
-import javax.jws.WebMethod;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
@@ -947,7 +946,9 @@ public class OpenBetsPanel extends JPanel {
 	}
 
 
+	@SuppressWarnings("rawtypes")
 	public class MyComboBoxRenderer extends JComboBox implements TableCellRenderer {
+		@SuppressWarnings("unchecked")
 		public MyComboBoxRenderer(String[] items) {
 			super(items);
 		}

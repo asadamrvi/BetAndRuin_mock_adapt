@@ -3,7 +3,6 @@ package dataAccess;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,13 +13,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Vector;
-
 import javax.jws.WebMethod;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import configuration.ConfigXML;
 import configuration.UtilDate;
@@ -39,12 +35,12 @@ import domain.Profile;
 import domain.Question;
 import domain.Sport;
 import domain.User;
+import exceptions.EventAlreadyCreated;
 import exceptions.NoAnswers;
 import exceptions.QuestionAlreadyExist;
 import exceptions.QuestionNotFound;
 import exceptions.invalidID;
 import exceptions.invalidPW;
-import gui.Panels.CreateQuestionPanel;
 
 /**
  * It implements the data access to the objectDb database
@@ -632,10 +628,8 @@ public class DataAccessImplementation implements DataAccess {
 		Date today = new Date();
 		Calendar cld = Calendar.getInstance();
 		cld.setTime(today);
-		int thisyear =cld.get(Calendar.YEAR);
 		int thismonth = cld.get(Calendar.MONTH);
 		cld.setTime(date);
-		int dateyear = cld.get(Calendar.YEAR);
 		int datemonth = cld.get(Calendar.MONTH);
 		
 		System.out.println("getEventsMonth month: " + 1);
@@ -961,9 +955,6 @@ public class DataAccessImplementation implements DataAccess {
 			db.getTransaction().commit();
 			db.close();
 			System.out.println("Credit card: " + cc.getCardNumber() + " has been deleted");
-		}
-		else {
-			System.out.println("Credit card not found");
 		}
 	}
 	
@@ -1346,6 +1337,78 @@ public class DataAccessImplementation implements DataAccess {
 		User u = db.getReference(User.class, user.getUsername());
 		db.getTransaction().begin();
 		u.setCash(u.getCash() + update);
+		db.getTransaction().commit();
+		db.close();
+	}
+	
+	
+	
+	
+	
+	
+
+	/**
+	 * @param date Date when the event is due to start
+	 * @param des  Description of the event
+	 * @param sport The sport of the event
+	 * @param cpnum The number of the competiton where the event is set
+	 */
+	@Override
+	public void addEvent(String date, String des, Sport sport,int cpumb) throws EventAlreadyCreated {
+		// TODO Auto-generated method stub
+		EntityManager db = createEntityManager();
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		Date dates;
+		try {
+			dates = df.parse(date); //parsing the date
+			int eventNumber = getMaxEventNumb() + 1; //getting a valid event number
+			Event event = new Event(eventNumber, des, dates, dates, sport); //creating the new event
+			//making sure that the event isn't duplicated, otherwise an exception will proc
+			Event ev = db.find(Event.class, des);
+			if (ev != null && ev.getEventDate() == dates) {
+				throw new EventAlreadyCreated();
+			}else {//if the event is not duplicated
+				Competition comp = db.find(Competition.class, cpumb); //get the competition corresponding to the number
+				// make the transaction at the db where we add the event and update the event list for the found competition
+				db.getTransaction().begin();
+				comp.addEvent(event);
+				db.persist(event);
+				db.getTransaction().commit();
+				db.close();
+			}
+		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @return returns the greatest event number so if we have (2,7,3,8) it will return 8 
+	 */
+	private int getMaxEventNumb() {
+		EntityManager db = createEntityManager();
+		System.out.println(">> DataAccess: getEvents");	
+		TypedQuery<Event> query = db.createQuery("SELECT ev FROM Event ev ",Event.class);   
+		List<Event> events = query.getResultList();
+		int max = 0;
+		for (Event event : events) {
+			if(event.getEventNumber() > max)
+				max = event.getEventNumber();
+		}
+		db.close();
+		return max;
+	}
+
+	public void createCompetition(String count, Sport sport, String comp, Date date) {
+		// TODO Auto-generated method stub
+		Country country = Country.getValue(count);
+		Competition competition = new Competition(comp, country, sport, date, date);
+		EntityManager db = createEntityManager();
+		db.getTransaction().begin();
+		db.persist(competition);
 		db.getTransaction().commit();
 		db.close();
 	}

@@ -1,26 +1,21 @@
 package gui.Panels;
 
 import javax.swing.JPanel;
-
 import gui.Panels.subpanels.BettingHistoryPanel;
 import gui.Panels.subpanels.OpenBetsPanel;
 import gui.components.FancyButton;
-
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.CardLayout;
 
+@SuppressWarnings("serial")
 public class MyBetsPanel extends JPanel {
 
 

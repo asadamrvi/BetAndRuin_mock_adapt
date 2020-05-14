@@ -1,4 +1,4 @@
-package gui.Panels;
+package gui.Panels.subpanels;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -34,7 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import com.toedter.calendar.JCalendar;
 import businessLogic.BLFacade;
-import configuration.UtilDate;
 import domain.Competition;
 import domain.Event;
 import domain.Prediction;
@@ -43,10 +42,10 @@ import domain.Sport;
 import exceptions.EventFinished;
 import exceptions.QuestionAlreadyExist;
 import gui.MainGUI;
+import gui.Panels.BrowsePanel;
 import gui.components.ButtonColumn;
 import gui.components.HintTextField;
 import gui.components.JNumericField;
-
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -100,7 +99,6 @@ public class CreateQuestionPanel extends JPanel {
 	private String[] columNameAnswers = new String[] {	"No.", "Anwser", "Odds", ""};
 	private String[] columNameQuestions = new String[] {	"No.", "Question"};
 
-	private final JLabel titleLabel = new JLabel("Create Questions");
 	private final JScrollPane answerScrollPane = new JScrollPane();
 
 	private final JScrollPane questionScrollPanel = new JScrollPane();
@@ -130,14 +128,7 @@ public class CreateQuestionPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
-		GridBagConstraints gbc_titleLabel = new GridBagConstraints();
-		gbc_titleLabel.anchor = GridBagConstraints.WEST;
-		gbc_titleLabel.gridwidth = 22;
-		gbc_titleLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_titleLabel.gridx = 1;
-		gbc_titleLabel.gridy = 1;
-		titleLabel.setFont(new Font("Source Code Pro ExtraLight", Font.PLAIN, 25));
-		add(titleLabel, gbc_titleLabel);
+
 
 		for(Component c : jCalendar.getDayChooser().getDayPanel().getComponents()) {
 			c.setFont(new Font("Source sans Pro", Font.PLAIN, 14));

@@ -2,7 +2,6 @@ package gui;
 
 
 import javax.imageio.ImageIO;
-import javax.jws.WebMethod;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -22,7 +21,7 @@ import businessLogic.BLFacade;
 import domain.Profile;
 import domain.User;
 import gui.Panels.BrowsePanel;
-import gui.Panels.CreateQuestionPanel;
+import gui.Panels.CreatePanel;
 import gui.Panels.FeedbackPanel;
 import gui.Panels.FeedbackResponsePanel;
 import gui.Panels.HomePanel;
@@ -35,8 +34,6 @@ import java.awt.Graphics;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -63,7 +60,7 @@ public class MainGUI extends JFrame {
 
 	private static BLFacade appFacadeInterface;
 
-	Timer timer;
+	private Timer timer;
 
 	public static BLFacade getBusinessLogic(){
 		return appFacadeInterface;
@@ -805,7 +802,7 @@ public class MainGUI extends JFrame {
 			menubuttons.put(myBetsButton,new MyBetsPanel());
 		}
 		menubuttons.put(feedbackButton, new FeedbackPanel());
-		menubuttons.put(createQuestionButton,new CreateQuestionPanel());
+		menubuttons.put(createQuestionButton,new CreatePanel());
 		menubuttons.put(userManagementButton,new UserManagementPanel());
 	}
 

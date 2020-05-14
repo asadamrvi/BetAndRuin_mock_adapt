@@ -10,6 +10,7 @@ import javax.swing.border.MatteBorder;
 
 import domain.Prediction;
 
+@SuppressWarnings("serial")
 public class BetDetails extends JPanel {
 
 	/**

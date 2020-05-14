@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -61,7 +60,7 @@ public class BettingHistoryPanel extends JPanel {
 
 	private List<Bet> searchResult;
 
-	private List<Bet> bets;
+	//private List<Bet> bets;
 	private List<PredictionContainer> predictions;
 	
 	private JButton btnNextPage;

@@ -2,8 +2,6 @@ package gui.components;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-import businessLogic.BLFacade;
 import gui.MainGUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

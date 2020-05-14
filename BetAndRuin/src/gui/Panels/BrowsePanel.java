@@ -67,8 +67,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
 import java.awt.Graphics;
-
-import javax.jws.WebMethod;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -1126,7 +1124,6 @@ public class BrowsePanel extends JPanel {
 			btnBet.setBorderPainted(true);
 			btnBet.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					BLFacade facade = MainGUI.getBusinessLogic();
 					if(!MainGUI.getInstance().isLoggedIn()) {
 						String[] options = {"Log in","Register","Cancel"};
 						int selectedoption = JOptionPane.showOptionDialog(null, "This action requires the user to be logged in", "Login required", JOptionPane.DEFAULT_OPTION,

@@ -6,9 +6,9 @@ import java.awt.Font;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.SystemColor;
 import javax.swing.JButton;
 
+@SuppressWarnings("serial")
 public class SocialMediaPanel extends JPanel{
 	public SocialMediaPanel() {
 		setBackground(new Color(245, 245, 245));

@@ -1,13 +1,12 @@
 package gui.components;
 
 import java.util.Vector;
-
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.*;
-import java.util.*;
 
+@SuppressWarnings("serial")
 public class JTableX extends JTable
 {
     protected CellEditorModel rm;
@@ -43,7 +42,8 @@ public class JTableX extends JTable
          rm = null;
      }
 
-     public JTableX(final Vector rowData, final Vector columnNames)
+     @SuppressWarnings("rawtypes")
+	public JTableX(final Vector rowData, final Vector columnNames)
      {
          super(rowData, columnNames);
          rm = null;
