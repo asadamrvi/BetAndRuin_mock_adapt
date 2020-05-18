@@ -1354,18 +1354,17 @@ public class DataAccessImplementation implements DataAccess {
 	 * @param cpnum The number of the competiton where the event is set
 	 */
 	@Override
-	public void addEvent(String date, String des, Sport sport,int cpumb) throws EventAlreadyCreated {
+	public void addEvent(Date start, Date end, String des, Sport sport,int cpumb) throws EventAlreadyCreated {
 		// TODO Auto-generated method stub
 		EntityManager db = createEntityManager();
-		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		Date dates;
+
 		try {
-			dates = df.parse(date); //parsing the date
 			int eventNumber = getMaxEventNumb() + 1; //getting a valid event number
-			Event event = new Event(eventNumber, des, dates, dates, sport); //creating the new event
+			Event event = new Event(eventNumber, des, start, end, sport); //creating the new event
+			System.out.println("Created");
 			//making sure that the event isn't duplicated, otherwise an exception will proc
 			Event ev = db.find(Event.class, des);
-			if (ev != null && ev.getEventDate() == dates) {
+			if (ev != null && ev.getEventDate() == start) {
 				throw new EventAlreadyCreated();
 			}else {//if the event is not duplicated
 				Competition comp = db.find(Competition.class, cpumb); //get the competition corresponding to the number
@@ -1377,7 +1376,7 @@ public class DataAccessImplementation implements DataAccess {
 				db.close();
 			}
 		
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -1,0 +1,222 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:31:52 #1 server] 
+Server on port 6136 has started by 5956@DESKTOP-6FCSN85
+
+[2020-05-15 12:32:06 #2 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 5956@DESKTOP-6FCSN85
+
+[2020-05-15 12:32:06 #3 store] 
+Configuration path: ?
+
+[2020-05-15 12:32:07 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-15 12:32:07 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-15 12:32:07 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-15 12:32:07 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-15 12:32:07 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-15 12:32:07 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-15 12:32:07 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-15 12:32:07 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-15 12:32:15 #12 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 5956@DESKTOP-6FCSN85
+
+[2020-05-15 12:32:33 #13 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 5956@DESKTOP-6FCSN85
+
+[2020-05-15 12:32:33 #14 store] 
+Configuration path: ?
+
+[2020-05-15 12:32:35 #15 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 5956@DESKTOP-6FCSN85
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:33:41 #1 server] 
+java.net.BindException: Address already in use: NET_Bind
+	at java.base/java.net.PlainSocketImpl.bind0(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:132)
+	at java.base/java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:436)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:381)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:243)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:187)
+	at com.objectdb.o.SMR.o(SMR.java:260)
+	at com.objectdb.o.SMR.f(SMR.java:160)
+	at com.objectdb.o.TOL.run(TOL.java:117)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2020-05-15 12:34:01 #16 server] 
+Server on port 6136 has stopped by 5956@DESKTOP-6FCSN85
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:34:10 #1 server] 
+Server on port 6136 has started by 10100@DESKTOP-6FCSN85
+
+[2020-05-15 12:34:17 #2 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 10100@DESKTOP-6FCSN85
+
+[2020-05-15 12:34:17 #3 store] 
+Configuration path: ?
+
+[2020-05-15 12:34:18 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-15 12:34:18 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-15 12:34:18 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-15 12:34:18 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-15 12:34:18 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-15 12:34:18 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-15 12:34:18 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-15 12:34:18 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-15 12:34:19 #12 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 10100@DESKTOP-6FCSN85
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:34:54 #1 server] 
+Server on port 6136 has started by 9136@DESKTOP-6FCSN85
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:49:38 #1 server] 
+Server on port 6136 has started by 7236@DESKTOP-6FCSN85
+
+[2020-05-15 12:49:44 #2 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 7236@DESKTOP-6FCSN85
+
+[2020-05-15 12:49:44 #3 store] 
+Configuration path: ?
+
+[2020-05-15 12:49:44 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-15 12:49:44 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-15 12:49:44 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-15 12:49:44 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-15 12:49:44 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-15 12:49:44 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-15 12:49:44 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-15 12:49:44 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-15 12:50:25 #12 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-15 12:50:25 #13 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-15 12:51:27 #14 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 7236@DESKTOP-6FCSN85
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:52:18 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:181)
+	at com.objectdb.o.SMR.o(SMR.java:260)
+	at com.objectdb.o.SMR.f(SMR.java:160)
+	at com.objectdb.o.TOL.run(TOL.java:117)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2020-05-15 12:52:22 #15 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 7236@DESKTOP-6FCSN85
+
+[2020-05-15 12:52:22 #16 store] 
+Configuration path: ?
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-15 12:56:04 #1 server] 
+Server on port 6136 has started by 11152@DESKTOP-6FCSN85
+
+[2020-05-15 12:56:08 #2 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 11152@DESKTOP-6FCSN85
+
+[2020-05-15 12:56:08 #3 store] 
+Configuration path: ?
+
+[2020-05-15 12:56:08 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-15 12:56:08 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-15 12:56:08 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-15 12:56:08 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-15 12:56:08 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-15 12:56:08 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-15 12:56:08 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-15 12:56:08 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-15 12:56:20 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-15 12:56:20 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-15 13:10:48 #14 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 11152@DESKTOP-6FCSN85
+

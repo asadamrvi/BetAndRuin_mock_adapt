@@ -60,7 +60,7 @@ public interface BLFacade  {
 	 * @param cpmunb
 	 * @throws EventAlreadyCreated
 	 */
-	@WebMethod void addEvent(String date, String des,Sport sport, int cpmunb)  throws EventAlreadyCreated;
+	@WebMethod void addEvent(Date start, Date end, String des,Sport sport, int cpmunb)  throws EventAlreadyCreated;
 
 	/**
 	 * 

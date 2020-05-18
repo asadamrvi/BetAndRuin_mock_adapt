@@ -1,5 +1,9 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,12 +11,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import gui.components.FancyButton;
+
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.Address;
 import javax.mail.Message;
@@ -22,16 +22,18 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.sql.DataSource;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Desktop;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import gui.components.FancyButton;
 
 @SuppressWarnings("serial")
 public class feedbackResponseGUI extends JDialog  {
@@ -232,9 +234,9 @@ public class feedbackResponseGUI extends JDialog  {
 	        message.setText(body);
 	        
 	        if(file != null) {
-	        	  DataSource source = new FileDataSource(file.getAbsolutePath()); 
+	        	  DataSource source = (DataSource) new FileDataSource(file.getAbsolutePath()); 
 	        	  message.setFileName(file.getName()); 
-	        	  message.setDataHandler(new DataHandler(source));
+	        	  message.setDataHandler(new DataHandler((javax.activation.DataSource) source));
 	        }
 	    	
 	        Transport transport = session.getTransport("smtp");

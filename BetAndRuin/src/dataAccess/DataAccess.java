@@ -310,7 +310,7 @@ public interface DataAccess {
 	 * @param cpumb
 	 * @throws EventAlreadyCreated
 	 */
-	public void addEvent(String date, String des, Sport sport,int cpumb)  throws EventAlreadyCreated;
+	public void addEvent(Date start, Date end, String des, Sport sport,int cpumb)  throws EventAlreadyCreated;
 	
 	/**
 	 * 

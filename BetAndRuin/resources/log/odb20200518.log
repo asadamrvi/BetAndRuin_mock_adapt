@@ -1,0 +1,125 @@
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-18 15:45:14 #1 server] 
+Server on port 6136 has started by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:45:17 #2 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:45:17 #3 store] 
+Configuration path: ?
+
+[2020-05-18 15:45:17 #4 type] 
+Type domain.Event is not enhanced.
+
+[2020-05-18 15:45:17 #5 type] 
+Type domain.Question is not enhanced.
+
+[2020-05-18 15:45:17 #6 type] 
+Type domain.Competition is not enhanced.
+
+[2020-05-18 15:45:17 #7 type] 
+Type domain.Prediction is not enhanced.
+
+[2020-05-18 15:45:17 #8 type] 
+Type domain.User is not enhanced.
+
+[2020-05-18 15:45:17 #9 type] 
+Type domain.CreditCard is not enhanced.
+
+[2020-05-18 15:45:17 #10 type] 
+Type domain.Bet is not enhanced.
+
+[2020-05-18 15:45:17 #11 type] 
+Type domain.Profile is not enhanced.
+
+[2020-05-18 15:45:39 #12 type] 
+Type domain.FeedbackRecord is not enhanced.
+
+[2020-05-18 15:45:39 #13 type] 
+Type domain.Feedback is not enhanced.
+
+[2020-05-18 15:49:56 #14 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:50:02 #15 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:50:02 #16 store] 
+Configuration path: ?
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-18 15:50:05 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:181)
+	at com.objectdb.o.SMR.o(SMR.java:260)
+	at com.objectdb.o.SMR.f(SMR.java:160)
+	at com.objectdb.o.TOL.run(TOL.java:117)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2020-05-18 15:56:53 #17 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 10096@DESKTOP-6FCSN85
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-18 15:57:16 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:181)
+	at com.objectdb.o.SMR.o(SMR.java:260)
+	at com.objectdb.o.SMR.f(SMR.java:160)
+	at com.objectdb.o.TOL.run(TOL.java:117)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2020-05-18 15:57:18 #18 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:57:18 #19 store] 
+Configuration path: ?
+
+[2020-05-18 15:58:46 #20 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:58:52 #21 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is opened by 10096@DESKTOP-6FCSN85
+
+[2020-05-18 15:58:52 #22 store] 
+Configuration path: ?
+
+------------------------------------------------------------------------------------------------------------------------
+
+[2020-05-18 15:58:54 #1 server] 
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:181)
+	at com.objectdb.o.SMR.o(SMR.java:260)
+	at com.objectdb.o.SMR.f(SMR.java:160)
+	at com.objectdb.o.TOL.run(TOL.java:117)
+	at com.objectdb.Server.runCommand(Server.java:200)
+	at com.objectdb.Server.run(Server.java:104)
+	at com.objectdb.Server.main(Server.java:63)
+
+[2020-05-18 16:14:36 #23 store] 
+Database 'C:\Users\Jon\git\BetAndRuin\BetAndRuin\resources\db\resources\bets.temp' is closed by 10096@DESKTOP-6FCSN85
+

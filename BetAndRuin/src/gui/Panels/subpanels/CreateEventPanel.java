@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,12 +51,15 @@ import gui.Panels.BrowsePanel;
 import gui.components.ButtonColumn;
 import gui.components.CompetitionPanel;
 import gui.components.FancyButton;
+import gui.components.HintTextField;
 
 
 @SuppressWarnings("serial")
 public class CreateEventPanel extends JPanel {
 
 	private HashMap<String, ArrayList<String>> events = new HashMap<String, ArrayList<String>>();
+	private ArrayList<Date> startingHours = new ArrayList<Date>();
+	private ArrayList<Date> endingHours = new ArrayList<Date>();
 	private  JComboBox<Sport> sportComboBox = new JComboBox<Sport>();
 
 	private JLabel jLabelMinBet = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("MinimumBetPrice")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -64,7 +68,11 @@ public class CreateEventPanel extends JPanel {
 	private JLabel teamsErrorLabel = new JLabel();
 	private JLabel team2Label = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Team2")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
 	private JLabel team1Label = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("Team1"));  //$NON-NLS-1$ //$NON-NLS-2$
-
+	private JLabel durationLabel = new JLabel((ResourceBundle.getBundle("Etiquetas").getString("duration")));
+	private JLabel startHourLabel = new JLabel(ResourceBundle.getBundle("Etiquetas").getString("start"));
+	private HintTextField jHintFieldEndHour = new HintTextField("minutes", new Color(255, 255, 255), new Color(0,0,0), new Color(0,0,0), new Color(169,169,169),  new Color(169,169,169));
+	private HintTextField jHintFieldDuration= new HintTextField("HH:mm", new Color(255, 255, 255), new Color(0,0,0), new Color(0,0,0), new Color(169,169,169),  new Color(169,169,169));
+	
 	private JCalendar jCalendar = new JCalendar();
 	private Calendar calendarMio = null;
 
@@ -269,18 +277,23 @@ public class CreateEventPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 					String date = df.format(jCalendar.getDate());
 					teamsErrorLabel.setText("");
 					createQuestionErrorLabel.setText("");
-					if (team1TextField.getText().equals("") || team2TextField.getText().equals("") ) {//if one of the teams is not set warn th admin
+					if (team1TextField.getText().equals("") || team2TextField.getText().equals("")  ) {//if one of the teams is not set warn th admin
 						teamsErrorLabel.setText("Enter both teams");
 						team1TextField.setBorder(new LineBorder(Color.RED, 2));
-					}else {
+					}else if(jHintFieldDuration.getText().equals("") || jHintFieldEndHour.getText().equals("")) {
+						teamsErrorLabel.setText("Enter valid dates");
+					} else {
 						//get both teams
 						String team1 = team1TextField.getText();
 						String team2 = team2TextField.getText();
 						team2TextField.setBorder(new LineBorder(Color.BLACK, 1));
 						team1TextField.setBorder(new LineBorder(Color.BLACK, 1));
+						String startingHour = jHintFieldDuration.getText();
+						String duration = jHintFieldEndHour.getText();
 						//create the description and add it to the hashmap
 						String description = team1 + "-" + team2;
 						ArrayList<String> eventList = events.get(date);
@@ -288,20 +301,42 @@ public class CreateEventPanel extends JPanel {
 							eventList = new ArrayList<String>();
 							eventList.add(description);
 							events.put(date, eventList);
+							Date startHour = sdf.parse(date + " " + startingHour);
+							Calendar cl = Calendar.getInstance();
+							cl.setTime(startHour);
+							cl.add(Calendar.MINUTE, Integer.parseInt(duration));
+							Date endHour = cl.getTime();
+							System.out.println(endHour);
+							startingHours.add(startHour);
+							endingHours.add(endHour);
 							createdEventsTableAdd(description, date);
 						}else if(eventList.contains(description)) {
 								teamsErrorLabel.setText("Event already placed");
 						}else {
 							eventList.add(description);
 							events.put(date, eventList);
+							Date startHour = sdf.parse(date + " " + startingHour);
+							Calendar cl = Calendar.getInstance();
+							cl.setTime(startHour);
+							cl.add(Calendar.MINUTE, Integer.parseInt(duration));
+							Date endHour = cl.getTime();
+							System.out.println(endHour);
+							startingHours.add(startHour);
+							endingHours.add(endHour);
 							createdEventsTableAdd(description, date);
 						}
 						team1TextField.setText("");
 						team2TextField.setText("");
+						jHintFieldEndHour.setText("");
+						jHintFieldDuration.setText("");
 					}
 				}
 				catch(NumberFormatException n) {
 					teamsErrorLabel.setText("Please enter a valid odd number");
+				}catch (ParseException e2) {
+					// TODO: handle exception
+					teamsErrorLabel.setText("Make sure dates are correct");
+					e2.printStackTrace();
 				}
 			}
 		});
@@ -441,6 +476,49 @@ public class CreateEventPanel extends JPanel {
 		competitionScrollPane.setViewportView(competitionPanel);
 		competitionScrollPane.updateUI();
 		disableInputFields();
+		
+		GridBagConstraints gbc_jTextFieldQuery = new GridBagConstraints();
+		gbc_jTextFieldQuery.anchor = GridBagConstraints.NORTH;
+		gbc_jTextFieldQuery.gridwidth = 2;
+		gbc_jTextFieldQuery.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jTextFieldQuery.insets = new Insets(0, 0, 5, 0);
+		gbc_jTextFieldQuery.gridx = 21;
+		gbc_jTextFieldQuery.gridy = 19;
+		this.add(jHintFieldEndHour, gbc_jTextFieldQuery);
+		jHintFieldEndHour.setBounds(new Rectangle(100, 211, 75, 33));
+		jHintFieldEndHour.setFont(new Font("Tahoma",Font.ITALIC,14));
+		
+		
+		durationLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 16));
+		durationLabel.setBounds(new Rectangle(25, 211, 75, 20));
+		GridBagConstraints gbc_durationLabel = new GridBagConstraints();
+		gbc_durationLabel.gridwidth = 3;
+		gbc_durationLabel.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_durationLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_durationLabel.gridx = 21;
+		gbc_durationLabel.gridy = 18;
+		this.add(durationLabel, gbc_durationLabel);
+		
+		GridBagConstraints gbc_jTextFieldDuration= new GridBagConstraints();
+		gbc_jTextFieldDuration.anchor = GridBagConstraints.NORTH;
+		gbc_jTextFieldDuration.gridwidth = 2;
+		gbc_jTextFieldDuration.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jTextFieldDuration.insets = new Insets(0, 0, 5, 5);
+		gbc_jTextFieldDuration.gridx = 21;
+		gbc_jTextFieldDuration.gridy = 16;
+		this.add(jHintFieldDuration, gbc_jTextFieldDuration);
+		jHintFieldDuration.setBounds(new Rectangle(100, 211, 75, 33));
+		jHintFieldDuration.setFont(new Font("Tahoma",Font.ITALIC,14));
+		
+		startHourLabel.setFont(new Font("Source Sans Pro", Font.BOLD, 16));
+		startHourLabel.setBounds(new Rectangle(25, 211, 75, 20));
+		GridBagConstraints gbc_startHourLabel = new GridBagConstraints();
+		gbc_startHourLabel.gridwidth = 3;
+		gbc_startHourLabel.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_startHourLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_startHourLabel.gridx = 21;
+		gbc_startHourLabel.gridy = 15;
+		this.add(startHourLabel, gbc_startHourLabel);
 	}
 
 	/**
@@ -518,25 +596,34 @@ public class CreateEventPanel extends JPanel {
 			teamsErrorLabel.setText("");
 			createQuestionErrorLabel.setText("");
 			Competition selectedcompetition = competitionPanel.getSelectedCompetition();
+
 			Sport sport = (Sport)sportComboBox.getSelectedItem();
 				if (events.size() < 1) {//if only 1 team is introduced warm the admin
 					teamsErrorLabel.setText("Introduce answers");
-				}else {
+					
+				}else{
 					// Obtain the business logic from a StartWindow class (local or remote)
 					BLFacade facade = MainGUI.getBusinessLogic();
+					// Parse the Hours
 					ArrayList<String> descriptions = new ArrayList<String>();
 					//for each pair in the hash we add it to the db
+					int i = 0;
 					for(String date: events.keySet()) {
 						descriptions = events.get(date);
+						 Date start = startingHours.get(i);
+						 Date end = endingHours.get(i);
+						 System.out.println("Start " + i+  " : " + start);
+						 System.out.println("End " + i+  " : " + end);
+						 i++;
 						for (String des : descriptions) {
-							facade.addEvent(date,des, sport, selectedcompetition.getCompetitionNumber());
+							facade.addEvent(start, end,des, sport, selectedcompetition.getCompetitionNumber());
 						}
 					}
 					loadEvents(selectedcompetition);
 					events = new HashMap<String, ArrayList<String>>(); // reset the hash after adding the pairs
 					resetCreatedEventTable(); //reset the table
 
-					createQuestionErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("EventCreated"));
+					teamsErrorLabel.setText(ResourceBundle.getBundle("Etiquetas").getString("EventCreated"));
 				}
 				//reset text fields 
 				team1TextField.setText("");
@@ -581,9 +668,9 @@ public class CreateEventPanel extends JPanel {
 		createdEventTable.getColumnModel().getColumn(0).setPreferredWidth(60);
 		createdEventTable.getColumnModel().getColumn(0).setMinWidth(60);
 		createdEventTable.getColumnModel().getColumn(0).setMaxWidth(60);
-		createdEventTable.getColumnModel().getColumn(2).setPreferredWidth(80);
-		createdEventTable.getColumnModel().getColumn(2).setMinWidth(80);
-		createdEventTable.getColumnModel().getColumn(2).setMaxWidth(80);
+		createdEventTable.getColumnModel().getColumn(2).setPreferredWidth(140);
+		createdEventTable.getColumnModel().getColumn(2).setMinWidth(140);
+		createdEventTable.getColumnModel().getColumn(2).setMaxWidth(140);
 		createdEventTable.getColumnModel().getColumn(3).setPreferredWidth(50);
 		createdEventTable.getColumnModel().getColumn(3).setMinWidth(50);
 		createdEventTable.getColumnModel().getColumn(3).setMaxWidth(50);
@@ -607,7 +694,11 @@ public class CreateEventPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			int row = createdEventTable.getSelectedRow();
-			events.remove(createdEventTable.getValueAt(row, 1));
+			String date =  (String)createdEventTable.getValueAt(row, 2);
+			ArrayList<String> des = events.get(date);
+			System.out.println(date);
+			des.remove(createdEventTable.getValueAt(row,1));
+			endingHours.remove(createdEventTable.getSelectedRow());
 			createdEventsTableModel.removeRow(row);
 		}
 	};
