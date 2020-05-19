@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
 
+import configuration.Password;
+
 /**
  * Stores credentials and additional information of registered users, including the active bets it has in place. 
  * Users may be regular or administrators (represented by isAdmin boolean).
@@ -63,7 +65,7 @@ public class User implements Serializable{
 	public User(String username, String password, boolean isAdmin, Profile p) {
 		super();
 		this.username = username;
-		this.password = password;
+		this.password = Password.hashPassword(password);
 		this.profile = p;
 		this.isAdmin = isAdmin;
 		this.registrationdate = new Date();

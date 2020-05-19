@@ -19,6 +19,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import configuration.ConfigXML;
+import configuration.Password;
 import configuration.UtilDate;
 import domain.Bet;
 import domain.BetType;
@@ -514,8 +515,11 @@ public class DataAccessImplementation implements DataAccess {
 		EntityManager db = createEntityManager();
 		Event ev = db.find(Event.class, event.getEventNumber());
 
-		if (ev.DoesQuestionExists(question)) throw new QuestionAlreadyExist(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
-
+		if (ev.DoesQuestionExists(question)) {
+			db.close();
+			throw new QuestionAlreadyExist(ResourceBundle.getBundle("Etiquetas").getString("ErrorQueryAlreadyExist"));
+	    }
+		
 		db.getTransaction().begin();
 
 		Question q = ev.addQuestion(question, betMinimum, predictions);
@@ -635,6 +639,7 @@ public class DataAccessImplementation implements DataAccess {
 		System.out.println("getEventsMonth month: " + 1);
 		
 		if(today.compareTo(date) > 0) { 
+			db.close();
 			return res;
 		}
 		else if(thismonth == datemonth){
@@ -654,6 +659,7 @@ public class DataAccessImplementation implements DataAccess {
 		for (Date d:dates){	 
 			res.add(d);
 		}
+		db.close();
 		return res;
 	}
 
@@ -792,7 +798,7 @@ public class DataAccessImplementation implements DataAccess {
 			db.close();
 			throw new invalidID("ID does not correspond to a registered user");
 		}
-		else if(!u.getPassword().equals(pw)) {
+		else if(!(Password.checkPassword(pw, u.getPassword()))) {
 			db.close();
 			throw new invalidPW("Incorrect password");
 		}
@@ -927,6 +933,7 @@ public class DataAccessImplementation implements DataAccess {
 			System.out.println("Credit card: " + cc.getCardNumber() + " has been added to: " + username);
 		}
 		else {
+			db.close();
 			System.out.println("User not found, could not store credit card");
 		}
 		return cc;
@@ -953,9 +960,9 @@ public class DataAccessImplementation implements DataAccess {
 				query.executeUpdate();
 			}
 			db.getTransaction().commit();
-			db.close();
 			System.out.println("Credit card: " + cc.getCardNumber() + " has been deleted");
 		}
+		db.close();
 	}
 	
 	/**
@@ -992,6 +999,7 @@ public class DataAccessImplementation implements DataAccess {
 		//check if there is an existing user for the new ID
 		if(!key.equals(username)) {
 			if(u != null) {
+				db.close();
 				throw new invalidID();
 			}
 			else {
@@ -1341,12 +1349,6 @@ public class DataAccessImplementation implements DataAccess {
 		db.close();
 	}
 	
-	
-	
-	
-	
-	
-
 	/**
 	 * @param date Date when the event is due to start
 	 * @param des  Description of the event
@@ -1354,7 +1356,7 @@ public class DataAccessImplementation implements DataAccess {
 	 * @param cpnum The number of the competiton where the event is set
 	 */
 	@Override
-	public void addEvent(Date start, Date end, String des, Sport sport,int cpumb) throws EventAlreadyCreated {
+	public void createEvent(Date start, Date end, String des, Sport sport,int cpumb) throws EventAlreadyCreated {
 		// TODO Auto-generated method stub
 		EntityManager db = createEntityManager();
 
@@ -1365,6 +1367,7 @@ public class DataAccessImplementation implements DataAccess {
 			//making sure that the event isn't duplicated, otherwise an exception will proc
 			Event ev = db.find(Event.class, des);
 			if (ev != null && ev.getEventDate() == start) {
+				db.close();
 				throw new EventAlreadyCreated();
 			}else {//if the event is not duplicated
 				Competition comp = db.find(Competition.class, cpumb); //get the competition corresponding to the number
@@ -1377,7 +1380,7 @@ public class DataAccessImplementation implements DataAccess {
 			}
 		
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			db.close();
 			e.printStackTrace();
 		}
 	}

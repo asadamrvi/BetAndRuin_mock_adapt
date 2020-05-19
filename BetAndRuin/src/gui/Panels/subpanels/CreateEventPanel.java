@@ -599,7 +599,7 @@ public class CreateEventPanel extends JPanel {
 
 			Sport sport = (Sport)sportComboBox.getSelectedItem();
 				if (events.size() < 1) {//if only 1 team is introduced warm the admin
-					teamsErrorLabel.setText("Introduce answers");
+					teamsErrorLabel.setText("Introduce events");
 					
 				}else{
 					// Obtain the business logic from a StartWindow class (local or remote)
@@ -616,7 +616,7 @@ public class CreateEventPanel extends JPanel {
 						 System.out.println("End " + i+  " : " + end);
 						 i++;
 						for (String des : descriptions) {
-							facade.addEvent(start, end,des, sport, selectedcompetition.getCompetitionNumber());
+							facade.createEvent(start, end,des, sport, selectedcompetition.getCompetitionNumber());
 						}
 					}
 					loadEvents(selectedcompetition);

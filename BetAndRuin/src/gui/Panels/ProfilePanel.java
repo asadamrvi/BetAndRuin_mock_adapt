@@ -46,7 +46,6 @@ public class ProfilePanel extends JPanel {
 
 	private PersonalInfoPanel personalInfoPanel;
 	private CreditCardsPanel creditCardsPanel;
-	private JPanel myTransactionsPanel;
 
 	private FancyButton chooseImageButton;
 	private FancyButton saveImageButton;
@@ -77,9 +76,6 @@ public class ProfilePanel extends JPanel {
 
 		personalInfoPanel = new PersonalInfoPanel();
 		tabbedPane.addTab("Personal info", personalInfoPanel);
-
-		myTransactionsPanel = new JPanel();
-		tabbedPane.addTab("My transactions",myTransactionsPanel);
 
 		creditCardsPanel = new CreditCardsPanel();
 		tabbedPane.addTab("My credit cards", creditCardsPanel);

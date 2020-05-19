@@ -15,5 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libs/jBCrypt-0.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

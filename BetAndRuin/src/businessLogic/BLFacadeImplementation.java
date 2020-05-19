@@ -91,10 +91,10 @@ public class BLFacadeImplementation  implements BLFacade {
 	
 
 	@Override
-	public void addEvent(Date start, Date end, String des,Sport sport, int cpmunb)  throws EventAlreadyCreated {
+	public void createEvent(Date start, Date end, String des,Sport sport, int cpmunb)  throws EventAlreadyCreated {
 		// TODO Auto-generated method stub
 		try {
-			dbManager.addEvent(start, end, des, sport, cpmunb);
+			dbManager.createEvent(start, end, des, sport, cpmunb);
 		} catch (EventAlreadyCreated e) {
 			throw new EventAlreadyCreated("Event already in db");
 		}

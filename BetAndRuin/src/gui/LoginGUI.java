@@ -54,7 +54,6 @@ public class LoginGUI extends JDialog {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("serial")
 	public LoginGUI() {
 
 		BLFacade facade = MainGUI.getBusinessLogic();
