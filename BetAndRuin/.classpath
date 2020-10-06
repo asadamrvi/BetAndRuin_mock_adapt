@@ -9,11 +9,16 @@
 	<classpathentry exported="true" kind="lib" path="jgoodies-common-1.8.0.jar" sourcepath="jgoodies-common-1.8.0-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/javax.mail.jar"/>
+	<classpathentry kind="lib" path="D:/Uni/3rd curso/software/tema 1/lab1.2/libs/byte-buddy-1.10.1.jar"/>
+	<classpathentry kind="lib" path="D:/Uni/3rd curso/software/tema 1/lab1.2/libs/byte-buddy-agent-1.10.1.jar"/>
+	<classpathentry kind="lib" path="D:/Uni/3rd curso/software/tema 1/lab1.2/libs/mockito-core-3.0.0.jar"/>
+	<classpathentry kind="lib" path="D:/Uni/3rd curso/software/tema 1/lab1.2/libs/objenesis-tck-3.0.1.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="libs/jBCrypt-0.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>

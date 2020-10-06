@@ -61,6 +61,17 @@ public class BLFacadeImplementation  implements BLFacade {
 			dbManager=new DataAccessImplementation(false);
 		}
 	} 
+	
+	public BLFacadeImplementation(DataAccess da) {
+		System.out.println("Creating BLFacadeImplementation instance with DataAccess parameter");
+		ConfigXML c=ConfigXML.getInstance();
+		if (c.getDataBaseOpenMode().equals("initialize")) {
+		da.open(true);
+		da.initializeDB();
+		
+		}
+		dbManager=da;
+		}
 
 	/** 
 	 * This method creates a question for an event, with a question text and the minimum bet

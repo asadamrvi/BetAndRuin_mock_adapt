@@ -6,7 +6,8 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 import configuration.ConfigXML;
-
+import dataAccess.DataAccess;
+import dataAccess.DataAccessImplementation;
 import businessLogic.BLFacade;
 import businessLogic.BLFacadeImplementation;
 
@@ -30,7 +31,10 @@ public class ApplicationLauncher {
 //			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			if (c.isBusinessLogicLocal()) {
 				
-			 appFacadeInterface= new BLFacadeImplementation();
+		// appFacadeInterface= new BLFacadeImplementation();
+		 
+	DataAccess da= new DataAccessImplementation(c.getDataBaseOpenMode().equals("initialize"));
+	appFacadeInterface=new BLFacadeImplementation(da);
 						
 			}
 			

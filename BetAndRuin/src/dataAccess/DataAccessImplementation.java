@@ -54,10 +54,18 @@ public class DataAccessImplementation implements DataAccess {
 	
 	public DataAccessImplementation(boolean initializeMode)  {
 
+		
+
+
+		open(initializeMode);
+		//System.out.println("Creating DataAccess instance => isDatabaseLocal: "+c.isDatabaseLocal()+" getDatabBaseOpenMode: "+c.getDataBaseOpenMode());
+	}
+
+	public DataAccessImplementation()  {	
+		new DataAccessImplementation(false);
+	}
+	public void open(boolean initializeMode){
 		c=ConfigXML.getInstance();
-
-		System.out.println("Creating DataAccess instance => isDatabaseLocal: "+c.isDatabaseLocal()+" getDatabBaseOpenMode: "+c.getDataBaseOpenMode());
-
 		fileName=c.getDbFilename();
 		if (initializeMode) {
 			fileName=fileName+";drop";
@@ -72,10 +80,6 @@ public class DataAccessImplementation implements DataAccess {
 
 			emf = Persistence.createEntityManagerFactory("objectdb://"+c.getDatabaseNode()+":"+c.getDatabasePort()+"/"+fileName, properties);
 		}
-	}
-
-	public DataAccessImplementation()  {	
-		new DataAccessImplementation(false);
 	}
 
 	public EntityManager createEntityManager() {
@@ -1403,6 +1407,8 @@ public class DataAccessImplementation implements DataAccess {
 		db.close();
 		return max;
 	}
+	
+	
 
 	public void createCompetition(String count, Sport sport, String comp, Date date) {
 		// TODO Auto-generated method stub
